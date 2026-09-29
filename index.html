@@ -1021,22 +1021,34 @@ try {
            ----------------------------------------------- */
 
         realmSymbol.classList.remove(
-            "visible"
+    "visible"
+);
+
+
+setTimeout(() => {
+
+    const newSymbol =
+        lorePages[
+            currentLorePage
+        ].symbol;
+
+
+    if (newSymbol) {
+
+        realmSymbol.src =
+            newSymbol;
+
+    }
+
+    else {
+
+        realmSymbol.removeAttribute(
+            "src"
         );
 
+    }
 
-        const newSymbol =
-            lorePages[
-                currentLorePage
-            ].symbol;
-
-
-        if (newSymbol) {
-
-            realmSymbol.src =
-                newSymbol;
-
-        }
+}, 600);
 
         else {
 
