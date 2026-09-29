@@ -21,20 +21,13 @@ html, body {
     background: #000;
 }
 
-/* =========================
-   PANORAMA
-   ========================= */
-
 canvas {
     position: fixed;
     top: 0;
     left: 0;
-
     width: 100vw;
     height: 100vh;
-
     display: block;
-
     z-index: 0;
 }
 
@@ -62,7 +55,7 @@ canvas {
 
 
 /* =========================
-   GENERAL INTRO CONTAINER
+   WELCOME SCREEN
    ========================= */
 
 #intro {
@@ -75,22 +68,15 @@ canvas {
 
     z-index: 10;
 
-    pointer-events: none;
+    pointer-events: auto;
 
     transition: opacity 0.7s ease;
 }
-
-
-/* =========================
-   WELCOME SCREEN
-   ========================= */
 
 #welcomeScreen {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    pointer-events: auto;
 
     text-align: center;
 
@@ -98,7 +84,6 @@ canvas {
         opacity 0.7s ease,
         transform 0.7s ease;
 }
-
 
 #welcomeText {
     white-space: nowrap;
@@ -118,7 +103,7 @@ canvas {
 
 
 /* =========================
-   PROCEED BUTTON
+   PROCEED AREA
    ========================= */
 
 #proceedArea {
@@ -131,8 +116,10 @@ canvas {
     opacity: 0;
 
     transition: opacity 0.5s ease;
-}
 
+    cursor: pointer;
+    user-select: none;
+}
 
 #proceedText {
     margin-bottom: 12px;
@@ -146,7 +133,6 @@ canvas {
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.5);
 }
-
 
 #proceedButton {
     display: block;
@@ -162,15 +148,12 @@ canvas {
         filter 0.15s ease;
 }
 
-
-#proceedButton:hover {
+#proceedArea:hover #proceedButton {
     transform: scale(1.05);
-
     filter: brightness(1.1);
 }
 
-
-#proceedButton:active {
+#proceedArea:active #proceedButton {
     transform: scale(0.97);
 }
 
@@ -187,13 +170,13 @@ canvas {
     align-items: center;
     justify-content: center;
 
-    pointer-events: none;
+    z-index: 11;
 
     opacity: 0;
 
-    transition: opacity 0.7s ease;
+    pointer-events: none;
 
-    z-index: 11;
+    transition: opacity 0.7s ease;
 }
 
 
@@ -204,29 +187,15 @@ canvas {
 #loreContainer {
     position: relative;
 
-    /*
-       The original image is 334 x 154.
-
-       This width controls how large the box
-       appears on screen.
-
-       It scales with the screen while
-       preserving the pixel-art proportions.
-    */
-
     width: min(80vw, 1000px);
 
     aspect-ratio: 334 / 154;
 
     image-rendering: pixelated;
 
-    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
 }
-
-
-/*
-   The actual pixel-art box
-*/
 
 #loreBox {
     position: absolute;
@@ -240,8 +209,6 @@ canvas {
 
     image-rendering: pixelated;
 
-    user-select: none;
-
     pointer-events: none;
 }
 
@@ -254,21 +221,20 @@ canvas {
     position: absolute;
 
     /*
-       These percentages are based on
-       your original 280 x 112 text area.
-
        Original box:
        334 x 154
 
-       Text area:
+       Usable text area:
        280 x 112
     */
 
     left: 8.08%;
-    top: 13.0%;
+    top: 13%;
 
     width: 83.83%;
     height: 72.73%;
+
+    box-sizing: border-box;
 
     display: flex;
     align-items: center;
@@ -276,16 +242,9 @@ canvas {
 
     padding: 0;
 
-    box-sizing: border-box;
-
     text-align: center;
 
     font-family: "Press Start 2P", monospace;
-
-    /*
-       This is intentionally small because
-       we're scaling the entire box.
-    */
 
     font-size: clamp(8px, 1.15vw, 16px);
 
@@ -296,11 +255,6 @@ canvas {
     white-space: pre-line;
 
     overflow: hidden;
-
-    /*
-       Prevent accidental selection while
-       clicking through the dialogue.
-    */
 
     user-select: none;
 
@@ -336,18 +290,11 @@ canvas {
     white-space: nowrap;
 }
 
-
-/*
-   Tiny blinking effect once the text
-   has finished typing.
-*/
-
 #nextIndicator.visible {
     opacity: 1;
 
     animation: blink 1.2s infinite;
 }
-
 
 @keyframes blink {
 
@@ -363,7 +310,7 @@ canvas {
 
 
 /* =========================
-   ERROR MESSAGE
+   ERROR
    ========================= */
 
 #error {
@@ -408,12 +355,10 @@ canvas {
 
 
 <!-- =========================
-     INTRO
+     WELCOME
      ========================= -->
 
 <div id="intro">
-
-    <!-- WELCOME SCREEN -->
 
     <div id="welcomeScreen">
 
@@ -439,7 +384,7 @@ canvas {
 
 
 <!-- =========================
-     LORE SCREEN
+     LORE
      ========================= -->
 
 <div id="loreScreen">
@@ -476,13 +421,11 @@ import * as THREE from
     "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-
 /* =========================================================
-   THREE.JS PANORAMA
+   THREE.JS
    ========================================================= */
 
 const scene = new THREE.Scene();
-
 
 const camera = new THREE.PerspectiveCamera(
     75,
@@ -491,31 +434,25 @@ const camera = new THREE.PerspectiveCamera(
     100
 );
 
-
 camera.position.set(0, 0, 0);
-
 
 
 const renderer = new THREE.WebGLRenderer({
     antialias: true
 });
 
-
 renderer.setPixelRatio(
     Math.min(window.devicePixelRatio, 2)
 );
-
 
 renderer.setSize(
     window.innerWidth,
     window.innerHeight
 );
 
-
 document.body.appendChild(
     renderer.domElement
 );
-
 
 
 /* =========================================================
@@ -534,9 +471,7 @@ const panoramaURLs = [
 ];
 
 
-
 const loader = new THREE.TextureLoader();
-
 
 
 try {
@@ -565,9 +500,8 @@ try {
     );
 
 
-
     /* =====================================================
-       PANORAMA MATERIALS
+       MATERIALS
        ===================================================== */
 
     const materials = textures.map(texture => {
@@ -586,9 +520,8 @@ try {
     });
 
 
-
     /* =====================================================
-       PANORAMA MESH
+       PANORAMA
        ===================================================== */
 
     const geometry =
@@ -609,18 +542,16 @@ try {
     scene.add(panorama);
 
 
-
     /* =====================================================
-       HIDE LOADING SCREEN
+       HIDE LOADING
        ===================================================== */
 
     document.getElementById("loading")
         .style.display = "none";
 
 
-
     /* =====================================================
-       PANORAMA ROTATION
+       ROTATION
        ===================================================== */
 
     let rotationY = 0;
@@ -630,13 +561,10 @@ try {
 
         requestAnimationFrame(animate);
 
-
         rotationY += 0.0003;
-
 
         panorama.rotation.y =
             rotationY;
-
 
         renderer.render(
             scene,
@@ -649,7 +577,6 @@ try {
     animate();
 
 
-
     /* =====================================================
        WELCOME TYPEWRITER
        ===================================================== */
@@ -657,17 +584,13 @@ try {
     const welcomeText =
         document.getElementById("welcomeText");
 
-
     const proceedArea =
         document.getElementById("proceedArea");
-
 
     const welcomeMessage =
         "Welcome....";
 
-
     let welcomeCharacter = 0;
-
 
 
     function typeWelcome() {
@@ -680,22 +603,19 @@ try {
             welcomeText.textContent +=
                 welcomeMessage[welcomeCharacter];
 
-
             welcomeCharacter++;
-
 
             setTimeout(
                 typeWelcome,
                 250
             );
 
-        }
-
-        else {
+        } else {
 
             setTimeout(() => {
 
-                proceedArea.style.opacity = "1";
+                proceedArea.style.opacity =
+                    "1";
 
             }, 400);
 
@@ -704,44 +624,32 @@ try {
     }
 
 
-
     setTimeout(
         typeWelcome,
         1000
     );
 
 
-
     /* =====================================================
-       LORE
+       LORE ELEMENTS
        ===================================================== */
-
-    const loreScreen =
-        document.getElementById("loreScreen");
-
 
     const welcomeScreen =
         document.getElementById("welcomeScreen");
 
+    const loreScreen =
+        document.getElementById("loreScreen");
 
     const loreText =
         document.getElementById("loreText");
-
 
     const nextIndicator =
         document.getElementById("nextIndicator");
 
 
-    const proceedButton =
-        document.getElementById("proceedButton");
-
-
-
-    /*
-       Each entry is one "page" of dialogue.
-
-       The text here is exactly what you provided.
-    */
+    /* =====================================================
+       LORE TEXT
+       ===================================================== */
 
     const lorePages = [
 
@@ -758,7 +666,6 @@ try {
     ];
 
 
-
     let currentLorePage = 0;
 
     let typing = false;
@@ -770,43 +677,34 @@ try {
     let currentCharacter = 0;
 
 
-
     /*
        Typing speed.
-
        Lower number = faster.
     */
 
     const typingSpeed = 35;
 
 
-
     /* =====================================================
-       TYPE A LORE PAGE
+       TYPE LORE PAGE
        ===================================================== */
 
     function typeLorePage() {
 
         clearTimeout(typingTimer);
 
-
         typing = true;
-
 
         nextIndicator.classList.remove(
             "visible"
         );
 
-
         currentText =
             lorePages[currentLorePage];
 
-
         currentCharacter = 0;
 
-
         loreText.textContent = "";
-
 
 
         function typeCharacter() {
@@ -819,21 +717,16 @@ try {
                 loreText.textContent +=
                     currentText[currentCharacter];
 
-
                 currentCharacter++;
-
 
                 typingTimer = setTimeout(
                     typeCharacter,
                     typingSpeed
                 );
 
-            }
-
-            else {
+            } else {
 
                 typing = false;
-
 
                 nextIndicator.classList.add(
                     "visible"
@@ -849,34 +742,42 @@ try {
     }
 
 
-
     /* =====================================================
-       SHOW LORE SCREEN
+       START LORE
        ===================================================== */
 
     function startLore() {
 
         /*
-           Fade out Welcome
+           Stop any possibility of clicking
+           the Welcome screen twice.
         */
 
-        welcomeScreen.style.opacity = "0";
+        proceedArea.style.pointerEvents =
+            "none";
 
+
+        /*
+           Fade Welcome away.
+        */
+
+        welcomeScreen.style.opacity =
+            "0";
 
         welcomeScreen.style.transform =
             "translateY(-20px)";
 
 
-
         /*
-           After the fade,
-           disable the welcome screen.
+           Wait for the fade,
+           then show the lore box.
         */
 
         setTimeout(() => {
 
             welcomeScreen.style.display =
                 "none";
+
 
             loreScreen.style.pointerEvents =
                 "auto";
@@ -887,7 +788,8 @@ try {
 
 
             /*
-               Start first lore page.
+               Give the box a moment to fade in
+               before starting the text.
             */
 
             setTimeout(() => {
@@ -901,29 +803,37 @@ try {
     }
 
 
-
     /* =====================================================
-       CLICK WELCOME BUTTON
+       PROCEED CLICK
        ===================================================== */
 
-    proceedButton.addEventListener(
+    proceedArea.addEventListener(
         "click",
-        startLore
+        (event) => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            startLore();
+
+        }
     );
 
 
-
     /* =====================================================
-       CLICK LORE SCREEN
+       LORE CLICK
        ===================================================== */
 
     loreScreen.addEventListener(
         "click",
-        () => {
+        (event) => {
+
+            event.preventDefault();
+
 
             /*
-               If the current text is still typing,
-               finish it immediately.
+               If the text is still typing,
+               finish the current section.
             */
 
             if (typing) {
@@ -932,32 +842,25 @@ try {
                     typingTimer
                 );
 
-
                 loreText.textContent =
                     currentText;
-
 
                 currentCharacter =
                     currentText.length;
 
-
                 typing = false;
-
 
                 nextIndicator.classList.add(
                     "visible"
                 );
-
 
                 return;
 
             }
 
 
-
             /*
-               If there are more pages,
-               move to the next one.
+               Move to the next section.
             */
 
             if (
@@ -967,30 +870,27 @@ try {
 
                 currentLorePage++;
 
-
                 typeLorePage();
 
-            }
-
-            else {
-
-                /*
-                   This is where we'll eventually
-                   transition into the actual website.
-
-                   For now, we'll just hide the
-                   continue indicator.
-                */
-
-                nextIndicator.classList.remove(
-                    "visible"
-                );
+                return;
 
             }
+
+
+            /*
+               End of the current introduction.
+
+               We'll replace this later with
+               whatever should happen after the
+               final lore section.
+            */
+
+            nextIndicator.classList.remove(
+                "visible"
+            );
 
         }
     );
-
 
 
 }
@@ -1013,7 +913,6 @@ catch (error) {
 }
 
 
-
 /* =========================================================
    RESIZE
    ========================================================= */
@@ -1026,9 +925,7 @@ window.addEventListener(
             window.innerWidth /
             window.innerHeight;
 
-
         camera.updateProjectionMatrix();
-
 
         renderer.setSize(
             window.innerWidth,
