@@ -1,447 +1,1033 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ThalSMP 2</title>
+<title>ThalSMP 2</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-        rel="stylesheet"
-    >
+<style>
 
-    <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
 
-        html, body {
-            margin: 0;
-            padding: 0;
+/* =========================
+   PANORAMA
+   ========================= */
 
-            width: 100%;
-            height: 100%;
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
 
-            overflow: hidden;
+    width: 100vw;
+    height: 100vh;
 
-            background: #000;
-        }
+    display: block;
 
+    z-index: 0;
+}
 
-        /*
-         * Panorama canvas
-         */
 
-        canvas {
-            position: fixed;
+/* =========================
+   LOADING SCREEN
+   ========================= */
 
-            top: 0;
-            left: 0;
+#loading {
+    position: fixed;
+    inset: 0;
 
-            display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            width: 100vw;
-            height: 100vh;
+    background: #000;
+    color: white;
 
-            z-index: 0;
-        }
+    font-family: "Press Start 2P", monospace;
+    font-size: 18px;
 
+    z-index: 50;
+}
 
-        /*
-         * Loading screen
-         */
 
-        #loading {
-            position: fixed;
-            inset: 0;
+/* =========================
+   GENERAL INTRO CONTAINER
+   ========================= */
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+#intro {
+    position: fixed;
+    inset: 0;
 
-            background: #000;
-            color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            font-family: "Press Start 2P", monospace;
-            font-size: 18px;
+    z-index: 10;
 
-            z-index: 20;
-        }
+    pointer-events: none;
 
+    transition: opacity 0.7s ease;
+}
 
-        /*
-         * Welcome screen
-         */
 
-        #welcome {
-            position: fixed;
-            inset: 0;
+/* =========================
+   WELCOME SCREEN
+   ========================= */
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+#welcomeScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-            pointer-events: none;
+    pointer-events: auto;
 
-            text-align: center;
+    text-align: center;
 
-            z-index: 10;
-        }
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
 
 
-        /*
-         * Welcome content
-         */
+#welcomeText {
+    white-space: nowrap;
 
-        #welcomeContent {
-            pointer-events: auto;
+    font-family: "Press Start 2P", monospace;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    font-size: clamp(32px, 6vw, 90px);
 
-            cursor: default;
-        }
+    color: white;
 
+    text-shadow:
+        4px 4px 0 #000,
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000;
+}
 
-        /*
-         * Welcome text
-         */
 
-        #welcomeText {
-            white-space: nowrap;
+/* =========================
+   PROCEED BUTTON
+   ========================= */
 
-            font-family:
-                "Press Start 2P",
-                monospace;
+#proceedArea {
+    margin-top: 25px;
 
-            font-size:
-                clamp(32px, 6vw, 90px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-            color: white;
+    opacity: 0;
 
-            text-shadow:
-                4px 4px 0 #000,
-                -2px -2px 0 #000,
-                2px -2px 0 #000,
-                -2px 2px 0 #000;
-        }
+    transition: opacity 0.5s ease;
+}
 
 
-        /*
-         * Proceed area
-         */
+#proceedText {
+    margin-bottom: 12px;
 
-        #proceedArea {
-            margin-top: 25px;
+    font-family: "Press Start 2P", monospace;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    font-size: clamp(7px, 1vw, 12px);
 
-            opacity: 0;
+    color: #000;
 
-            transition:
-                opacity 0.5s ease;
-        }
+    text-shadow:
+        1px 1px 0 rgba(255,255,255,0.5);
+}
 
 
-        /*
-         * Click to Proceed text
-         */
+#proceedButton {
+    display: block;
 
-        #proceedText {
-            margin-bottom: 12px;
+    width: clamp(100px, 12vw, 170px);
+    height: auto;
 
-            font-family:
-                "Press Start 2P",
-                monospace;
+    cursor: pointer;
+    user-select: none;
 
-            font-size:
-                clamp(7px, 1vw, 12px);
+    transition:
+        transform 0.15s ease,
+        filter 0.15s ease;
+}
 
-            color: #000;
 
-            text-shadow:
-                1px 1px 0 rgba(255, 255, 255, 0.5);
-        }
+#proceedButton:hover {
+    transform: scale(1.05);
 
+    filter: brightness(1.1);
+}
 
-        /*
-         * Image button
-         */
 
-        #proceedButton {
-            display: block;
+#proceedButton:active {
+    transform: scale(0.97);
+}
 
-            width: clamp(100px, 12vw, 170px);
-            height: auto;
 
-            cursor: pointer;
+/* =========================
+   LORE SCREEN
+   ========================= */
 
-            user-select: none;
+#loreScreen {
+    position: fixed;
+    inset: 0;
 
-            transition:
-                transform 0.15s ease,
-                filter 0.15s ease;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    pointer-events: none;
 
-        /*
-         * Button hover
-         */
+    opacity: 0;
 
-        #proceedButton:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
+    transition: opacity 0.7s ease;
 
+    z-index: 11;
+}
 
-        /*
-         * Button press
-         */
 
-        #proceedButton:active {
-            transform: scale(0.97);
-        }
+/* =========================
+   LORE BOX
+   ========================= */
 
+#loreContainer {
+    position: relative;
 
-        /*
-         * Popup overlay
-         */
+    /*
+       The original image is 334 x 154.
 
-        #popup {
-            position: fixed;
-            inset: 0;
+       This width controls how large the box
+       appears on screen.
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+       It scales with the screen while
+       preserving the pixel-art proportions.
+    */
 
-            background: rgba(0, 0, 0, 0.55);
+    width: min(80vw, 1000px);
 
-            opacity: 0;
-            visibility: hidden;
+    aspect-ratio: 334 / 154;
 
-            transition:
-                opacity 0.5s ease;
+    image-rendering: pixelated;
 
-            z-index: 30;
-        }
+    pointer-events: auto;
+}
 
 
-        /*
-         * Popup when visible
-         */
+/*
+   The actual pixel-art box
+*/
 
-        #popup.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+#loreBox {
+    position: absolute;
 
+    inset: 0;
 
-        /*
-         * Popup box
-         */
+    width: 100%;
+    height: 100%;
 
-        #popupBox {
-            padding: 40px;
+    display: block;
 
-            max-width: 700px;
+    image-rendering: pixelated;
 
-            box-sizing: border-box;
+    user-select: none;
 
-            background: rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
 
-            border: 3px solid #fff;
 
-            color: white;
+/* =========================
+   LORE TEXT
+   ========================= */
 
-            font-family:
-                "Press Start 2P",
-                monospace;
+#loreText {
+    position: absolute;
 
-            font-size: 16px;
+    /*
+       These percentages are based on
+       your original 280 x 112 text area.
 
-            line-height: 1.8;
+       Original box:
+       334 x 154
 
-            text-align: center;
+       Text area:
+       280 x 112
+    */
 
-            box-shadow:
-                8px 8px 0 #000;
-        }
+    left: 8.08%;
+    top: 13.0%;
 
+    width: 83.83%;
+    height: 72.73%;
 
-        /*
-         * Popup close button
-         */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        #popupClose {
-            margin-top: 25px;
+    padding: 0;
 
-            padding: 10px 18px;
+    box-sizing: border-box;
 
-            border: 2px solid white;
+    text-align: center;
 
-            background: #222;
+    font-family: "Press Start 2P", monospace;
 
-            color: white;
+    /*
+       This is intentionally small because
+       we're scaling the entire box.
+    */
 
-            font-family:
-                "Press Start 2P",
-                monospace;
+    font-size: clamp(8px, 1.15vw, 16px);
 
-            font-size: 10px;
+    line-height: 1.8;
 
-            cursor: pointer;
-        }
+    color: #111;
 
+    white-space: pre-line;
 
-        #popupClose:hover {
-            background: #444;
-        }
+    overflow: hidden;
 
+    /*
+       Prevent accidental selection while
+       clicking through the dialogue.
+    */
 
-        /*
-         * Error screen
-         */
+    user-select: none;
 
-        #error {
-            display: none;
+    pointer-events: none;
+}
 
-            position: fixed;
-            inset: 0;
 
-            padding: 40px;
+/* =========================
+   NEXT INDICATOR
+   ========================= */
 
-            box-sizing: border-box;
+#nextIndicator {
+    position: absolute;
 
-            background: #000;
-            color: white;
+    bottom: -55px;
+    left: 50%;
 
-            font-family: sans-serif;
+    transform: translateX(-50%);
 
-            z-index: 40;
-        }
+    font-family: "Press Start 2P", monospace;
 
-    </style>
+    font-size: clamp(7px, 0.9vw, 12px);
 
+    color: #000;
+
+    text-shadow:
+        1px 1px 0 rgba(255,255,255,0.5);
+
+    opacity: 0;
+
+    transition: opacity 0.4s ease;
+
+    white-space: nowrap;
+}
+
+
+/*
+   Tiny blinking effect once the text
+   has finished typing.
+*/
+
+#nextIndicator.visible {
+    opacity: 1;
+
+    animation: blink 1.2s infinite;
+}
+
+
+@keyframes blink {
+
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+
+}
+
+
+/* =========================
+   ERROR MESSAGE
+   ========================= */
+
+#error {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    max-width: 80vw;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,0.85);
+
+    color: white;
+
+    font-family: monospace;
+
+    text-align: center;
+
+    z-index: 100;
+
+    display: none;
+}
+
+</style>
 </head>
+
 
 <body>
 
 
-    <!-- Loading -->
+<!-- =========================
+     LOADING
+     ========================= -->
 
-    <div id="loading">
-        Entering the world...
-    </div>
-
-
-    <!-- Welcome -->
-
-    <div id="welcome">
-
-        <div id="welcomeContent">
-
-            <div id="welcomeText"></div>
+<div id="loading">
+    Entering the world...
+</div>
 
 
-            <div id="proceedArea">
+<!-- =========================
+     INTRO
+     ========================= -->
 
-                <div id="proceedText">
-                    (Click to Proceed)
-                </div>
+<div id="intro">
 
-                <img
-                    id="proceedButton"
-                    src="https://i.imgur.com/ugXJ5W7.png"
-                    alt="Click to Proceed"
-                >
+    <!-- WELCOME SCREEN -->
 
+    <div id="welcomeScreen">
+
+        <div id="welcomeText"></div>
+
+        <div id="proceedArea">
+
+            <div id="proceedText">
+                (Click to Proceed)
             </div>
+
+            <img
+                id="proceedButton"
+                src="https://i.imgur.com/ugXJ5W7.png"
+                alt="Click to Proceed"
+            >
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- Popup -->
 
-    <div id="popup">
+<!-- =========================
+     LORE SCREEN
+     ========================= -->
 
-        <div id="popupBox">
+<div id="loreScreen">
 
-            <div>
-                The world is waiting...
-            </div>
+    <div id="loreContainer">
 
-            <button id="popupClose">
-                CLOSE
-            </button>
+        <img
+            id="loreBox"
+            src="https://i.imgur.com/GePl0ts.png"
+            alt=""
+        >
 
+        <div id="loreText"></div>
+
+        <div id="nextIndicator">
+            (Click to Continue)
         </div>
 
     </div>
 
-
-    <!-- Error -->
-
-    <div id="error"></div>
+</div>
 
 
-    <script type="module">
+<!-- =========================
+     ERROR
+     ========================= -->
 
-        import * as THREE from
-            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
-
-
-        /*
-         * Scene
-         */
-
-        const scene =
-            new THREE.Scene();
+<div id="error"></div>
 
 
-        /*
-         * Camera
-         */
+<script type="module">
 
-        const camera =
-            new THREE.PerspectiveCamera(
-                75,
-                window.innerWidth /
-                    window.innerHeight,
-                0.1,
-                100
-            );
+import * as THREE from
+    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-        camera.position.set(
-            0,
-            0,
-            0
-        );
+
+/* =========================================================
+   THREE.JS PANORAMA
+   ========================================================= */
+
+const scene = new THREE.Scene();
 
 
-        /*
-         * Renderer
-         */
+const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+);
 
-        const renderer =
-            new THREE.WebGLRenderer({
-                antialias: true
+
+camera.position.set(0, 0, 0);
+
+
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+
+document.body.appendChild(
+    renderer.domElement
+);
+
+
+
+/* =========================================================
+   PANORAMA IMAGES
+   ========================================================= */
+
+const panoramaURLs = [
+
+    "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
+    "https://i.imgur.com/DozXrgb.jpeg",    // Left
+    "https://i.imgur.com/rOS65Sa.png",     // Top
+    "https://i.imgur.com/AeNmcy7.jpeg",    // Bottom
+    "https://i.imgur.com/07p3EMv.jpeg",    // Front
+    "https://i.imgur.com/XH20czc.jpeg"     // Back
+
+];
+
+
+
+const loader = new THREE.TextureLoader();
+
+
+
+try {
+
+    /* =====================================================
+       LOAD PANORAMA
+       ===================================================== */
+
+    const textures = await Promise.all(
+
+        panoramaURLs.map(url => {
+
+            return new Promise((resolve, reject) => {
+
+                loader.load(
+                    url,
+                    resolve,
+                    undefined,
+                    reject
+                );
+
             });
 
+        })
 
-        renderer.setPixelRatio(
-            Math.min(
-                window.devicePixelRatio,
-                2
-            )
+    );
+
+
+
+    /* =====================================================
+       PANORAMA MATERIALS
+       ===================================================== */
+
+    const materials = textures.map(texture => {
+
+        texture.colorSpace =
+            THREE.SRGBColorSpace;
+
+        return new THREE.MeshBasicMaterial({
+
+            map: texture,
+
+            side: THREE.BackSide
+
+        });
+
+    });
+
+
+
+    /* =====================================================
+       PANORAMA MESH
+       ===================================================== */
+
+    const geometry =
+        new THREE.BoxGeometry(
+            100,
+            100,
+            100
         );
+
+
+    const panorama =
+        new THREE.Mesh(
+            geometry,
+            materials
+        );
+
+
+    scene.add(panorama);
+
+
+
+    /* =====================================================
+       HIDE LOADING SCREEN
+       ===================================================== */
+
+    document.getElementById("loading")
+        .style.display = "none";
+
+
+
+    /* =====================================================
+       PANORAMA ROTATION
+       ===================================================== */
+
+    let rotationY = 0;
+
+
+    function animate() {
+
+        requestAnimationFrame(animate);
+
+
+        rotationY += 0.0003;
+
+
+        panorama.rotation.y =
+            rotationY;
+
+
+        renderer.render(
+            scene,
+            camera
+        );
+
+    }
+
+
+    animate();
+
+
+
+    /* =====================================================
+       WELCOME TYPEWRITER
+       ===================================================== */
+
+    const welcomeText =
+        document.getElementById("welcomeText");
+
+
+    const proceedArea =
+        document.getElementById("proceedArea");
+
+
+    const welcomeMessage =
+        "Welcome....";
+
+
+    let welcomeCharacter = 0;
+
+
+
+    function typeWelcome() {
+
+        if (
+            welcomeCharacter <
+            welcomeMessage.length
+        ) {
+
+            welcomeText.textContent +=
+                welcomeMessage[welcomeCharacter];
+
+
+            welcomeCharacter++;
+
+
+            setTimeout(
+                typeWelcome,
+                250
+            );
+
+        }
+
+        else {
+
+            setTimeout(() => {
+
+                proceedArea.style.opacity = "1";
+
+            }, 400);
+
+        }
+
+    }
+
+
+
+    setTimeout(
+        typeWelcome,
+        1000
+    );
+
+
+
+    /* =====================================================
+       LORE
+       ===================================================== */
+
+    const loreScreen =
+        document.getElementById("loreScreen");
+
+
+    const welcomeScreen =
+        document.getElementById("welcomeScreen");
+
+
+    const loreText =
+        document.getElementById("loreText");
+
+
+    const nextIndicator =
+        document.getElementById("nextIndicator");
+
+
+    const proceedButton =
+        document.getElementById("proceedButton");
+
+
+
+    /*
+       Each entry is one "page" of dialogue.
+
+       The text here is exactly what you provided.
+    */
+
+    const lorePages = [
+
+        "You are about to enter the Overworld, one of five realms that make up this world.",
+
+        "The Overworld is green and warm, filled with life and growth.\nThe Nether is hot and smoky, filled with decay.",
+
+        "The Aether is pastel and cool, filled with spirit.\nThe Otherside is dark and chilling, filled with miasma and souls.",
+
+        "The End is dark and cold, yet burns with distant warmth, filled with everything and nothing.",
+
+        "Not every realm can be easily reached. Some may be places you never see at all.\nBut every one of you has been touched by one of them."
+
+    ];
+
+
+
+    let currentLorePage = 0;
+
+    let typing = false;
+
+    let typingTimer = null;
+
+    let currentText = "";
+
+    let currentCharacter = 0;
+
+
+
+    /*
+       Typing speed.
+
+       Lower number = faster.
+    */
+
+    const typingSpeed = 35;
+
+
+
+    /* =====================================================
+       TYPE A LORE PAGE
+       ===================================================== */
+
+    function typeLorePage() {
+
+        clearTimeout(typingTimer);
+
+
+        typing = true;
+
+
+        nextIndicator.classList.remove(
+            "visible"
+        );
+
+
+        currentText =
+            lorePages[currentLorePage];
+
+
+        currentCharacter = 0;
+
+
+        loreText.textContent = "";
+
+
+
+        function typeCharacter() {
+
+            if (
+                currentCharacter <
+                currentText.length
+            ) {
+
+                loreText.textContent +=
+                    currentText[currentCharacter];
+
+
+                currentCharacter++;
+
+
+                typingTimer = setTimeout(
+                    typeCharacter,
+                    typingSpeed
+                );
+
+            }
+
+            else {
+
+                typing = false;
+
+
+                nextIndicator.classList.add(
+                    "visible"
+                );
+
+            }
+
+        }
+
+
+        typeCharacter();
+
+    }
+
+
+
+    /* =====================================================
+       SHOW LORE SCREEN
+       ===================================================== */
+
+    function startLore() {
+
+        /*
+           Fade out Welcome
+        */
+
+        welcomeScreen.style.opacity = "0";
+
+
+        welcomeScreen.style.transform =
+            "translateY(-20px)";
+
+
+
+        /*
+           After the fade,
+           disable the welcome screen.
+        */
+
+        setTimeout(() => {
+
+            welcomeScreen.style.display =
+                "none";
+
+            loreScreen.style.pointerEvents =
+                "auto";
+
+
+            loreScreen.style.opacity =
+                "1";
+
+
+            /*
+               Start first lore page.
+            */
+
+            setTimeout(() => {
+
+                typeLorePage();
+
+            }, 500);
+
+        }, 700);
+
+    }
+
+
+
+    /* =====================================================
+       CLICK WELCOME BUTTON
+       ===================================================== */
+
+    proceedButton.addEventListener(
+        "click",
+        startLore
+    );
+
+
+
+    /* =====================================================
+       CLICK LORE SCREEN
+       ===================================================== */
+
+    loreScreen.addEventListener(
+        "click",
+        () => {
+
+            /*
+               If the current text is still typing,
+               finish it immediately.
+            */
+
+            if (typing) {
+
+                clearTimeout(
+                    typingTimer
+                );
+
+
+                loreText.textContent =
+                    currentText;
+
+
+                currentCharacter =
+                    currentText.length;
+
+
+                typing = false;
+
+
+                nextIndicator.classList.add(
+                    "visible"
+                );
+
+
+                return;
+
+            }
+
+
+
+            /*
+               If there are more pages,
+               move to the next one.
+            */
+
+            if (
+                currentLorePage <
+                lorePages.length - 1
+            ) {
+
+                currentLorePage++;
+
+
+                typeLorePage();
+
+            }
+
+            else {
+
+                /*
+                   This is where we'll eventually
+                   transition into the actual website.
+
+                   For now, we'll just hide the
+                   continue indicator.
+                */
+
+                nextIndicator.classList.remove(
+                    "visible"
+                );
+
+            }
+
+        }
+    );
+
+
+
+}
+catch (error) {
+
+    console.error(error);
+
+
+    const errorBox =
+        document.getElementById("error");
+
+
+    errorBox.textContent =
+        "The world could not be loaded. Check the browser console for details.";
+
+
+    errorBox.style.display =
+        "block";
+
+}
+
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
 
 
         renderer.setSize(
@@ -449,350 +1035,10 @@
             window.innerHeight
         );
 
+    }
+);
 
-        document.body.appendChild(
-            renderer.domElement
-        );
-
-
-        /*
-         * Working panorama
-         */
-
-        const panoramaURLs = [
-
-            "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
-            "https://i.imgur.com/DozXrgb.jpeg",   // Left
-            "https://i.imgur.com/rOS65Sa.png",    // Top
-            "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
-            "https://i.imgur.com/07p3EMv.jpeg",   // Front
-            "https://i.imgur.com/XH20czc.jpeg"    // Back
-
-        ];
-
-
-        const loader =
-            new THREE.TextureLoader();
-
-
-        try {
-
-
-            /*
-             * Load panorama
-             */
-
-            const textures =
-                await Promise.all(
-
-                    panoramaURLs.map(
-                        url => {
-
-                            return new Promise(
-                                (
-                                    resolve,
-                                    reject
-                                ) => {
-
-                                    loader.load(
-
-                                        url,
-
-                                        texture =>
-                                            resolve(texture),
-
-                                        undefined,
-
-                                        error =>
-                                            reject(error)
-
-                                    );
-
-                                }
-                            );
-
-                        }
-                    )
-
-                );
-
-
-            /*
-             * Create materials
-             */
-
-            const materials =
-                textures.map(
-                    texture => {
-
-                        texture.colorSpace =
-                            THREE.SRGBColorSpace;
-
-
-                        return new THREE.MeshBasicMaterial({
-
-                            map: texture,
-
-                            side:
-                                THREE.BackSide
-
-                        });
-
-                    }
-                );
-
-
-            /*
-             * Create panorama
-             */
-
-            const geometry =
-                new THREE.BoxGeometry(
-                    100,
-                    100,
-                    100
-                );
-
-
-            const panorama =
-                new THREE.Mesh(
-                    geometry,
-                    materials
-                );
-
-
-            scene.add(
-                panorama
-            );
-
-
-            /*
-             * Hide loading
-             */
-
-            document.getElementById(
-                "loading"
-            ).style.display =
-                "none";
-
-
-            /*
-             * Automatic panorama rotation
-             *
-             * No dragging.
-             * No mouse controls.
-             * No touch controls.
-             */
-
-            let rotationY = 0;
-
-
-            function animate() {
-
-                requestAnimationFrame(
-                    animate
-                );
-
-
-                rotationY +=
-                    0.0003;
-
-
-                panorama.rotation.y =
-                    rotationY;
-
-
-                renderer.render(
-                    scene,
-                    camera
-                );
-
-            }
-
-
-            animate();
-
-
-            /*
-             * Welcome typewriter
-             */
-
-            const welcomeText =
-                document.getElementById(
-                    "welcomeText"
-                );
-
-
-            const proceedArea =
-                document.getElementById(
-                    "proceedArea"
-                );
-
-
-            const message =
-                "Welcome....";
-
-
-            let character = 0;
-
-
-            function typeWelcome() {
-
-                if (
-                    character <
-                    message.length
-                ) {
-
-                    welcomeText.textContent +=
-                        message[character];
-
-
-                    character++;
-
-
-                    setTimeout(
-                        typeWelcome,
-                        250
-                    );
-
-                }
-                else {
-
-                    /*
-                     * Show the button
-                     * after Welcome finishes.
-                     */
-
-                    setTimeout(
-                        () => {
-
-                            proceedArea.style.opacity =
-                                "1";
-
-                        },
-                        400
-                    );
-
-                }
-
-            }
-
-
-            /*
-             * Start typing
-             */
-
-            setTimeout(
-                typeWelcome,
-                1000
-            );
-
-
-            /*
-             * Proceed button
-             */
-
-            const proceedButton =
-                document.getElementById(
-                    "proceedButton"
-                );
-
-
-            const popup =
-                document.getElementById(
-                    "popup"
-                );
-
-
-            proceedButton.addEventListener(
-                "click",
-                () => {
-
-                    popup.classList.add(
-                        "visible"
-                    );
-
-                }
-            );
-
-
-            /*
-             * Close popup
-             */
-
-            const popupClose =
-                document.getElementById(
-                    "popupClose"
-                );
-
-
-            popupClose.addEventListener(
-                "click",
-                () => {
-
-                    popup.classList.remove(
-                        "visible"
-                    );
-
-                }
-            );
-
-
-        }
-        catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            document.getElementById(
-                "loading"
-            ).style.display =
-                "none";
-
-
-            const errorBox =
-                document.getElementById(
-                    "error"
-                );
-
-
-            errorBox.style.display =
-                "block";
-
-
-            errorBox.textContent =
-                "Something went wrong while loading the world.";
-
-        }
-
-
-        /*
-         * Resize
-         */
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                camera.aspect =
-                    window.innerWidth /
-                    window.innerHeight;
-
-
-                camera.updateProjectionMatrix();
-
-
-                renderer.setSize(
-                    window.innerWidth,
-                    window.innerHeight
-                );
-
-            }
-        );
-
-    </script>
+</script>
 
 </body>
 </html>
