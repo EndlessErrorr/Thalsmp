@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,11 +43,6 @@ canvas {
     display: block;
 
     z-index: 0;
-
-    /*
-       The panorama NEVER receives mouse clicks.
-       The interaction layer above it handles those.
-    */
 
     pointer-events: none;
 }
@@ -161,11 +157,6 @@ canvas {
 
     user-select: none;
 
-    /*
-       Make absolutely sure this area
-       receives pointer events.
-    */
-
     pointer-events: auto;
 }
 
@@ -256,10 +247,8 @@ canvas {
     position: relative;
 
     /*
-       Original asset:
-       334 x 154
-
-       This scales the entire pixel-art box.
+       KEEPING THE ORIGINAL BOX SIZE
+       AND POSITIONING
     */
 
     width: min(80vw, 1000px);
@@ -295,6 +284,55 @@ canvas {
 
 
 /* =========================================================
+   REALM SYMBOL
+   ========================================================= */
+
+#realmSymbol {
+    position: absolute;
+
+    /*
+       This sits INSIDE the original
+       usable text area of the box.
+    */
+
+    left: 50%;
+
+    top: 18%;
+
+    transform:
+        translateX(-50%)
+        scale(0.8);
+
+    width: 24%;
+
+    height: 34%;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+#realmSymbol.visible {
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        scale(1);
+}
+
+
+/* =========================================================
    LORE TEXT
    ========================================================= */
 
@@ -302,16 +340,12 @@ canvas {
     position: absolute;
 
     /*
-       Your original image is:
-
-       334 x 154
-
-       Your usable text area is:
+       Original usable area:
 
        280 x 112
 
-       These percentages position that
-       exact area inside the enlarged box.
+       These positions stay the same
+       as your working version.
     */
 
     left: 8.08%;
@@ -333,9 +367,14 @@ canvas {
 
     font-family: "Press Start 2P", monospace;
 
-    font-size: clamp(8px, 1.15vw, 16px);
+    /*
+       Larger text now that each realm
+       gets its own section.
+    */
 
-    line-height: 1.8;
+    font-size: clamp(11px, 1.5vw, 21px);
+
+    line-height: 1.7;
 
     color: #111;
 
@@ -346,6 +385,24 @@ canvas {
     user-select: none;
 
     pointer-events: none;
+
+    z-index: 3;
+}
+
+
+/* =========================================================
+   REALM TEXT POSITION
+   ========================================================= */
+
+/*
+   On realm pages, the text moves slightly
+   lower so the symbol has room above it.
+*/
+
+#loreText.realmText {
+    align-items: flex-end;
+
+    padding-bottom: 3%;
 }
 
 
@@ -493,6 +550,13 @@ canvas {
             <img
                 id="loreBox"
                 src="https://i.imgur.com/GePl0ts.png"
+                alt=""
+            >
+
+
+            <img
+                id="realmSymbol"
+                src=""
                 alt=""
             >
 
@@ -715,7 +779,7 @@ try {
 
 
     /* =====================================================
-       WELCOME ELEMENTS
+       ELEMENTS
        ===================================================== */
 
     const welcomeText =
@@ -745,6 +809,12 @@ try {
     const loreText =
         document.getElementById(
             "loreText"
+        );
+
+
+    const realmSymbol =
+        document.getElementById(
+            "realmSymbol"
         );
 
 
@@ -817,15 +887,61 @@ try {
 
     const lorePages = [
 
-        "You are about to enter the Overworld, one of five realms that make up this world.",
+        {
+            text:
+                "You are about to enter the Overworld, one of five realms that make up this world.",
 
-        "The Overworld is green and warm, filled with life and growth.\nThe Nether is hot and smoky, filled with decay.",
+            symbol:
+                null
+        },
 
-        "The Aether is pastel and cool, filled with spirit.\nThe Otherside is dark and chilling, filled with miasma and souls.",
+        {
+            text:
+                "The Overworld is green and warm, filled with life and growth.",
 
-        "The End is dark and cold, yet burns with distant warmth, filled with everything and nothing.",
+            symbol:
+                "https://i.imgur.com/viHBHca.png"
+        },
 
-        "Not every realm can be easily reached. Some may be places you never see at all.\nBut every one of you has been touched by one of them."
+        {
+            text:
+                "The Nether is hot and smoky, filled with decay.",
+
+            symbol:
+                "https://i.imgur.com/Lwe6PNM.png"
+        },
+
+        {
+            text:
+                "The Aether is pastel and cool, filled with spirit.",
+
+            symbol:
+                "https://i.imgur.com/E2JL5Ia.png"
+        },
+
+        {
+            text:
+                "The Otherside is dark and chilling, filled with miasma and souls.",
+
+            symbol:
+                "https://i.imgur.com/4hB9YGV.png"
+        },
+
+        {
+            text:
+                "The End is dark and cold, yet burns with distant warmth, filled with everything and nothing.",
+
+            symbol:
+                "https://i.imgur.com/LZiGKoN.png"
+        },
+
+        {
+            text:
+                "Not every realm can be easily reached. Some may be places you never see at all.\nBut every one of you has been touched by one of them.",
+
+            symbol:
+                null
+        }
 
     ];
 
@@ -845,7 +961,7 @@ try {
 
 
     /* =====================================================
-       TYPE LORE
+       TYPE LORE PAGE
        ===================================================== */
 
     function typeLorePage() {
@@ -866,7 +982,7 @@ try {
         currentText =
             lorePages[
                 currentLorePage
-            ];
+            ].text;
 
 
         currentCharacter = 0;
@@ -874,6 +990,66 @@ try {
 
         loreText.textContent = "";
 
+
+        /* -----------------------------------------------
+           Determine whether this is a realm page
+           ----------------------------------------------- */
+
+        if (
+            lorePages[
+                currentLorePage
+            ].symbol
+        ) {
+
+            loreText.classList.add(
+                "realmText"
+            );
+
+        }
+
+        else {
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           Hide symbol before new page
+           ----------------------------------------------- */
+
+        realmSymbol.classList.remove(
+            "visible"
+        );
+
+
+        const newSymbol =
+            lorePages[
+                currentLorePage
+            ].symbol;
+
+
+        if (newSymbol) {
+
+            realmSymbol.src =
+                newSymbol;
+
+        }
+
+        else {
+
+            realmSymbol.removeAttribute(
+                "src"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           Type text
+           ----------------------------------------------- */
 
         function typeCharacter() {
 
@@ -904,8 +1080,40 @@ try {
                 typing = false;
 
 
-                nextIndicator.classList.add(
-                    "visible"
+                /*
+                   Realm symbol appears once
+                   the text has finished.
+                */
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].symbol
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            realmSymbol.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        150
+                    );
+
+                }
+
+
+                setTimeout(
+                    () => {
+
+                        nextIndicator.classList.add(
+                            "visible"
+                        );
+
+                    },
+                    600
                 );
 
             }
@@ -929,19 +1137,9 @@ try {
         );
 
 
-        /*
-           Disable the welcome controls
-           immediately so it cannot be
-           triggered twice.
-        */
-
         proceedArea.style.pointerEvents =
             "none";
 
-
-        /*
-           Fade Welcome out.
-        */
 
         welcomeScreen.style.opacity =
             "0";
@@ -950,10 +1148,6 @@ try {
         welcomeScreen.style.transform =
             "translateY(-20px)";
 
-
-        /*
-           Fade Lore in.
-        */
 
         setTimeout(
             () => {
@@ -1023,7 +1217,7 @@ try {
 
 
             /*
-               If text is currently typing,
+               If text is still typing,
                finish it immediately.
             */
 
@@ -1045,6 +1239,19 @@ try {
                 typing = false;
 
 
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].symbol
+                ) {
+
+                    realmSymbol.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
                 nextIndicator.classList.add(
                     "visible"
                 );
@@ -1056,8 +1263,7 @@ try {
 
 
             /*
-               Otherwise advance to the
-               next lore section.
+               Otherwise advance.
             */
 
             if (
@@ -1077,8 +1283,8 @@ try {
 
 
             /*
-               We will eventually put the
-               next website section here.
+               Placeholder for the next
+               website section.
             */
 
             nextIndicator.classList.remove(
@@ -1141,3 +1347,4 @@ window.addEventListener(
 
 </body>
 </html>
+```
