@@ -10,9 +10,9 @@
 
 <style>
     @font-face {
-        font-family: "MineCrafter";
-        src: url("https://fonts.cdnfonts.com/s/15710/Minecrafter.Reg.ttf")
-            format("truetype");
+        font-family: "Minercraftory";
+        src: url("https://fonts.cdnfonts.com/s/15589/Minercraftory.woff")
+            format("woff");
     }
 
     html, body {
@@ -32,6 +32,7 @@
     #loading {
         position: fixed;
         inset: 0;
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -44,10 +45,6 @@
 
         z-index: 10;
     }
-
-    /*
-     * Welcome text
-     */
 
     #welcome {
         position: fixed;
@@ -67,24 +64,23 @@
     #welcomeText {
         white-space: nowrap;
 
-        font-family: "MineCrafter", Impact, sans-serif;
+        font-family: "Minercraftory", sans-serif;
         font-size: clamp(50px, 9vw, 140px);
 
-        color: #d0d0d0;
+        color: #d8d8d8;
 
         /*
-         * Dark Minecraft-style outline and depth
+         * Chunky dark outline
          */
+        -webkit-text-stroke: 3px #111;
 
-        -webkit-text-stroke: 4px #202020;
-
+        /*
+         * Minecraft-style depth
+         */
         text-shadow:
-            8px 8px 0 #202020,
-            6px 6px 0 #202020,
-            4px 4px 0 #303030,
-            2px 2px 0 #404040;
-
-        letter-spacing: 2px;
+            7px 7px 0 #111,
+            5px 5px 0 #222,
+            3px 3px 0 #333;
     }
 
     #error {
@@ -127,16 +123,8 @@
         "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-    /*
-     * Scene
-     */
-
     const scene = new THREE.Scene();
 
-
-    /*
-     * Camera
-     */
 
     const camera = new THREE.PerspectiveCamera(
         75,
@@ -147,10 +135,6 @@
 
     camera.position.set(0, 0, 0);
 
-
-    /*
-     * Renderer
-     */
 
     const renderer = new THREE.WebGLRenderer({
         antialias: true
@@ -165,91 +149,72 @@
         window.innerHeight
     );
 
-    document.body.appendChild(renderer.domElement);
+    document.body.appendChild(
+        renderer.domElement
+    );
 
 
     /*
-     * Panorama images
-     *
-     * THREE.BoxGeometry expects:
-     *
-     * 1. Right
-     * 2. Left
-     * 3. Top
-     * 4. Bottom
-     * 5. Front
-     * 6. Back
+     * WORKING PANORAMA
      */
 
     const panoramaURLs = [
-
         "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
         "https://i.imgur.com/DozXrgb.jpeg",   // Left
         "https://i.imgur.com/rOS65Sa.png",    // Top
         "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
         "https://i.imgur.com/07p3EMv.jpeg",   // Front
         "https://i.imgur.com/XH20czc.jpeg"    // Back
-
     ];
 
 
-    const loader = new THREE.TextureLoader();
+    const loader =
+        new THREE.TextureLoader();
 
 
     try {
 
-        /*
-         * Load panorama
-         */
+        const textures =
+            await Promise.all(
 
-        const textures = await Promise.all(
+                panoramaURLs.map(url => {
 
-            panoramaURLs.map(url => {
+                    return new Promise(
+                        (resolve, reject) => {
 
-                return new Promise((resolve, reject) => {
+                            loader.load(
+                                url,
 
-                    loader.load(
+                                texture =>
+                                    resolve(texture),
 
-                        url,
+                                undefined,
 
-                        texture => resolve(texture),
+                                error =>
+                                    reject(error)
+                            );
 
-                        undefined,
-
-                        error => reject(error)
-
+                        }
                     );
 
+                })
+
+            );
+
+
+        const materials =
+            textures.map(texture => {
+
+                texture.colorSpace =
+                    THREE.SRGBColorSpace;
+
+                return new THREE.MeshBasicMaterial({
+                    map: texture,
+                    side: THREE.BackSide
                 });
-
-            })
-
-        );
-
-
-        /*
-         * Create materials
-         */
-
-        const materials = textures.map(texture => {
-
-            texture.colorSpace =
-                THREE.SRGBColorSpace;
-
-            return new THREE.MeshBasicMaterial({
-
-                map: texture,
-
-                side: THREE.BackSide
 
             });
 
-        });
-
-
-        /*
-         * Create panorama cube
-         */
 
         const geometry =
             new THREE.BoxGeometry(
@@ -269,20 +234,16 @@
         scene.add(panorama);
 
 
-        /*
-         * Hide loading screen
-         */
-
         document.getElementById(
             "loading"
         ).style.display = "none";
 
 
         /*
-         * Automatic panorama rotation
+         * Automatic rotation only.
          *
-         * No mouse dragging.
-         * No touch controls.
+         * There are deliberately
+         * NO mouse or touch controls.
          */
 
         let rotationY = 0;
@@ -290,7 +251,9 @@
 
         function animate() {
 
-            requestAnimationFrame(animate);
+            requestAnimationFrame(
+                animate
+            );
 
 
             rotationY += 0.0003;
@@ -338,13 +301,8 @@
                 welcomeText.textContent +=
                     message[character];
 
-
                 character++;
 
-
-                /*
-                 * Slower typing speed
-                 */
 
                 setTimeout(
                     typeWelcome,
@@ -355,11 +313,6 @@
 
         }
 
-
-        /*
-         * Wait a little before
-         * beginning the text.
-         */
 
         setTimeout(
             typeWelcome,
