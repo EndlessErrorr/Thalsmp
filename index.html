@@ -12,32 +12,53 @@
 
 <style>
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
+
     background: #000;
 }
+
+
+/* =========================================================
+   PANORAMA
+   ========================================================= */
 
 canvas {
     position: fixed;
+
     top: 0;
     left: 0;
+
     width: 100vw;
     height: 100vh;
+
     display: block;
+
     z-index: 0;
+
+    /*
+       The panorama NEVER receives mouse clicks.
+       The interaction layer above it handles those.
+    */
+
+    pointer-events: none;
 }
 
 
-/* =========================
-   LOADING SCREEN
-   ========================= */
+/* =========================================================
+   LOADING
+   ========================================================= */
 
 #loading {
     position: fixed;
+
     inset: 0;
 
     display: flex;
@@ -45,45 +66,61 @@ canvas {
     justify-content: center;
 
     background: #000;
+
     color: white;
 
     font-family: "Press Start 2P", monospace;
+
     font-size: 18px;
 
-    z-index: 50;
+    z-index: 1000;
 }
 
 
-/* =========================
-   WELCOME SCREEN
-   ========================= */
+/* =========================================================
+   MAIN INTERACTION LAYER
+   ========================================================= */
 
-#intro {
+#interactionLayer {
     position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    pointer-events: auto;
+}
+
+
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
+
+#welcomeScreen {
+    position: absolute;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    z-index: 10;
-
-    pointer-events: auto;
-
-    transition: opacity 0.7s ease;
-}
-
-#welcomeScreen {
-    display: flex;
     flex-direction: column;
-    align-items: center;
 
     text-align: center;
+
+    opacity: 1;
 
     transition:
         opacity 0.7s ease,
         transform 0.7s ease;
 }
+
+
+/* =========================================================
+   WELCOME TEXT
+   ========================================================= */
 
 #welcomeText {
     white-space: nowrap;
@@ -102,24 +139,40 @@ canvas {
 }
 
 
-/* =========================
+/* =========================================================
    PROCEED AREA
-   ========================= */
+   ========================================================= */
 
 #proceedArea {
     margin-top: 25px;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
     opacity: 0;
 
-    transition: opacity 0.5s ease;
+    transition:
+        opacity 0.5s ease;
 
     cursor: pointer;
+
     user-select: none;
+
+    /*
+       Make absolutely sure this area
+       receives pointer events.
+    */
+
+    pointer-events: auto;
 }
+
+
+/* =========================================================
+   PROCEED TEXT
+   ========================================================= */
 
 #proceedText {
     margin-bottom: 12px;
@@ -132,60 +185,82 @@ canvas {
 
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.5);
+
+    pointer-events: none;
 }
+
+
+/* =========================================================
+   PROCEED BUTTON
+   ========================================================= */
 
 #proceedButton {
     display: block;
 
     width: clamp(100px, 12vw, 170px);
+
     height: auto;
 
     cursor: pointer;
+
     user-select: none;
+
+    pointer-events: auto;
 
     transition:
         transform 0.15s ease,
         filter 0.15s ease;
 }
 
+
 #proceedArea:hover #proceedButton {
     transform: scale(1.05);
+
     filter: brightness(1.1);
 }
+
 
 #proceedArea:active #proceedButton {
     transform: scale(0.97);
 }
 
 
-/* =========================
+/* =========================================================
    LORE SCREEN
-   ========================= */
+   ========================================================= */
 
 #loreScreen {
-    position: fixed;
+    position: absolute;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
-
-    z-index: 11;
 
     opacity: 0;
 
     pointer-events: none;
 
-    transition: opacity 0.7s ease;
+    transition:
+        opacity 0.7s ease;
 }
 
 
-/* =========================
-   LORE BOX
-   ========================= */
+/* =========================================================
+   LORE CONTAINER
+   ========================================================= */
 
 #loreContainer {
     position: relative;
+
+    /*
+       Original asset:
+       334 x 154
+
+       This scales the entire pixel-art box.
+    */
 
     width: min(80vw, 1000px);
 
@@ -194,8 +269,14 @@ canvas {
     image-rendering: pixelated;
 
     cursor: pointer;
+
     user-select: none;
 }
+
+
+/* =========================================================
+   LORE BOX IMAGE
+   ========================================================= */
 
 #loreBox {
     position: absolute;
@@ -213,19 +294,24 @@ canvas {
 }
 
 
-/* =========================
+/* =========================================================
    LORE TEXT
-   ========================= */
+   ========================================================= */
 
 #loreText {
     position: absolute;
 
     /*
-       Original box:
+       Your original image is:
+
        334 x 154
 
-       Usable text area:
+       Your usable text area is:
+
        280 x 112
+
+       These percentages position that
+       exact area inside the enlarged box.
     */
 
     left: 8.08%;
@@ -237,6 +323,7 @@ canvas {
     box-sizing: border-box;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -262,14 +349,15 @@ canvas {
 }
 
 
-/* =========================
+/* =========================================================
    NEXT INDICATOR
-   ========================= */
+   ========================================================= */
 
 #nextIndicator {
     position: absolute;
 
     bottom: -55px;
+
     left: 50%;
 
     transform: translateX(-50%);
@@ -285,20 +373,25 @@ canvas {
 
     opacity: 0;
 
-    transition: opacity 0.4s ease;
-
     white-space: nowrap;
+
+    transition:
+        opacity 0.4s ease;
 }
+
 
 #nextIndicator.visible {
     opacity: 1;
 
-    animation: blink 1.2s infinite;
+    animation:
+        blink 1.2s infinite;
 }
+
 
 @keyframes blink {
 
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
     }
 
@@ -309,9 +402,9 @@ canvas {
 }
 
 
-/* =========================
+/* =========================================================
    ERROR
-   ========================= */
+   ========================================================= */
 
 #error {
     position: fixed;
@@ -333,7 +426,7 @@ canvas {
 
     text-align: center;
 
-    z-index: 100;
+    z-index: 2000;
 
     display: none;
 }
@@ -345,30 +438,37 @@ canvas {
 <body>
 
 
-<!-- =========================
+<!-- =======================================================
      LOADING
-     ========================= -->
+     ======================================================= -->
 
 <div id="loading">
     Entering the world...
 </div>
 
 
-<!-- =========================
-     WELCOME
-     ========================= -->
+<!-- =======================================================
+     INTERACTION LAYER
+     ======================================================= -->
 
-<div id="intro">
+<div id="interactionLayer">
+
+
+    <!-- ===================================================
+         WELCOME
+         =================================================== -->
 
     <div id="welcomeScreen">
 
         <div id="welcomeText"></div>
+
 
         <div id="proceedArea">
 
             <div id="proceedText">
                 (Click to Proceed)
             </div>
+
 
             <img
                 id="proceedButton"
@@ -380,27 +480,30 @@ canvas {
 
     </div>
 
-</div>
+
+    <!-- ===================================================
+         LORE
+         =================================================== -->
+
+    <div id="loreScreen">
+
+        <div id="loreContainer">
 
 
-<!-- =========================
-     LORE
-     ========================= -->
+            <img
+                id="loreBox"
+                src="https://i.imgur.com/GePl0ts.png"
+                alt=""
+            >
 
-<div id="loreScreen">
 
-    <div id="loreContainer">
+            <div id="loreText"></div>
 
-        <img
-            id="loreBox"
-            src="https://i.imgur.com/GePl0ts.png"
-            alt=""
-        >
 
-        <div id="loreText"></div>
+            <div id="nextIndicator">
+                (Click to Continue)
+            </div>
 
-        <div id="nextIndicator">
-            (Click to Continue)
         </div>
 
     </div>
@@ -408,9 +511,9 @@ canvas {
 </div>
 
 
-<!-- =========================
+<!-- =======================================================
      ERROR
-     ========================= -->
+     ======================================================= -->
 
 <div id="error"></div>
 
@@ -422,33 +525,49 @@ import * as THREE from
 
 
 /* =========================================================
-   THREE.JS
+   THREE.JS SETUP
    ========================================================= */
 
-const scene = new THREE.Scene();
+const scene =
+    new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
+
+const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        100
+    );
+
+
+camera.position.set(
+    0,
+    0,
+    0
 );
 
-camera.position.set(0, 0, 0);
 
+const renderer =
+    new THREE.WebGLRenderer({
+        antialias: true
+    });
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true
-});
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
 );
+
 
 renderer.setSize(
     window.innerWidth,
     window.innerHeight
 );
+
 
 document.body.appendChild(
     renderer.domElement
@@ -456,7 +575,7 @@ document.body.appendChild(
 
 
 /* =========================================================
-   PANORAMA IMAGES
+   PANORAMA
    ========================================================= */
 
 const panoramaURLs = [
@@ -471,57 +590,67 @@ const panoramaURLs = [
 ];
 
 
-const loader = new THREE.TextureLoader();
+const loader =
+    new THREE.TextureLoader();
 
 
 try {
 
     /* =====================================================
-       LOAD PANORAMA
+       LOAD ALL PANORAMA IMAGES
        ===================================================== */
 
-    const textures = await Promise.all(
+    const textures =
+        await Promise.all(
 
-        panoramaURLs.map(url => {
+            panoramaURLs.map(
+                url => {
 
-            return new Promise((resolve, reject) => {
+                    return new Promise(
+                        (resolve, reject) => {
 
-                loader.load(
-                    url,
-                    resolve,
-                    undefined,
-                    reject
-                );
+                            loader.load(
+                                url,
+                                resolve,
+                                undefined,
+                                reject
+                            );
 
-            });
+                        }
+                    );
 
-        })
+                }
+            )
 
-    );
+        );
 
 
     /* =====================================================
-       MATERIALS
+       CREATE MATERIALS
        ===================================================== */
 
-    const materials = textures.map(texture => {
+    const materials =
+        textures.map(
+            texture => {
 
-        texture.colorSpace =
-            THREE.SRGBColorSpace;
+                texture.colorSpace =
+                    THREE.SRGBColorSpace;
 
-        return new THREE.MeshBasicMaterial({
 
-            map: texture,
+                return new THREE.MeshBasicMaterial({
 
-            side: THREE.BackSide
+                    map: texture,
 
-        });
+                    side: THREE.BackSide
 
-    });
+                });
+
+            }
+        );
 
 
     /* =====================================================
-       PANORAMA
+       CREATE PANORAMA
        ===================================================== */
 
     const geometry =
@@ -539,19 +668,22 @@ try {
         );
 
 
-    scene.add(panorama);
+    scene.add(
+        panorama
+    );
 
 
     /* =====================================================
-       HIDE LOADING
+       REMOVE LOADING SCREEN
        ===================================================== */
 
-    document.getElementById("loading")
-        .style.display = "none";
+    document.getElementById(
+        "loading"
+    ).style.display = "none";
 
 
     /* =====================================================
-       ROTATION
+       PANORAMA ROTATION
        ===================================================== */
 
     let rotationY = 0;
@@ -559,12 +691,17 @@ try {
 
     function animate() {
 
-        requestAnimationFrame(animate);
+        requestAnimationFrame(
+            animate
+        );
+
 
         rotationY += 0.0003;
 
+
         panorama.rotation.y =
             rotationY;
+
 
         renderer.render(
             scene,
@@ -578,17 +715,52 @@ try {
 
 
     /* =====================================================
-       WELCOME TYPEWRITER
+       WELCOME ELEMENTS
        ===================================================== */
 
     const welcomeText =
-        document.getElementById("welcomeText");
+        document.getElementById(
+            "welcomeText"
+        );
+
 
     const proceedArea =
-        document.getElementById("proceedArea");
+        document.getElementById(
+            "proceedArea"
+        );
+
+
+    const welcomeScreen =
+        document.getElementById(
+            "welcomeScreen"
+        );
+
+
+    const loreScreen =
+        document.getElementById(
+            "loreScreen"
+        );
+
+
+    const loreText =
+        document.getElementById(
+            "loreText"
+        );
+
+
+    const nextIndicator =
+        document.getElementById(
+            "nextIndicator"
+        );
+
+
+    /* =====================================================
+       WELCOME TYPEWRITER
+       ===================================================== */
 
     const welcomeMessage =
         "Welcome....";
+
 
     let welcomeCharacter = 0;
 
@@ -601,23 +773,32 @@ try {
         ) {
 
             welcomeText.textContent +=
-                welcomeMessage[welcomeCharacter];
+                welcomeMessage[
+                    welcomeCharacter
+                ];
+
 
             welcomeCharacter++;
+
 
             setTimeout(
                 typeWelcome,
                 250
             );
 
-        } else {
+        }
 
-            setTimeout(() => {
+        else {
 
-                proceedArea.style.opacity =
-                    "1";
+            setTimeout(
+                () => {
 
-            }, 400);
+                    proceedArea.style.opacity =
+                        "1";
+
+                },
+                400
+            );
 
         }
 
@@ -631,24 +812,7 @@ try {
 
 
     /* =====================================================
-       LORE ELEMENTS
-       ===================================================== */
-
-    const welcomeScreen =
-        document.getElementById("welcomeScreen");
-
-    const loreScreen =
-        document.getElementById("loreScreen");
-
-    const loreText =
-        document.getElementById("loreText");
-
-    const nextIndicator =
-        document.getElementById("nextIndicator");
-
-
-    /* =====================================================
-       LORE TEXT
+       LORE PAGES
        ===================================================== */
 
     const lorePages = [
@@ -677,32 +841,36 @@ try {
     let currentCharacter = 0;
 
 
-    /*
-       Typing speed.
-       Lower number = faster.
-    */
-
     const typingSpeed = 35;
 
 
     /* =====================================================
-       TYPE LORE PAGE
+       TYPE LORE
        ===================================================== */
 
     function typeLorePage() {
 
-        clearTimeout(typingTimer);
+        clearTimeout(
+            typingTimer
+        );
+
 
         typing = true;
+
 
         nextIndicator.classList.remove(
             "visible"
         );
 
+
         currentText =
-            lorePages[currentLorePage];
+            lorePages[
+                currentLorePage
+            ];
+
 
         currentCharacter = 0;
+
 
         loreText.textContent = "";
 
@@ -715,18 +883,26 @@ try {
             ) {
 
                 loreText.textContent +=
-                    currentText[currentCharacter];
+                    currentText[
+                        currentCharacter
+                    ];
+
 
                 currentCharacter++;
 
-                typingTimer = setTimeout(
-                    typeCharacter,
-                    typingSpeed
-                );
 
-            } else {
+                typingTimer =
+                    setTimeout(
+                        typeCharacter,
+                        typingSpeed
+                    );
+
+            }
+
+            else {
 
                 typing = false;
+
 
                 nextIndicator.classList.add(
                     "visible"
@@ -748,9 +924,15 @@ try {
 
     function startLore() {
 
+        console.log(
+            "Proceed button clicked!"
+        );
+
+
         /*
-           Stop any possibility of clicking
-           the Welcome screen twice.
+           Disable the welcome controls
+           immediately so it cannot be
+           triggered twice.
         */
 
         proceedArea.style.pointerEvents =
@@ -758,61 +940,68 @@ try {
 
 
         /*
-           Fade Welcome away.
+           Fade Welcome out.
         */
 
         welcomeScreen.style.opacity =
             "0";
+
 
         welcomeScreen.style.transform =
             "translateY(-20px)";
 
 
         /*
-           Wait for the fade,
-           then show the lore box.
+           Fade Lore in.
         */
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            welcomeScreen.style.display =
-                "none";
-
-
-            loreScreen.style.pointerEvents =
-                "auto";
+                welcomeScreen.style.display =
+                    "none";
 
 
-            loreScreen.style.opacity =
-                "1";
+                loreScreen.style.pointerEvents =
+                    "auto";
 
 
-            /*
-               Give the box a moment to fade in
-               before starting the text.
-            */
+                loreScreen.style.opacity =
+                    "1";
 
-            setTimeout(() => {
 
-                typeLorePage();
+                setTimeout(
+                    () => {
 
-            }, 500);
+                        typeLorePage();
 
-        }, 700);
+                    },
+                    500
+                );
+
+            },
+            700
+        );
 
     }
 
 
     /* =====================================================
-       PROCEED CLICK
+       PROCEED BUTTON
        ===================================================== */
 
     proceedArea.addEventListener(
-        "click",
-        (event) => {
+        "pointerdown",
+        event => {
 
             event.preventDefault();
+
             event.stopPropagation();
+
+            console.log(
+                "Proceed area pointer detected!"
+            );
+
 
             startLore();
 
@@ -821,19 +1010,21 @@ try {
 
 
     /* =====================================================
-       LORE CLICK
+       LORE CLICKING
        ===================================================== */
 
     loreScreen.addEventListener(
-        "click",
-        (event) => {
+        "pointerdown",
+        event => {
 
             event.preventDefault();
 
+            event.stopPropagation();
+
 
             /*
-               If the text is still typing,
-               finish the current section.
+               If text is currently typing,
+               finish it immediately.
             */
 
             if (typing) {
@@ -842,17 +1033,22 @@ try {
                     typingTimer
                 );
 
+
                 loreText.textContent =
                     currentText;
+
 
                 currentCharacter =
                     currentText.length;
 
+
                 typing = false;
+
 
                 nextIndicator.classList.add(
                     "visible"
                 );
+
 
                 return;
 
@@ -860,7 +1056,8 @@ try {
 
 
             /*
-               Move to the next section.
+               Otherwise advance to the
+               next lore section.
             */
 
             if (
@@ -870,7 +1067,9 @@ try {
 
                 currentLorePage++;
 
+
                 typeLorePage();
+
 
                 return;
 
@@ -878,11 +1077,8 @@ try {
 
 
             /*
-               End of the current introduction.
-
-               We'll replace this later with
-               whatever should happen after the
-               final lore section.
+               We will eventually put the
+               next website section here.
             */
 
             nextIndicator.classList.remove(
@@ -896,11 +1092,15 @@ try {
 }
 catch (error) {
 
-    console.error(error);
+    console.error(
+        error
+    );
 
 
     const errorBox =
-        document.getElementById("error");
+        document.getElementById(
+            "error"
+        );
 
 
     errorBox.textContent =
@@ -925,7 +1125,9 @@ window.addEventListener(
             window.innerWidth /
             window.innerHeight;
 
+
         camera.updateProjectionMatrix();
+
 
         renderer.setSize(
             window.innerWidth,
