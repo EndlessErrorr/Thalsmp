@@ -1,576 +1,798 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>ThalSMP 2</title>
+    <title>ThalSMP 2</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-    rel="stylesheet"
->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
 
-<style>
+    <style>
 
-    html, body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: #000;
-    }
+        html, body {
+            margin: 0;
+            padding: 0;
 
-    canvas {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+        }
 
 
-    /*
-     * Loading screen
-     */
+        /*
+         * Panorama canvas
+         */
 
-    #loading {
-        position: fixed;
-        inset: 0;
+        canvas {
+            position: fixed;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            top: 0;
+            left: 0;
 
-        background: #000;
-        color: white;
+            display: block;
 
-        font-family: "Press Start 2P", monospace;
-        font-size: 18px;
+            width: 100vw;
+            height: 100vh;
 
-        z-index: 10;
-    }
+            z-index: 0;
+        }
 
 
-    /*
-     * Welcome screen
-     */
+        /*
+         * Loading screen
+         */
 
-    #welcome {
-        position: fixed;
-        inset: 0;
+        #loading {
+            position: fixed;
+            inset: 0;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        pointer-events: none;
+            background: #000;
+            color: white;
 
-        text-align: center;
+            font-family: "Press Start 2P", monospace;
+            font-size: 18px;
 
-        z-index: 5;
-    }
-
-
-    /*
-     * Everything inside this container
-     * can be clicked.
-     */
-
-    #welcomeContent {
-        pointer-events: auto;
-
-        cursor: pointer;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+            z-index: 20;
+        }
 
 
-    /*
-     * Main Welcome text
-     */
+        /*
+         * Welcome screen
+         */
 
-    #welcomeText {
+        #welcome {
+            position: fixed;
+            inset: 0;
 
-        white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        font-family:
-            "Press Start 2P",
-            monospace;
+            pointer-events: none;
 
-        font-size:
-            clamp(32px, 6vw, 90px);
+            text-align: center;
 
-        color: white;
-
-        text-shadow:
-            4px 4px 0 #000,
-            -2px -2px 0 #000,
-            2px -2px 0 #000,
-            -2px 2px 0 #000;
-    }
+            z-index: 10;
+        }
 
 
-    /*
-     * Click to Proceed
-     */
+        /*
+         * Welcome content
+         */
 
-    #proceedText {
+        #welcomeContent {
+            pointer-events: auto;
 
-        margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-        font-family:
-            "Press Start 2P",
-            monospace;
-
-        font-size:
-            clamp(8px, 1.2vw, 14px);
-
-        color: #000;
-
-        text-shadow:
-            1px 1px 0 rgba(255, 255, 255, 0.35);
-
-        opacity: 0;
-
-        transition:
-            opacity 0.5s ease;
-    }
+            cursor: default;
+        }
 
 
-    /*
-     * Error screen
-     */
+        /*
+         * Welcome text
+         */
 
-    #error {
-        display: none;
+        #welcomeText {
+            white-space: nowrap;
 
-        position: fixed;
-        inset: 0;
+            font-family:
+                "Press Start 2P",
+                monospace;
 
-        padding: 40px;
-        box-sizing: border-box;
+            font-size:
+                clamp(32px, 6vw, 90px);
 
-        background: #000;
-        color: white;
+            color: white;
 
-        font-family: sans-serif;
+            text-shadow:
+                4px 4px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000;
+        }
 
-        z-index: 20;
-    }
 
-</style>
-```
+        /*
+         * Proceed area
+         */
+
+        #proceedArea {
+            margin-top: 25px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            opacity: 0;
+
+            transition:
+                opacity 0.5s ease;
+        }
+
+
+        /*
+         * Click to Proceed text
+         */
+
+        #proceedText {
+            margin-bottom: 12px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(7px, 1vw, 12px);
+
+            color: #000;
+
+            text-shadow:
+                1px 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+
+        /*
+         * Image button
+         */
+
+        #proceedButton {
+            display: block;
+
+            width: clamp(100px, 12vw, 170px);
+            height: auto;
+
+            cursor: pointer;
+
+            user-select: none;
+
+            transition:
+                transform 0.15s ease,
+                filter 0.15s ease;
+        }
+
+
+        /*
+         * Button hover
+         */
+
+        #proceedButton:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+
+        /*
+         * Button press
+         */
+
+        #proceedButton:active {
+            transform: scale(0.97);
+        }
+
+
+        /*
+         * Popup overlay
+         */
+
+        #popup {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.55);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 0.5s ease;
+
+            z-index: 30;
+        }
+
+
+        /*
+         * Popup when visible
+         */
+
+        #popup.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        /*
+         * Popup box
+         */
+
+        #popupBox {
+            padding: 40px;
+
+            max-width: 700px;
+
+            box-sizing: border-box;
+
+            background: rgba(0, 0, 0, 0.8);
+
+            border: 3px solid #fff;
+
+            color: white;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 16px;
+
+            line-height: 1.8;
+
+            text-align: center;
+
+            box-shadow:
+                8px 8px 0 #000;
+        }
+
+
+        /*
+         * Popup close button
+         */
+
+        #popupClose {
+            margin-top: 25px;
+
+            padding: 10px 18px;
+
+            border: 2px solid white;
+
+            background: #222;
+
+            color: white;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 10px;
+
+            cursor: pointer;
+        }
+
+
+        #popupClose:hover {
+            background: #444;
+        }
+
+
+        /*
+         * Error screen
+         */
+
+        #error {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            padding: 40px;
+
+            box-sizing: border-box;
+
+            background: #000;
+            color: white;
+
+            font-family: sans-serif;
+
+            z-index: 40;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-```
-<div id="loading">
-    Entering the world...
-</div>
+
+    <!-- Loading -->
+
+    <div id="loading">
+        Entering the world...
+    </div>
 
 
-<div id="welcome">
+    <!-- Welcome -->
 
-    <div id="welcomeContent">
+    <div id="welcome">
 
-        <div id="welcomeText"></div>
+        <div id="welcomeContent">
 
-        <div id="proceedText">
-            (Click to Proceed)
+            <div id="welcomeText"></div>
+
+
+            <div id="proceedArea">
+
+                <div id="proceedText">
+                    (Click to Proceed)
+                </div>
+
+                <img
+                    id="proceedButton"
+                    src="https://i.imgur.com/ugXJ5W7.png"
+                    alt="Click to Proceed"
+                >
+
+            </div>
+
         </div>
 
     </div>
 
-</div>
+
+    <!-- Popup -->
+
+    <div id="popup">
+
+        <div id="popupBox">
+
+            <div>
+                The world is waiting...
+            </div>
+
+            <button id="popupClose">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
 
 
-<div id="error"></div>
+    <!-- Error -->
+
+    <div id="error"></div>
 
 
-<script type="module">
+    <script type="module">
 
-    import * as THREE from
-        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
-
-
-    /*
-     * Scene
-     */
-
-    const scene =
-        new THREE.Scene();
-
-
-    /*
-     * Camera
-     */
-
-    const camera =
-        new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth /
-                window.innerHeight,
-            0.1,
-            100
-        );
-
-
-    camera.position.set(
-        0,
-        0,
-        0
-    );
-
-
-    /*
-     * Renderer
-     */
-
-    const renderer =
-        new THREE.WebGLRenderer({
-            antialias: true
-        });
-
-
-    renderer.setPixelRatio(
-        Math.min(
-            window.devicePixelRatio,
-            2
-        )
-    );
-
-
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
-
-
-    document.body.appendChild(
-        renderer.domElement
-    );
-
-
-    /*
-     * Working panorama
-     */
-
-    const panoramaURLs = [
-
-        "https://i.imgur.com/Qv1i6iu.jpeg",
-        "https://i.imgur.com/DozXrgb.jpeg",
-        "https://i.imgur.com/rOS65Sa.png",
-        "https://i.imgur.com/AeNmcy7.jpeg",
-        "https://i.imgur.com/07p3EMv.jpeg",
-        "https://i.imgur.com/XH20czc.jpeg"
-
-    ];
-
-
-    const loader =
-        new THREE.TextureLoader();
-
-
-    try {
+        import * as THREE from
+            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
         /*
-         * Load panorama textures
+         * Scene
          */
 
-        const textures =
-            await Promise.all(
+        const scene =
+            new THREE.Scene();
 
-                panoramaURLs.map(
-                    url => {
 
-                        return new Promise(
-                            (
-                                resolve,
-                                reject
-                            ) => {
+        /*
+         * Camera
+         */
 
-                                loader.load(
-
-                                    url,
-
-                                    texture =>
-                                        resolve(texture),
-
-                                    undefined,
-
-                                    error =>
-                                        reject(error)
-
-                                );
-
-                            }
-                        );
-
-                    }
-                )
-
+        const camera =
+            new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth /
+                    window.innerHeight,
+                0.1,
+                100
             );
 
 
+        camera.position.set(
+            0,
+            0,
+            0
+        );
+
+
         /*
-         * Materials
+         * Renderer
          */
 
-        const materials =
-            textures.map(
-                texture => {
-
-                    texture.colorSpace =
-                        THREE.SRGBColorSpace;
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true
+            });
 
 
-                    return new THREE.MeshBasicMaterial({
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                2
+            )
+        );
 
-                        map: texture,
 
-                        side:
-                            THREE.BackSide
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
 
-                    });
+
+        document.body.appendChild(
+            renderer.domElement
+        );
+
+
+        /*
+         * Working panorama
+         */
+
+        const panoramaURLs = [
+
+            "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
+            "https://i.imgur.com/DozXrgb.jpeg",   // Left
+            "https://i.imgur.com/rOS65Sa.png",    // Top
+            "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
+            "https://i.imgur.com/07p3EMv.jpeg",   // Front
+            "https://i.imgur.com/XH20czc.jpeg"    // Back
+
+        ];
+
+
+        const loader =
+            new THREE.TextureLoader();
+
+
+        try {
+
+
+            /*
+             * Load panorama
+             */
+
+            const textures =
+                await Promise.all(
+
+                    panoramaURLs.map(
+                        url => {
+
+                            return new Promise(
+                                (
+                                    resolve,
+                                    reject
+                                ) => {
+
+                                    loader.load(
+
+                                        url,
+
+                                        texture =>
+                                            resolve(texture),
+
+                                        undefined,
+
+                                        error =>
+                                            reject(error)
+
+                                    );
+
+                                }
+                            );
+
+                        }
+                    )
+
+                );
+
+
+            /*
+             * Create materials
+             */
+
+            const materials =
+                textures.map(
+                    texture => {
+
+                        texture.colorSpace =
+                            THREE.SRGBColorSpace;
+
+
+                        return new THREE.MeshBasicMaterial({
+
+                            map: texture,
+
+                            side:
+                                THREE.BackSide
+
+                        });
+
+                    }
+                );
+
+
+            /*
+             * Create panorama
+             */
+
+            const geometry =
+                new THREE.BoxGeometry(
+                    100,
+                    100,
+                    100
+                );
+
+
+            const panorama =
+                new THREE.Mesh(
+                    geometry,
+                    materials
+                );
+
+
+            scene.add(
+                panorama
+            );
+
+
+            /*
+             * Hide loading
+             */
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            /*
+             * Automatic panorama rotation
+             *
+             * No dragging.
+             * No mouse controls.
+             * No touch controls.
+             */
+
+            let rotationY = 0;
+
+
+            function animate() {
+
+                requestAnimationFrame(
+                    animate
+                );
+
+
+                rotationY +=
+                    0.0003;
+
+
+                panorama.rotation.y =
+                    rotationY;
+
+
+                renderer.render(
+                    scene,
+                    camera
+                );
+
+            }
+
+
+            animate();
+
+
+            /*
+             * Welcome typewriter
+             */
+
+            const welcomeText =
+                document.getElementById(
+                    "welcomeText"
+                );
+
+
+            const proceedArea =
+                document.getElementById(
+                    "proceedArea"
+                );
+
+
+            const message =
+                "Welcome....";
+
+
+            let character = 0;
+
+
+            function typeWelcome() {
+
+                if (
+                    character <
+                    message.length
+                ) {
+
+                    welcomeText.textContent +=
+                        message[character];
+
+
+                    character++;
+
+
+                    setTimeout(
+                        typeWelcome,
+                        250
+                    );
+
+                }
+                else {
+
+                    /*
+                     * Show the button
+                     * after Welcome finishes.
+                     */
+
+                    setTimeout(
+                        () => {
+
+                            proceedArea.style.opacity =
+                                "1";
+
+                        },
+                        400
+                    );
+
+                }
+
+            }
+
+
+            /*
+             * Start typing
+             */
+
+            setTimeout(
+                typeWelcome,
+                1000
+            );
+
+
+            /*
+             * Proceed button
+             */
+
+            const proceedButton =
+                document.getElementById(
+                    "proceedButton"
+                );
+
+
+            const popup =
+                document.getElementById(
+                    "popup"
+                );
+
+
+            proceedButton.addEventListener(
+                "click",
+                () => {
+
+                    popup.classList.add(
+                        "visible"
+                    );
 
                 }
             );
 
 
-        /*
-         * Panorama cube
-         */
+            /*
+             * Close popup
+             */
 
-        const geometry =
-            new THREE.BoxGeometry(
-                100,
-                100,
-                100
+            const popupClose =
+                document.getElementById(
+                    "popupClose"
+                );
+
+
+            popupClose.addEventListener(
+                "click",
+                () => {
+
+                    popup.classList.remove(
+                        "visible"
+                    );
+
+                }
             );
 
-
-        const panorama =
-            new THREE.Mesh(
-                geometry,
-                materials
-            );
-
-
-        scene.add(
-            panorama
-        );
-
-
-        /*
-         * Hide loading screen
-         */
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            "none";
-
-
-        /*
-         * Automatic rotation
-         *
-         * No dragging.
-         * No mouse controls.
-         * No touch controls.
-         */
-
-        let rotationY = 0;
-
-
-        function animate() {
-
-            requestAnimationFrame(
-                animate
-            );
-
-
-            rotationY +=
-                0.0003;
-
-
-            panorama.rotation.y =
-                rotationY;
-
-
-            renderer.render(
-                scene,
-                camera
-            );
 
         }
+        catch (error) {
 
-
-        animate();
-
-
-        /*
-         * Welcome typewriter
-         */
-
-        const welcomeText =
-            document.getElementById(
-                "welcomeText"
+            console.error(
+                error
             );
 
 
-        const proceedText =
             document.getElementById(
-                "proceedText"
-            );
+                "loading"
+            ).style.display =
+                "none";
 
 
-        const message =
-            "Welcome....";
-
-
-        let character = 0;
-
-
-        function typeWelcome() {
-
-            if (
-                character <
-                message.length
-            ) {
-
-                welcomeText.textContent +=
-                    message[character];
-
-
-                character++;
-
-
-                setTimeout(
-                    typeWelcome,
-                    250
+            const errorBox =
+                document.getElementById(
+                    "error"
                 );
 
-            }
-            else {
 
-                /*
-                 * Show the click prompt
-                 * after Welcome finishes.
-                 */
+            errorBox.style.display =
+                "block";
 
-                setTimeout(
-                    () => {
 
-                        proceedText.style.opacity =
-                            "1";
-
-                    },
-                    400
-                );
-
-            }
+            errorBox.textContent =
+                "Something went wrong while loading the world.";
 
         }
 
 
         /*
-         * Begin typing after
-         * the panorama loads.
+         * Resize
          */
 
-        setTimeout(
-            typeWelcome,
-            1000
-        );
-
-
-        /*
-         * Click prompt
-         *
-         * This doesn't navigate anywhere
-         * yet. We'll connect it to the
-         * next screen later.
-         */
-
-        document.getElementById(
-            "welcomeContent"
-        ).addEventListener(
-            "click",
+        window.addEventListener(
+            "resize",
             () => {
 
-                console.log(
-                    "Welcome screen clicked."
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+
+                camera.updateProjectionMatrix();
+
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
                 );
 
             }
         );
 
-
-    }
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        document.getElementById(
-            "loading"
-        ).style.display =
-            "none";
-
-
-        const errorBox =
-            document.getElementById(
-                "error"
-            );
-
-
-        errorBox.style.display =
-            "block";
-
-
-        errorBox.textContent =
-            "Something went wrong while loading the world.";
-
-    }
-
-
-    /*
-     * Resize
-     */
-
-    window.addEventListener(
-        "resize",
-        () => {
-
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
-
-
-            camera.updateProjectionMatrix();
-
-
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-        }
-    );
-
-</script>
-```
+    </script>
 
 </body>
 </html>
