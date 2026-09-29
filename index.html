@@ -8,12 +8,15 @@
 ```
 <title>ThalSMP 2</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+>
+
 <style>
-    @font-face {
-        font-family: "Minercraftory";
-        src: url("https://fonts.cdnfonts.com/s/15589/Minercraftory.woff")
-            format("woff");
-    }
 
     html, body {
         margin: 0;
@@ -29,6 +32,11 @@
         height: 100%;
     }
 
+
+    /*
+     * Loading screen
+     */
+
     #loading {
         position: fixed;
         inset: 0;
@@ -40,11 +48,16 @@
         background: #000;
         color: white;
 
-        font-family: sans-serif;
+        font-family: "Press Start 2P", monospace;
         font-size: 18px;
 
         z-index: 10;
     }
+
+
+    /*
+     * Welcome screen
+     */
 
     #welcome {
         position: fixed;
@@ -61,27 +74,78 @@
         z-index: 5;
     }
 
+
+    /*
+     * Everything inside this container
+     * can be clicked.
+     */
+
+    #welcomeContent {
+        pointer-events: auto;
+
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    /*
+     * Main Welcome text
+     */
+
     #welcomeText {
+
         white-space: nowrap;
 
-        font-family: "Minercraftory", sans-serif;
-        font-size: clamp(50px, 9vw, 140px);
+        font-family:
+            "Press Start 2P",
+            monospace;
 
-        color: #d8d8d8;
+        font-size:
+            clamp(32px, 6vw, 90px);
 
-        /*
-         * Chunky dark outline
-         */
-        -webkit-text-stroke: 3px #111;
+        color: white;
 
-        /*
-         * Minecraft-style depth
-         */
         text-shadow:
-            7px 7px 0 #111,
-            5px 5px 0 #222,
-            3px 3px 0 #333;
+            4px 4px 0 #000,
+            -2px -2px 0 #000,
+            2px -2px 0 #000,
+            -2px 2px 0 #000;
     }
+
+
+    /*
+     * Click to Proceed
+     */
+
+    #proceedText {
+
+        margin-top: 25px;
+
+        font-family:
+            "Press Start 2P",
+            monospace;
+
+        font-size:
+            clamp(8px, 1.2vw, 14px);
+
+        color: #000;
+
+        text-shadow:
+            1px 1px 0 rgba(255, 255, 255, 0.35);
+
+        opacity: 0;
+
+        transition:
+            opacity 0.5s ease;
+    }
+
+
+    /*
+     * Error screen
+     */
 
     #error {
         display: none;
@@ -99,6 +163,7 @@
 
         z-index: 20;
     }
+
 </style>
 ```
 
@@ -111,11 +176,24 @@
     Entering the world...
 </div>
 
+
 <div id="welcome">
-    <span id="welcomeText"></span>
+
+    <div id="welcomeContent">
+
+        <div id="welcomeText"></div>
+
+        <div id="proceedText">
+            (Click to Proceed)
+        </div>
+
+    </div>
+
 </div>
 
+
 <div id="error"></div>
+
 
 <script type="module">
 
@@ -123,31 +201,58 @@
         "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-    const scene = new THREE.Scene();
+    /*
+     * Scene
+     */
+
+    const scene =
+        new THREE.Scene();
 
 
-    const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        100
+    /*
+     * Camera
+     */
+
+    const camera =
+        new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth /
+                window.innerHeight,
+            0.1,
+            100
+        );
+
+
+    camera.position.set(
+        0,
+        0,
+        0
     );
 
-    camera.position.set(0, 0, 0);
 
+    /*
+     * Renderer
+     */
 
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true
-    });
+    const renderer =
+        new THREE.WebGLRenderer({
+            antialias: true
+        });
+
 
     renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
     );
+
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
+
 
     document.body.appendChild(
         renderer.domElement
@@ -155,16 +260,18 @@
 
 
     /*
-     * WORKING PANORAMA
+     * Working panorama
      */
 
     const panoramaURLs = [
-        "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
-        "https://i.imgur.com/DozXrgb.jpeg",   // Left
-        "https://i.imgur.com/rOS65Sa.png",    // Top
-        "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
-        "https://i.imgur.com/07p3EMv.jpeg",   // Front
-        "https://i.imgur.com/XH20czc.jpeg"    // Back
+
+        "https://i.imgur.com/Qv1i6iu.jpeg",
+        "https://i.imgur.com/DozXrgb.jpeg",
+        "https://i.imgur.com/rOS65Sa.png",
+        "https://i.imgur.com/AeNmcy7.jpeg",
+        "https://i.imgur.com/07p3EMv.jpeg",
+        "https://i.imgur.com/XH20czc.jpeg"
+
     ];
 
 
@@ -174,47 +281,74 @@
 
     try {
 
+
+        /*
+         * Load panorama textures
+         */
+
         const textures =
             await Promise.all(
 
-                panoramaURLs.map(url => {
+                panoramaURLs.map(
+                    url => {
 
-                    return new Promise(
-                        (resolve, reject) => {
+                        return new Promise(
+                            (
+                                resolve,
+                                reject
+                            ) => {
 
-                            loader.load(
-                                url,
+                                loader.load(
 
-                                texture =>
-                                    resolve(texture),
+                                    url,
 
-                                undefined,
+                                    texture =>
+                                        resolve(texture),
 
-                                error =>
-                                    reject(error)
-                            );
+                                    undefined,
 
-                        }
-                    );
+                                    error =>
+                                        reject(error)
 
-                })
+                                );
+
+                            }
+                        );
+
+                    }
+                )
 
             );
 
 
+        /*
+         * Materials
+         */
+
         const materials =
-            textures.map(texture => {
+            textures.map(
+                texture => {
 
-                texture.colorSpace =
-                    THREE.SRGBColorSpace;
+                    texture.colorSpace =
+                        THREE.SRGBColorSpace;
 
-                return new THREE.MeshBasicMaterial({
-                    map: texture,
-                    side: THREE.BackSide
-                });
 
-            });
+                    return new THREE.MeshBasicMaterial({
 
+                        map: texture,
+
+                        side:
+                            THREE.BackSide
+
+                    });
+
+                }
+            );
+
+
+        /*
+         * Panorama cube
+         */
 
         const geometry =
             new THREE.BoxGeometry(
@@ -231,19 +365,27 @@
             );
 
 
-        scene.add(panorama);
-
-
-        document.getElementById(
-            "loading"
-        ).style.display = "none";
+        scene.add(
+            panorama
+        );
 
 
         /*
-         * Automatic rotation only.
+         * Hide loading screen
+         */
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        /*
+         * Automatic rotation
          *
-         * There are deliberately
-         * NO mouse or touch controls.
+         * No dragging.
+         * No mouse controls.
+         * No touch controls.
          */
 
         let rotationY = 0;
@@ -256,7 +398,8 @@
             );
 
 
-            rotationY += 0.0003;
+            rotationY +=
+                0.0003;
 
 
             panorama.rotation.y =
@@ -284,6 +427,12 @@
             );
 
 
+        const proceedText =
+            document.getElementById(
+                "proceedText"
+            );
+
+
         const message =
             "Welcome....";
 
@@ -301,6 +450,7 @@
                 welcomeText.textContent +=
                     message[character];
 
+
                 character++;
 
 
@@ -310,9 +460,32 @@
                 );
 
             }
+            else {
+
+                /*
+                 * Show the click prompt
+                 * after Welcome finishes.
+                 */
+
+                setTimeout(
+                    () => {
+
+                        proceedText.style.opacity =
+                            "1";
+
+                    },
+                    400
+                );
+
+            }
 
         }
 
+
+        /*
+         * Begin typing after
+         * the panorama loads.
+         */
 
         setTimeout(
             typeWelcome,
@@ -320,14 +493,40 @@
         );
 
 
-    } catch (error) {
+        /*
+         * Click prompt
+         *
+         * This doesn't navigate anywhere
+         * yet. We'll connect it to the
+         * next screen later.
+         */
 
-        console.error(error);
+        document.getElementById(
+            "welcomeContent"
+        ).addEventListener(
+            "click",
+            () => {
+
+                console.log(
+                    "Welcome screen clicked."
+                );
+
+            }
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            error
+        );
 
 
         document.getElementById(
             "loading"
-        ).style.display = "none";
+        ).style.display =
+            "none";
 
 
         const errorBox =
