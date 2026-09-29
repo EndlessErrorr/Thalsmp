@@ -6,6 +6,10 @@
 
     <title>ThalSMP 2</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <style>
         html, body {
             margin: 0;
@@ -29,9 +33,37 @@
             justify-content: center;
             background: #000;
             color: white;
-            font-family: sans-serif;
+            font-family: "Press Start 2P", monospace;
             font-size: 18px;
             z-index: 10;
+        }
+
+        #welcome {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            pointer-events: none;
+
+            color: white;
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(32px, 6vw, 90px);
+
+            text-align: center;
+
+            text-shadow:
+                4px 4px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000;
+
+            z-index: 5;
+        }
+
+        #welcomeText {
+            white-space: nowrap;
         }
 
         #error {
@@ -52,20 +84,16 @@
 
     <div id="loading">Entering the world...</div>
 
+    <div id="welcome">
+        <span id="welcomeText"></span>
+    </div>
+
     <div id="error"></div>
 
     <script type="module">
         import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
-        // --------------------------------------------------
-        // Scene
-        // --------------------------------------------------
-
         const scene = new THREE.Scene();
-
-        // --------------------------------------------------
-        // Camera
-        // --------------------------------------------------
 
         const camera = new THREE.PerspectiveCamera(
             75,
@@ -76,10 +104,6 @@
 
         camera.position.set(0, 0, 0);
 
-        // --------------------------------------------------
-        // Renderer
-        // --------------------------------------------------
-
         const renderer = new THREE.WebGLRenderer({
             antialias: true
         });
@@ -89,177 +113,104 @@
 
         document.body.appendChild(renderer.domElement);
 
-        // --------------------------------------------------
-        // Panorama images
-        // --------------------------------------------------
-const panoramaURLs = [
-    "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
-    "https://i.imgur.com/DozXrgb.jpeg",   // Left
-    "https://i.imgur.com/rOS65Sa.png",    // Top
-    "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
-    "https://i.imgur.com/07p3EMv.jpeg",   // Front
-    "https://i.imgur.com/XH20czc.jpeg"    // Back
-];
-        // --------------------------------------------------
-        // Load the six panorama faces
-        // --------------------------------------------------
+        const panoramaURLs = [
+            "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
+            "https://i.imgur.com/DozXrgb.jpeg",   // Left
+            "https://i.imgur.com/rOS65Sa.png",    // Top
+            "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
+            "https://i.imgur.com/07p3EMv.jpeg",   // Front
+            "https://i.imgur.com/XH20czc.jpeg"    // Back
+        ];
 
         const loader = new THREE.TextureLoader();
 
-        const textures = await Promise.all(
-            panoramaURLs.map(url => {
-                return new Promise((resolve, reject) => {
-                    loader.load(
-                        url,
-                        texture => resolve(texture),
-                        undefined,
-                        error => reject(error)
-                    );
+        try {
+            const textures = await Promise.all(
+                panoramaURLs.map(url => {
+                    return new Promise((resolve, reject) => {
+                        loader.load(
+                            url,
+                            texture => resolve(texture),
+                            undefined,
+                            error => reject(error)
+                        );
+                    });
+                })
+            );
+
+            const materials = textures.map(texture => {
+                texture.colorSpace = THREE.SRGBColorSpace;
+
+                return new THREE.MeshBasicMaterial({
+                    map: texture,
+                    side: THREE.BackSide
                 });
-            })
-        );
-
-        // --------------------------------------------------
-        // Create the panorama cube
-        // --------------------------------------------------
-
-        const materials = textures.map(texture => {
-            texture.colorSpace = THREE.SRGBColorSpace;
-
-            return new THREE.MeshBasicMaterial({
-                map: texture,
-                side: THREE.BackSide
             });
-        });
 
-        const geometry = new THREE.BoxGeometry(100, 100, 100);
+            const geometry = new THREE.BoxGeometry(100, 100, 100);
 
-        const panorama = new THREE.Mesh(
-            geometry,
-            materials
-        );
-
-        scene.add(panorama);
-
-        // --------------------------------------------------
-        // Loading screen
-        // --------------------------------------------------
-
-        document.getElementById("loading").style.display = "none";
-
-        // --------------------------------------------------
-        // Mouse controls
-        // --------------------------------------------------
-
-        let isDragging = false;
-
-        let previousMouseX = 0;
-        let previousMouseY = 0;
-
-        let rotationY = 0;
-        let rotationX = 0;
-
-        let lastInteraction = performance.now();
-
-        renderer.domElement.addEventListener("mousedown", event => {
-            isDragging = true;
-
-            previousMouseX = event.clientX;
-            previousMouseY = event.clientY;
-
-            lastInteraction = performance.now();
-        });
-
-        window.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
-
-        window.addEventListener("mousemove", event => {
-            if (!isDragging) return;
-
-            const movementX = event.clientX - previousMouseX;
-            const movementY = event.clientY - previousMouseY;
-
-            previousMouseX = event.clientX;
-            previousMouseY = event.clientY;
-
-            rotationY -= movementX * 0.003;
-            rotationX -= movementY * 0.003;
-
-            rotationX = Math.max(
-                -Math.PI / 2,
-                Math.min(Math.PI / 2, rotationX)
+            const panorama = new THREE.Mesh(
+                geometry,
+                materials
             );
 
-            lastInteraction = performance.now();
-        });
+            scene.add(panorama);
 
-        // --------------------------------------------------
-        // Touch controls
-        // --------------------------------------------------
+            document.getElementById("loading").style.display = "none";
 
-        let lastTouchX = 0;
-        let lastTouchY = 0;
+            /*
+             * Automatic panorama rotation
+             */
 
-        renderer.domElement.addEventListener("touchstart", event => {
-            if (event.touches.length !== 1) return;
+            let rotationY = 0;
 
-            lastTouchX = event.touches[0].clientX;
-            lastTouchY = event.touches[0].clientY;
+            function animate() {
+                requestAnimationFrame(animate);
 
-            lastInteraction = performance.now();
-        });
-
-        renderer.domElement.addEventListener("touchmove", event => {
-            if (event.touches.length !== 1) return;
-
-            const touch = event.touches[0];
-
-            const movementX = touch.clientX - lastTouchX;
-            const movementY = touch.clientY - lastTouchY;
-
-            lastTouchX = touch.clientX;
-            lastTouchY = touch.clientY;
-
-            rotationY -= movementX * 0.003;
-            rotationX -= movementY * 0.003;
-
-            rotationX = Math.max(
-                -Math.PI / 2,
-                Math.min(Math.PI / 2, rotationX)
-            );
-
-            lastInteraction = performance.now();
-
-            event.preventDefault();
-        }, { passive: false });
-
-        // --------------------------------------------------
-        // Animation
-        // --------------------------------------------------
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Slowly rotate when the user isn't interacting.
-            const timeSinceInteraction =
-                performance.now() - lastInteraction;
-
-            if (!isDragging && timeSinceInteraction > 1500) {
                 rotationY += 0.0003;
+
+                panorama.rotation.y = rotationY;
+
+                renderer.render(scene, camera);
             }
 
-            panorama.rotation.y = rotationY;
-            panorama.rotation.x = rotationX;
+            animate();
 
-            renderer.render(scene, camera);
+            /*
+             * Welcome typewriter
+             */
+
+            const welcomeText = document.getElementById("welcomeText");
+            const message = "Welcome....";
+
+            let character = 0;
+
+            function typeWelcome() {
+                if (character < message.length) {
+                    welcomeText.textContent += message[character];
+                    character++;
+
+                    setTimeout(typeWelcome, 120);
+                }
+            }
+
+            setTimeout(typeWelcome, 1000);
+
+        } catch (error) {
+            console.error(error);
+
+            document.getElementById("loading").style.display = "none";
+
+            const errorBox = document.getElementById("error");
+
+            errorBox.style.display = "block";
+            errorBox.textContent =
+                "Something went wrong while loading the world.";
         }
 
-        animate();
-
-        // --------------------------------------------------
-        // Window resizing
-        // --------------------------------------------------
+        /*
+         * Resize
+         */
 
         window.addEventListener("resize", () => {
             camera.aspect =
@@ -271,14 +222,6 @@ const panoramaURLs = [
                 window.innerWidth,
                 window.innerHeight
             );
-        });
-
-        // --------------------------------------------------
-        // Error handling
-        // --------------------------------------------------
-
-        window.addEventListener("error", event => {
-            console.error(event.error || event.message);
         });
     </script>
 
