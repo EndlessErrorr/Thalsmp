@@ -10,7 +10,12 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Aether Panorama Test</title>
+    <title>The Aether</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
 
@@ -21,13 +26,22 @@
             padding: 0;
 
             width: 100%;
-            height: 100%;
-
-            overflow: hidden;
+            min-height: 100%;
 
             background: #000;
 
         }
+
+        body {
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* =========================
+           PANORAMA
+           ========================= */
 
         canvas {
 
@@ -43,6 +57,372 @@
 
             pointer-events: none;
 
+            z-index: 0;
+
+        }
+
+
+        /* =========================
+           PAGE
+           ========================= */
+
+        #page {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding:
+                7vh
+                0
+                10vh;
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+
+        /* =========================
+           LORE BOX
+           ========================= */
+
+        #loreBoxContainer {
+
+            position: relative;
+
+            width: min(78vw, 950px);
+
+        }
+
+        #loreTop,
+        #loreBottom {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            image-rendering: pixelated;
+
+        }
+
+        #loreMiddle {
+
+            width: 100%;
+
+            overflow: hidden;
+
+        }
+
+        .middlePiece {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            image-rendering: pixelated;
+
+        }
+
+
+        /* =========================
+           CONTENT
+           ========================= */
+
+        #boxContent {
+
+            position: absolute;
+
+            left: 8.08%;
+            top: 0;
+
+            width: 83.83%;
+
+            box-sizing: border-box;
+
+            padding:
+                8%
+                4%
+                7%;
+
+            text-align: center;
+
+        }
+
+
+        /* =========================
+           TITLE
+           ========================= */
+
+        #pageTitle {
+
+            margin:
+                0
+                0
+                3vh;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(24px, 4.2vw, 50px);
+
+            line-height: 1.4;
+
+            color: #9a7740;
+
+            text-shadow:
+                1px 1px 0
+                rgba(255, 255, 255, 0.25);
+
+        }
+
+
+        /* =========================
+           SECTION TITLES
+           ========================= */
+
+        .sectionTitle {
+
+            margin:
+                2.5vh
+                0
+                1.5vh;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(17px, 2.5vw, 31px);
+
+            line-height: 1.5;
+
+            color: #9a7740;
+
+        }
+
+
+        /* =========================
+           BODY TEXT
+           ========================= */
+
+        .introText,
+        .architectText,
+        .aspectText {
+
+            margin:
+                0
+                auto;
+
+            max-width: 900px;
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(13px, 1.35vw, 18px);
+
+            font-weight: 500;
+
+            line-height: 1.9;
+
+            color: #a98750;
+
+        }
+
+        .architectText strong {
+
+            color: #9a7740;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =========================
+           DIVIDERS
+           ========================= */
+
+        .divider {
+
+            margin:
+                2.2vh
+                0;
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(13px, 1.4vw, 19px);
+
+            font-weight: 600;
+
+            color: #9a7740;
+
+            line-height: 1;
+
+        }
+
+
+        /* =========================
+           ASPECT
+           ========================= */
+
+        #aspectIcon {
+
+            display: block;
+
+            width:
+                min(21%, 135px);
+
+            height: auto;
+
+            margin:
+                1vh
+                auto
+                0;
+
+            image-rendering: pixelated;
+
+        }
+
+        .aspectName {
+
+            margin:
+                0.8vh
+                0
+                1.8vh;
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(16px, 1.8vw, 24px);
+
+            font-weight: 700;
+
+            color: #9a7740;
+
+        }
+
+
+        /* =========================
+           BACK BUTTON
+           ========================= */
+
+        #backButton {
+
+            display: inline-block;
+
+            margin-top: 3vh;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(7px, 0.8vw, 11px);
+
+            color: #9a7740;
+
+            text-decoration: none;
+
+            background:
+                rgba(0, 0, 0, 0.35);
+
+            border:
+                2px solid #9a7740;
+
+            padding:
+                12px
+                16px;
+
+            image-rendering: pixelated;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                transform 0.15s ease;
+
+        }
+
+        #backButton:hover {
+
+            background: #9a7740;
+
+            color: #111;
+
+            transform:
+                scale(1.05);
+
+        }
+
+        #backButton:active {
+
+            transform:
+                scale(0.95);
+
+        }
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 600px) {
+
+            #page {
+
+                padding-top: 5vh;
+                padding-bottom: 8vh;
+
+            }
+
+            #boxContent {
+
+                padding:
+                    8%
+                    8%
+                    8%;
+
+            }
+
+            #pageTitle {
+
+                margin-bottom: 3vh;
+
+            }
+
+            .introText,
+            .architectText,
+            .aspectText {
+
+                line-height: 1.7;
+
+            }
+
+            .divider {
+
+                margin:
+                    1.8vh
+                    0;
+
+            }
+
         }
 
     </style>
@@ -52,6 +432,121 @@
 
 <body>
 
+
+<div id="page">
+
+    <div id="loreBoxContainer">
+
+        <img
+            id="loreTop"
+            src="https://i.imgur.com/rkZjDca.png"
+            alt=""
+        >
+
+        <div id="loreMiddle"></div>
+
+        <img
+            id="loreBottom"
+            src="https://i.imgur.com/wgdAJjF.png"
+            alt=""
+        >
+
+
+        <div id="boxContent">
+
+            <h1 id="pageTitle">
+                The Aether
+            </h1>
+
+
+            <p class="introText">
+                The Aether is a place of stillness and spirit.
+                Its skies are vast and bright, its lands are
+                cold and peaceful, and everything feels touched
+                by something beyond the mortal world.
+            </p>
+
+
+            <div class="divider">
+                ‿̩͙⊱༒︎༻♱༺༒︎⊰‿̩͙
+            </div>
+
+
+            <h2 class="sectionTitle">
+                Architect
+            </h2>
+
+
+            <p class="architectText">
+                <strong>
+                    Nivener, the Architect of the Aether,
+                </strong>
+                is a figure of reverence and judgment.
+                She is elegant and distant, watching over
+                the Aether with a quiet authority. Her warmth
+                is not easily found, but neither is her cruelty.
+                She believes that everything has its place,
+                and those who stray from it may find themselves
+                judged.
+            </p>
+
+
+            <div class="divider">
+                ‿̩͙⊱༒︎༻♱༺༒︎⊰‿̩͙
+            </div>
+
+
+            <h2 class="sectionTitle">
+                Aspect
+            </h2>
+
+
+            <img
+                id="aspectIcon"
+                src="https://i.imgur.com/E2JL5Ia.png"
+                alt="Aether Aspect"
+            >
+
+
+            <div class="aspectName">
+                Holy + Ice
+            </div>
+
+
+            <p class="aspectText">
+                The Aspect of the Aether draws its power from
+                two forces deeply intertwined with the realm:
+                holy magic and ice.
+                <br><br>
+                Its wielders draw upon the divine and the cold,
+                channeling the reverence of the Aether and the
+                stillness of ice. The Aspect is powerful, but
+                it is also restrained. Those touched by the
+                Aether learn to wield their power with purpose,
+                carrying with them a connection to the divine
+                and to the Architect who governs their realm.
+            </p>
+
+
+            <div class="divider">
+                ‿̩͙⊱༒︎༻♱༺༒︎⊰‿̩͙
+            </div>
+
+
+            <a
+                id="backButton"
+                href="relms.html"
+            >
+                Return to Realms
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script type="module">
 
 import * as THREE from
@@ -60,24 +555,17 @@ import * as THREE from
 
 /* =========================
    AETHER PANORAMA
-
-   Your order:
-
-   Front
-   Right
-   Back
-   Left
-   Up
-   Down
    ========================= */
 
 const panoramaURLs = [
+
     "https://i.imgur.com/TOgoELs.jpeg",   // Right
     "https://i.imgur.com/Fp9ecXG.jpeg",   // Left
     "https://i.imgur.com/swk8bh8.png",    // Top
     "https://i.imgur.com/yzIymAO.png",    // Bottom
     "https://i.imgur.com/xrjPybb.jpeg",   // Front
     "https://i.imgur.com/8P1bemP.jpeg"    // Back
+
 ];
 
 
@@ -136,7 +624,7 @@ document.body.appendChild(
 
 
 /* =========================
-   LOAD PANORAMA
+   LOAD TEXTURES
    ========================= */
 
 const loader =
@@ -210,7 +698,151 @@ function createPanorama() {
 
 
 /* =========================
-   ROTATION
+   LORE BOX
+   ========================= */
+
+function buildLoreBox() {
+
+    const top =
+        document.getElementById(
+            "loreTop"
+        );
+
+    const middle =
+        document.getElementById(
+            "loreMiddle"
+        );
+
+    const bottom =
+        document.getElementById(
+            "loreBottom"
+        );
+
+    const content =
+        document.getElementById(
+            "boxContent"
+        );
+
+
+    if (
+        !top.complete ||
+        !bottom.complete
+    ) {
+
+        setTimeout(
+            buildLoreBox,
+            50
+        );
+
+        return;
+
+    }
+
+
+    const contentHeight =
+        content.offsetHeight;
+
+    const topHeight =
+        top.getBoundingClientRect().height;
+
+    const bottomHeight =
+        bottom.getBoundingClientRect().height;
+
+    const requiredMiddleHeight =
+        contentHeight -
+        topHeight -
+        bottomHeight;
+
+
+    const middleImage =
+        new Image();
+
+
+    middleImage.onload = () => {
+
+        const scaledMiddleHeight =
+            middleImage.height *
+            (
+                middle.offsetWidth /
+                middleImage.width
+            );
+
+
+        const copies =
+            Math.max(
+                1,
+                Math.ceil(
+                    requiredMiddleHeight /
+                    scaledMiddleHeight
+                )
+            );
+
+
+        middle.innerHTML = "";
+
+
+        for (
+            let i = 0;
+            i < copies;
+            i++
+        ) {
+
+            const piece =
+                document.createElement(
+                    "img"
+                );
+
+            piece.className =
+                "middlePiece";
+
+            piece.src =
+                "https://i.imgur.com/C1w2h9j.png";
+
+            piece.alt = "";
+
+            middle.appendChild(
+                piece
+            );
+
+        }
+
+    };
+
+
+    middleImage.src =
+        "https://i.imgur.com/C1w2h9j.png";
+
+}
+
+
+/* =========================
+   BUILD BOX
+   ========================= */
+
+if (document.fonts) {
+
+    document.fonts.ready.then(
+        buildLoreBox
+    );
+
+} else {
+
+    window.addEventListener(
+        "load",
+        buildLoreBox
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    buildLoreBox
+);
+
+
+/* =========================
+   ANIMATION
    ========================= */
 
 function animate() {
