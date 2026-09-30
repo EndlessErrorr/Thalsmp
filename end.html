@@ -1,11 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>End Panorama Test</title>
+    <title>The End</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
         html,
@@ -13,18 +17,302 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
+            min-height: 100%;
             background: #000;
         }
 
+        body {
+            overflow-x: hidden;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
         canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #page {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding: 7vh 0 10vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        #loreBoxContainer {
+            position: relative;
+            width: min(78vw, 950px);
+            image-rendering: pixelated;
+        }
+
+        #loreTop {
             display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+        }
+
+        #loreMiddle {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+
+        .middlePiece {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+        }
+
+        #loreBottom {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+        }
+
+        #boxContent {
+            position: absolute;
+            left: 8.08%;
+            top: 0;
+            width: 83.83%;
+            box-sizing: border-box;
+            padding: 8% 4% 7%;
+            text-align: center;
+        }
+
+        #pageTitle {
+            margin: 0 0 4vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(18px, 3vw, 38px);
+            line-height: 1.4;
+
+            color: #241338;
+
+            text-shadow:
+                1px 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .sectionTitle {
+            margin: 0 0 2vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(11px, 1.4vw, 17px);
+            line-height: 1.5;
+
+            color: #241338;
+        }
+
+        .introText,
+        .architectText,
+        .aspectText {
+            margin: 0 auto;
+
+            max-width: 800px;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(15px, 1.5vw, 22px);
+            line-height: 1.7;
+
+            color: #76549A;
+        }
+
+        .architectText strong,
+        .aspectText strong {
+            color: #5D3D80;
+        }
+
+        .divider {
+            margin: 2.5vh 0;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(13px, 1.4vw, 20px);
+            line-height: 1;
+
+            color: #241338;
+
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .aspectIcon {
+            display: block;
+            width: min(21%, 135px);
+            height: auto;
+
+            margin: 0 auto 2vh;
+
+            image-rendering: pixelated;
+        }
+
+        .aspectName {
+            margin: 0 0 2vh;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(18px, 2vw, 28px);
+            font-weight: 600;
+
+            color: #241338;
+        }
+
+        #backButton {
+            display: inline-block;
+
+            margin-top: 3vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(7px, 0.8vw, 11px);
+
+            color: #241338;
+            text-decoration: none;
+
+            background: rgba(0, 0, 0, 0.35);
+
+            border: 2px solid #241338;
+
+            padding: 12px 16px;
+
+            image-rendering: pixelated;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        #backButton:hover {
+            background: #241338;
+            color: #111;
+            transform: scale(1.05);
+        }
+
+        #backButton:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 600px) {
+            #page {
+                padding-top: 5vh;
+                padding-bottom: 8vh;
+            }
+
+            #boxContent {
+                padding: 8%;
+            }
+
+            #pageTitle {
+                margin-bottom: 3vh;
+            }
+
+            .introText,
+            .architectText,
+            .aspectText {
+                line-height: 1.7;
+            }
+
+            .divider {
+                margin: 1.8vh 0;
+            }
         }
     </style>
 </head>
 
 <body>
+
+<div id="page">
+
+    <div id="loreBoxContainer">
+
+        <img
+            id="loreTop"
+            src="https://i.imgur.com/rkZjDca.png"
+            alt=""
+        >
+
+        <div id="loreMiddle"></div>
+
+        <img
+            id="loreBottom"
+            src="https://i.imgur.com/wgdAJjF.png"
+            alt=""
+        >
+
+        <div id="boxContent">
+
+            <h1 id="pageTitle">
+                The End
+            </h1>
+
+            <p class="introText">
+                The End is a place of darkness and silence. Its lands stretch endlessly into the unknown, cold and empty yet somehow filled with the presence of something far greater.
+            </p>
+
+            <p class="introText">
+                It is a realm where everything feels distant, where the familiar rules of the world begin to lose their meaning. The End represents the finality of all things. Nothing can last forever, no matter how powerful, ancient, or enduring it may seem.
+            </p>
+
+            <div class="divider">
+                ✦•······················•✦•······················•✦
+            </div>
+
+            <h2 class="sectionTitle">
+                Architect
+            </h2>
+
+            <p class="architectText">
+                <strong>Elythara, the Architect of the End, is the oldest of the Five Architects.</strong>
+                They existed before the other realms were shaped, their power predating the world itself. Ancient and unknowable, Elythara is a force beyond the understanding of those who live within the realms they created.
+            </p>
+
+            <div class="divider">
+                ✦•······················•✦•······················•✦
+            </div>
+
+            <h2 class="sectionTitle">
+                Aspect
+            </h2>
+
+            <img
+                class="aspectIcon"
+                src="https://i.imgur.com/LZiGKoN.png"
+                alt="End Aspect"
+            >
+
+            <div class="aspectName">
+                Ender + Evocation
+            </div>
+
+            <p class="aspectText">
+                The Aspect of the End draws its power from two forces deeply intertwined with the realm: Ender and Evocation.
+            </p>
+
+            <p class="aspectText">
+                Its wielders channel strange and powerful magic, drawing upon forces that blur the boundaries between what is possible and what should be. The Aspect is unpredictable and difficult to fully understand, reflecting the nature of the End itself.
+            </p>
+
+            <div class="divider">
+                ✦•······················•✦•······················•✦
+            </div>
+
+            <a id="backButton" href="relms.html">
+                Return to Realms
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script type="module">
     import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
@@ -59,42 +347,24 @@
     renderer.domElement.style.width = "100vw";
     renderer.domElement.style.height = "100vh";
     renderer.domElement.style.pointerEvents = "none";
+    renderer.domElement.style.zIndex = "0";
 
     document.body.appendChild(renderer.domElement);
 
-    /*
-        User supplied order:
-
-        Front
-        Right
-        Back
-        Left
-        Up
-        Down
-
-        Three.js BoxGeometry order:
-
-        Right
-        Left
-        Top
-        Bottom
-        Front
-        Back
-    */
-
-   const panoramaURLs = [
-    "https://i.imgur.com/Ect30c7.jpeg",  // Right
-    "https://i.imgur.com/qyRFzM5.jpeg",  // Left
-    "https://i.imgur.com/10Nwqok.png",   // Bottom
-    "https://i.imgur.com/oncFUFI.png",   // Top
-    "https://i.imgur.com/wwnCOJH.jpeg",  // Front
-    "https://i.imgur.com/seoC63G.jpeg"   // Back
-];
+    const panoramaURLs = [
+        "https://i.imgur.com/Ect30c7.jpeg",  // Right
+        "https://i.imgur.com/qyRFzM5.jpeg",  // Left
+        "https://i.imgur.com/10Nwqok.png",   // Bottom
+        "https://i.imgur.com/oncFUFI.png",   // Top
+        "https://i.imgur.com/wwnCOJH.jpeg",  // Front
+        "https://i.imgur.com/seoC63G.jpeg"   // Back
+    ];
 
     const loader = new THREE.TextureLoader();
     const materials = [];
 
     panoramaURLs.forEach((url) => {
+
         loader.load(
             url,
             (texture) => {
@@ -115,14 +385,6 @@
                 ) {
                     createPanorama();
                 }
-            },
-            undefined,
-            (error) => {
-                console.error(
-                    "Failed to load panorama texture:",
-                    url,
-                    error
-                );
             }
         );
     });
@@ -176,6 +438,115 @@
                 window.innerHeight
             );
         }
+    );
+
+    function buildLoreBox() {
+
+        const top =
+            document.getElementById("loreTop");
+
+        const middle =
+            document.getElementById("loreMiddle");
+
+        const bottom =
+            document.getElementById("loreBottom");
+
+        const content =
+            document.getElementById("boxContent");
+
+        if (
+            !top.complete ||
+            !bottom.complete
+        ) {
+            setTimeout(
+                buildLoreBox,
+                50
+            );
+
+            return;
+        }
+
+        const contentHeight =
+            content.offsetHeight;
+
+        const topHeight =
+            top.getBoundingClientRect().height;
+
+        const bottomHeight =
+            bottom.getBoundingClientRect().height;
+
+        const requiredMiddleHeight =
+            contentHeight -
+            topHeight -
+            bottomHeight;
+
+        const middleImage =
+            new Image();
+
+        middleImage.onload = () => {
+
+            const scaledMiddleHeight =
+                middleImage.height *
+                (
+                    middle.offsetWidth /
+                    middleImage.width
+                );
+
+            const copies =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        requiredMiddleHeight /
+                        scaledMiddleHeight
+                    )
+                );
+
+            middle.innerHTML = "";
+
+            for (
+                let i = 0;
+                i < copies;
+                i++
+            ) {
+
+                const piece =
+                    document.createElement("img");
+
+                piece.className =
+                    "middlePiece";
+
+                piece.src =
+                    "https://i.imgur.com/C1w2h9j.png";
+
+                piece.alt = "";
+
+                middle.appendChild(
+                    piece
+                );
+            }
+        };
+
+        middleImage.src =
+            "https://i.imgur.com/C1w2h9j.png";
+    }
+
+    if (document.fonts) {
+
+        document.fonts.ready.then(
+            buildLoreBox
+        );
+
+    } else {
+
+        window.addEventListener(
+            "load",
+            buildLoreBox
+        );
+    }
+
+    window.addEventListener(
+        "resize",
+        buildLoreBox
     );
 </script>
 
