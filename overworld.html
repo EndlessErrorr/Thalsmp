@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Overworld | ThalSMP 2</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: #000;
+            font-family: "Press Start 2P", monospace;
+        }
+
+
+        /* =========================
+           PANORAMA
+           ========================= */
+
+        #panorama {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 0;
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           PAGE
+           ========================= */
+
+        #page {
+            position: relative;
+
+            width: 100%;
+            min-height: 100vh;
+
+            padding: 8vh 0 12vh;
+
+            display: flex;
+            justify-content: center;
+
+            z-index: 10;
+        }
+
+
+        /* =========================
+           LORE BOX
+           ========================= */
+
+        #loreContainer {
+            position: relative;
+
+            width: min(82vw, 1000px);
+
+            image-rendering: pixelated;
+        }
+
+
+        #boxTop {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            image-rendering: pixelated;
+        }
+
+
+        #boxMiddle {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            image-rendering: pixelated;
+
+            /*
+             * The middle section repeats vertically.
+             * It is never stretched.
+             */
+        }
+
+
+        #boxBottom {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            image-rendering: pixelated;
+        }
+
+
+        #boxContent {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            /*
+             * This is positioned over the repeated
+             * middle section of the box.
+             */
+            padding:
+                7% 9%
+                7%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            color: #111;
+
+            text-align: center;
+        }
+
+
+        /* =========================
+           TITLE
+           ========================= */
+
+        #title {
+            margin: 0 0 5vh;
+
+            font-size: clamp(28px, 5vw, 58px);
+            line-height: 1.4;
+
+            color: #4f8f3b;
+
+            text-shadow:
+                2px 2px 0 rgba(255, 255, 255, 0.45);
+        }
+
+
+        /* =========================
+           SECTIONS
+           ========================= */
+
+        .section {
+            width: 100%;
+            max-width: 850px;
+
+            margin-bottom: 7vh;
+        }
+
+
+        .sectionTitle {
+            margin: 0 0 3vh;
+
+            font-size: clamp(20px, 3vw, 38px);
+            line-height: 1.4;
+
+            color: #111;
+        }
+
+
+        .sectionText {
+            margin: 0;
+
+            font-size: clamp(11px, 1.35vw, 18px);
+            line-height: 2;
+
+            text-align: center;
+        }
+
+
+        .sectionText strong {
+            font-weight: normal;
+        }
+
+
+        /* =========================
+           ARCHITECT
+           ========================= */
+
+        #architectSymbol {
+            display: block;
+
+            width: min(30%, 180px);
+            height: auto;
+
+            margin: 0 auto 3vh;
+
+            image-rendering: pixelated;
+        }
+
+
+        /* =========================
+           ASPECT
+           ========================= */
+
+        #aspectSymbol {
+            display: block;
+
+            width: min(25%, 160px);
+            height: auto;
+
+            margin: 0 auto 2vh;
+
+            image-rendering: pixelated;
+        }
+
+
+        #aspectName {
+            margin: 0 0 4vh;
+
+            font-size: clamp(13px, 1.8vw, 22px);
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 600px) {
+
+            #page {
+                padding-top: 5vh;
+                padding-bottom: 8vh;
+            }
+
+            #loreContainer {
+                width: 94vw;
+            }
+
+            #boxContent {
+                padding-left: 8%;
+                padding-right: 8%;
+            }
+
+            .section {
+                margin-bottom: 5vh;
+            }
+
+            .sectionText {
+                font-size: 10px;
+                line-height: 1.9;
+            }
+
+            #architectSymbol {
+                width: 35%;
+            }
+
+            #aspectSymbol {
+                width: 30%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- =========================
+         PANORAMA
+         ========================= -->
+
+    <div id="panorama"></div>
+
+
+    <!-- =========================
+         PAGE CONTENT
+         ========================= -->
+
+    <main id="page">
+
+        <div id="loreContainer">
+
+            <!-- Box top -->
+            <img
+                id="boxTop"
+                src="https://i.imgur.com/rkZjDca.png"
+                alt=""
+            >
+
+            <!--
+                Repeated middle section.
+                JavaScript creates enough copies
+                to fill the entire content area.
+            -->
+            <div id="boxMiddle"></div>
+
+            <!-- Box bottom -->
+            <img
+                id="boxBottom"
+                src="https://i.imgur.com/wgdAJjF.png"
+                alt=""
+            >
+
+
+            <!-- =========================
+                 TEXT CONTENT
+                 ========================= -->
+
+            <div id="boxContent">
+
+                <section class="section">
+
+                    <h1 id="title">
+                        The Overworld
+                    </h1>
+
+                    <p class="sectionText">
+                        The Overworld is a place of change.
+                        Whether it's day or night, hot or cold,
+                        or the weather, something in the Overworld
+                        is always changing, always growing.
+                    </p>
+
+                </section>
+
+
+                <section class="section">
+
+                    <h2 class="sectionTitle">
+                        Architect
+                    </h2>
+
+                    <p class="sectionText">
+                        <strong>Sylvara, the Architect of the Overworld</strong>,
+                        is a force of nature and lightning.
+                        She is a caring and nurturing Architect,
+                        often seen as the mother of all life.
+                        She watches over the Overworld and its people
+                        with a deep connection to the living world,
+                        guiding growth and change wherever she can.
+                    </p>
+
+                </section>
+
+
+                <section class="section">
+
+                    <h2 class="sectionTitle">
+                        Aspect
+                    </h2>
+
+                    <img
+                        id="aspectSymbol"
+                        src="https://i.imgur.com/viHBHca.png"
+                        alt="Overworld Aspect"
+                    >
+
+                    <h3 id="aspectName">
+                        Nature + Lightning
+                    </h3>
+
+                    <p class="sectionText">
+                        The Aspect of the Overworld is one of growth
+                        and change. It draws upon the living world
+                        around you, allowing its wielders to influence
+                        nature and call upon the power of storms.
+                    </p>
+
+                    <br>
+
+                    <p class="sectionText">
+                        Those touched by the Overworld may find their
+                        magic taking many different forms. Some may
+                        nurture life, manipulate plants, or shape the
+                        land around them. Others may call upon
+                        lightning and the power of the storm.
+                    </p>
+
+                    <br>
+
+                    <p class="sectionText">
+                        How your Aspect manifests is unique to you,
+                        but all who wield it share a connection to
+                        the Overworld and its Architect.
+                    </p>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         THREE.JS PANORAMA
+         ========================= -->
+
+    <script type="module">
+
+        import * as THREE from
+            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+        const panoramaURLs = [
+
+            "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
+            "https://i.imgur.com/DozXrgb.jpeg",   // Left
+            "https://i.imgur.com/rOS65Sa.png",    // Top
+            "https://i.imgur.com/AeNmcy7.jpeg",   // Bottom
+            "https://i.imgur.com/07p3EMv.jpeg",   // Front
+            "https://i.imgur.com/XH20czc.jpeg"    // Back
+
+        ];
+
+
+        const scene =
+            new THREE.Scene();
+
+
+        const camera =
+            new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                100
+            );
+
+
+        camera.position.set(
+            0,
+            0,
+            0
+        );
+
+
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true
+            });
+
+
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                2
+            )
+        );
+
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+
+        renderer.domElement.style.position =
+            "fixed";
+
+        renderer.domElement.style.top =
+            "0";
+
+        renderer.domElement.style.left =
+            "0";
+
+        renderer.domElement.style.width =
+            "100vw";
+
+        renderer.domElement.style.height =
+            "100vh";
+
+        renderer.domElement.style.zIndex =
+            "0";
+
+        renderer.domElement.style.pointerEvents =
+            "none";
+
+
+        document
+            .getElementById("panorama")
+            .appendChild(
+                renderer.domElement
+            );
+
+
+        const loader =
+            new THREE.TextureLoader();
+
+
+        const materials =
+            panoramaURLs.map(
+                (url) => {
+
+                    const texture =
+                        loader.load(url);
+
+                    texture.colorSpace =
+                        THREE.SRGBColorSpace;
+
+                    return new THREE.MeshBasicMaterial({
+                        map: texture,
+                        side: THREE.BackSide
+                    });
+
+                }
+            );
+
+
+        const geometry =
+            new THREE.BoxGeometry(
+                100,
+                100,
+                100
+            );
+
+
+        const panorama =
+            new THREE.Mesh(
+                geometry,
+                materials
+            );
+
+
+        scene.add(
+            panorama
+        );
+
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+            panorama.rotation.y +=
+                0.0003;
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        }
+
+
+        animate();
+
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+
+            }
+        );
+
+    </script>
+
+
+    <!-- =========================
+         BUILD REPEATED BOX
+         ========================= -->
+
+    <script>
+
+        const loreContainer =
+            document.getElementById(
+                "loreContainer"
+            );
+
+        const boxTop =
+            document.getElementById(
+                "boxTop"
+            );
+
+        const boxMiddle =
+            document.getElementById(
+                "boxMiddle"
+            );
+
+        const boxBottom =
+            document.getElementById(
+                "boxBottom"
+            );
+
+        const boxContent =
+            document.getElementById(
+                "boxContent"
+            );
+
+
+        function buildLoreBox() {
+
+            /*
+             * Wait until the top and bottom images
+             * have loaded so their actual dimensions
+             * are available.
+             */
+
+            const topHeight =
+                boxTop.getBoundingClientRect().height;
+
+            const bottomHeight =
+                boxBottom.getBoundingClientRect().height;
+
+
+            /*
+             * Find how tall the content needs to be.
+             */
+
+            const contentHeight =
+                boxContent.scrollHeight;
+
+
+            /*
+             * The middle image is repeated at its
+             * natural aspect ratio.
+             */
+
+            const middleImage =
+                new Image();
+
+            middleImage.src =
+                "https://i.imgur.com/C1w2h9j.png";
+
+
+            middleImage.onload =
+                () => {
+
+                    const middleWidth =
+                        middleImage.naturalWidth;
+
+                    const middleHeight =
+                        middleImage.naturalHeight;
+
+
+                    const containerWidth =
+                        loreContainer.getBoundingClientRect().width;
+
+
+                    const scaledMiddleHeight =
+                        middleHeight *
+                        (
+                            containerWidth /
+                            middleWidth
+                        );
+
+
+                    /*
+                     * Work out how much middle
+                     * background is required.
+                     */
+
+                    const requiredMiddleHeight =
+                        Math.max(
+                            0,
+                            contentHeight -
+                            topHeight -
+                            bottomHeight
+                        );
+
+
+                    const copies =
+                        Math.ceil(
+                            requiredMiddleHeight /
+                            scaledMiddleHeight
+                        ) + 1;
+
+
+                    boxMiddle.innerHTML =
+                        "";
+
+
+                    for (
+                        let i = 0;
+                        i < copies;
+                        i++
+                    ) {
+
+                        const image =
+                            document.createElement(
+                                "img"
+                            );
+
+                        image.src =
+                            "https://i.imgur.com/C1w2h9j.png";
+
+                        image.alt =
+                            "";
+
+                        image.draggable =
+                            false;
+
+                        image.style.display =
+                            "block";
+
+                        image.style.width =
+                            "100%";
+
+                        image.style.height =
+                            "auto";
+
+                        image.style.imageRendering =
+                            "pixelated";
+
+                        boxMiddle.appendChild(
+                            image
+                        );
+
+                    }
+
+
+                    /*
+                     * Put the content over the
+                     * entire box.
+                     */
+
+                    const middleHeightTotal =
+                        scaledMiddleHeight *
+                        copies;
+
+
+                    loreContainer.style.height =
+                        (
+                            topHeight +
+                            middleHeightTotal +
+                            bottomHeight
+                        ) + "px";
+
+
+                    boxContent.style.height =
+                        (
+                            topHeight +
+                            middleHeightTotal +
+                            bottomHeight
+                        ) + "px";
+
+
+                    /*
+                     * The content is centered vertically
+                     * within the finished box.
+                     */
+
+                    boxContent.style.paddingTop =
+                        topHeight + "px";
+
+                    boxContent.style.paddingBottom =
+                        bottomHeight + "px";
+
+                };
+
+        }
+
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                setTimeout(
+                    buildLoreBox,
+                    100
+                );
+
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                clearTimeout(
+                    window.__boxResizeTimer
+                );
+
+                window.__boxResizeTimer =
+                    setTimeout(
+                        buildLoreBox,
+                        150
+                    );
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
