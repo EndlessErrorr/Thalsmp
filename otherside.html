@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Otherside Panorama Test</title>
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+
+        }
+
+        canvas {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            display: block;
+
+            pointer-events: none;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<script type="module">
+
+import * as THREE from
+    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+/* =========================
+   OTHERSIDE PANORAMA
+
+   Your order:
+
+   Front
+   Right
+   Back
+   Left
+   Up
+   Down
+
+   Converted to the
+   Three.js BoxGeometry order:
+
+   Right
+   Left
+   Top
+   Bottom
+   Front
+   Back
+   ========================= */
+
+const panoramaURLs = [
+
+    "https://i.imgur.com/hArkRnD.jpeg",   // Right
+    "https://i.imgur.com/bve9I8v.png",    // Left
+    "https://i.imgur.com/2SjSZ9Y.png",    // Top
+    "https://i.imgur.com/L4jdyLf.png",    // Bottom
+    "https://i.imgur.com/kWkxnTR.png",    // Front
+    "https://i.imgur.com/yToC3RB.png"     // Back
+
+];
+
+
+/* =========================
+   SCENE
+   ========================= */
+
+const scene =
+    new THREE.Scene();
+
+
+/* =========================
+   CAMERA
+   ========================= */
+
+const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        100
+    );
+
+camera.position.set(
+    0,
+    0,
+    0
+);
+
+
+/* =========================
+   RENDERER
+   ========================= */
+
+const renderer =
+    new THREE.WebGLRenderer({
+        antialias: true
+    });
+
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+document.body.appendChild(
+    renderer.domElement
+);
+
+
+/* =========================
+   LOAD TEXTURES
+   ========================= */
+
+const loader =
+    new THREE.TextureLoader();
+
+const materials = [];
+
+
+panoramaURLs.forEach(
+    (url) => {
+
+        loader.load(
+            url,
+
+            (texture) => {
+
+                texture.colorSpace =
+                    THREE.SRGBColorSpace;
+
+                materials.push(
+                    new THREE.MeshBasicMaterial({
+                        map: texture,
+                        side: THREE.BackSide
+                    })
+                );
+
+
+                if (
+                    materials.length ===
+                    panoramaURLs.length
+                ) {
+
+                    createPanorama();
+
+                }
+
+            }
+
+        );
+
+    }
+);
+
+
+/* =========================
+   CREATE PANORAMA
+   ========================= */
+
+function createPanorama() {
+
+    const geometry =
+        new THREE.BoxGeometry(
+            100,
+            100,
+            100
+        );
+
+
+    const panorama =
+        new THREE.Mesh(
+            geometry,
+            materials
+        );
+
+
+    scene.add(
+        panorama
+    );
+
+}
+
+
+/* =========================
+   ROTATION
+   ========================= */
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    scene.rotation.y +=
+        0.0003;
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+
+/* =========================
+   RESIZE
+   ========================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
