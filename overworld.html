@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Press+Start+2P&display=swap"
         rel="stylesheet"
     >
 
@@ -145,10 +145,10 @@
             font-size: clamp(24px, 4.2vw, 50px);
             line-height: 1.4;
 
-            color: #4f8f3b;
+            color: #386b2b;
 
             text-shadow:
-                2px 2px 0 rgba(255, 255, 255, 0.45);
+                2px 2px 0 rgba(255, 255, 255, 0.4);
         }
 
 
@@ -158,10 +158,10 @@
             font-size: clamp(17px, 2.5vw, 31px);
             line-height: 1.4;
 
-            color: #4f8f3b;
+            color: #386b2b;
 
             text-shadow:
-                1px 1px 0 rgba(255, 255, 255, 0.35);
+                1px 1px 0 rgba(255, 255, 255, 0.3);
         }
 
 
@@ -180,8 +180,10 @@
         .sectionText {
             margin: 0;
 
-            font-size: clamp(10px, 1.15vw, 16px);
-            line-height: 1.95;
+            font-family: "Merriweather", serif;
+
+            font-size: clamp(13px, 1.35vw, 18px);
+            line-height: 1.9;
 
             text-align: center;
 
@@ -190,9 +192,9 @@
 
 
         .sectionText strong {
-            font-weight: normal;
+            font-weight: 700;
 
-            color: #5d944c;
+            color: #578c49;
         }
 
 
@@ -201,7 +203,7 @@
            ========================= */
 
         .sectionDivider {
-            margin: 4.5vh 0 6vh;
+            margin: 4vh 0 5.5vh;
 
             font-family: "Times New Roman", serif;
 
@@ -224,7 +226,7 @@
         #aspectSymbol {
             display: block;
 
-            width: min(22%, 140px);
+            width: min(21%, 135px);
             height: auto;
 
             margin: 0 auto 1.5vh;
@@ -236,10 +238,14 @@
         #aspectName {
             margin: 0 0 3vh;
 
-            font-size: clamp(12px, 1.5vw, 19px);
+            font-family: "Merriweather", serif;
+
+            font-size: clamp(14px, 1.6vw, 20px);
+            font-weight: 700;
+
             line-height: 1.7;
 
-            color: #5d944c;
+            color: #578c49;
         }
 
 
@@ -272,8 +278,8 @@
             }
 
             .sectionText {
-                font-size: 9px;
-                line-height: 1.85;
+                font-size: 12px;
+                line-height: 1.8;
             }
 
             .sectionDivider {
@@ -282,11 +288,11 @@
             }
 
             #aspectSymbol {
-                width: 28%;
+                width: 27%;
             }
 
             #aspectName {
-                font-size: 11px;
+                font-size: 12px;
             }
         }
 
@@ -718,10 +724,13 @@
 
 
                     const copies =
-                        Math.ceil(
-                            requiredMiddleHeight /
-                            scaledMiddleHeight
-                        ) + 1;
+                        Math.max(
+                            1,
+                            Math.ceil(
+                                requiredMiddleHeight /
+                                scaledMiddleHeight
+                            )
+                        );
 
 
                     boxMiddle.innerHTML =
