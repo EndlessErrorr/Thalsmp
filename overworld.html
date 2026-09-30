@@ -62,7 +62,7 @@
             width: 100%;
             min-height: 100vh;
 
-            padding: 8vh 0 12vh;
+            padding: 7vh 0 10vh;
 
             display: flex;
             justify-content: center;
@@ -78,7 +78,7 @@
         #loreContainer {
             position: relative;
 
-            width: min(82vw, 1000px);
+            width: min(78vw, 950px);
 
             image-rendering: pixelated;
         }
@@ -136,13 +136,13 @@
 
 
         /* =========================
-           TITLE
+           TITLES
            ========================= */
 
         #title {
-            margin: 0 0 5vh;
+            margin: 0 0 4vh;
 
-            font-size: clamp(28px, 5vw, 58px);
+            font-size: clamp(24px, 4.2vw, 50px);
             line-height: 1.4;
 
             color: #4f8f3b;
@@ -152,33 +152,36 @@
         }
 
 
+        .sectionTitle {
+            margin: 0 0 2.5vh;
+
+            font-size: clamp(17px, 2.5vw, 31px);
+            line-height: 1.4;
+
+            color: #4f8f3b;
+
+            text-shadow:
+                1px 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+
         /* =========================
            SECTIONS
            ========================= */
 
         .section {
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
 
             margin-bottom: 0;
-        }
-
-
-        .sectionTitle {
-            margin: 0 0 3vh;
-
-            font-size: clamp(20px, 3vw, 38px);
-            line-height: 1.4;
-
-            color: #111;
         }
 
 
         .sectionText {
             margin: 0;
 
-            font-size: clamp(11px, 1.35vw, 18px);
-            line-height: 2;
+            font-size: clamp(10px, 1.15vw, 16px);
+            line-height: 1.95;
 
             text-align: center;
 
@@ -198,11 +201,11 @@
            ========================= */
 
         .sectionDivider {
-            margin: 5vh 0 7vh;
+            margin: 4.5vh 0 6vh;
 
             font-family: "Times New Roman", serif;
 
-            font-size: clamp(16px, 2vw, 26px);
+            font-size: clamp(14px, 1.7vw, 23px);
 
             line-height: 1;
 
@@ -221,19 +224,19 @@
         #aspectSymbol {
             display: block;
 
-            width: min(25%, 160px);
+            width: min(22%, 140px);
             height: auto;
 
-            margin: 0 auto 2vh;
+            margin: 0 auto 1.5vh;
 
             image-rendering: pixelated;
         }
 
 
         #aspectName {
-            margin: 0 0 4vh;
+            margin: 0 0 3vh;
 
-            font-size: clamp(13px, 1.8vw, 22px);
+            font-size: clamp(12px, 1.5vw, 19px);
             line-height: 1.7;
 
             color: #5d944c;
@@ -247,12 +250,12 @@
         @media (max-width: 600px) {
 
             #page {
-                padding-top: 5vh;
-                padding-bottom: 8vh;
+                padding-top: 4vh;
+                padding-bottom: 7vh;
             }
 
             #loreContainer {
-                width: 94vw;
+                width: 92vw;
             }
 
             #boxContent {
@@ -260,18 +263,30 @@
                 padding-right: 8%;
             }
 
+            #title {
+                font-size: clamp(21px, 7vw, 38px);
+            }
+
+            .sectionTitle {
+                font-size: clamp(16px, 5vw, 25px);
+            }
+
             .sectionText {
-                font-size: 10px;
-                line-height: 1.9;
+                font-size: 9px;
+                line-height: 1.85;
             }
 
             .sectionDivider {
-                font-size: 15px;
-                margin: 4vh 0 6vh;
+                font-size: 13px;
+                margin: 3.5vh 0 5vh;
             }
 
             #aspectSymbol {
-                width: 30%;
+                width: 28%;
+            }
+
+            #aspectName {
+                font-size: 11px;
             }
         }
 
@@ -427,6 +442,13 @@
                     </p>
 
                 </section>
+
+
+                <!-- BOTTOM DIVIDER -->
+
+                <div class="sectionDivider">
+                    °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
+                </div>
 
 
             </div>
