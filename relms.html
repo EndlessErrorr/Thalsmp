@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ThalSMP 2 - Realms</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+
+        }
+
+
+        #panorama {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+        }
+
+
+        #interactionLayer {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 100;
+
+            pointer-events: none;
+
+        }
+
+
+        /* ========================================
+           LORE BOX
+        ======================================== */
+
+        #loreContainer {
+
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: min(80vw, 1000px);
+
+            aspect-ratio: 334 / 154;
+
+            image-rendering: pixelated;
+
+            user-select: none;
+
+        }
+
+
+        #loreBox {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            image-rendering: pixelated;
+
+            pointer-events: none;
+
+        }
+
+
+        #loreText {
+
+            position: absolute;
+
+            left: 8.08%;
+            top: 13%;
+
+            width: 83.83%;
+            height: 72.73%;
+
+            box-sizing: border-box;
+
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: center;
+
+            padding-top: 8%;
+
+            text-align: center;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(11px, 1.5vw, 21px);
+
+            line-height: 1.7;
+
+            color: #111;
+
+            user-select: none;
+
+            pointer-events: none;
+
+            z-index: 3;
+
+        }
+
+
+        /* ========================================
+           REALM BUTTONS
+        ======================================== */
+
+        #realmButtons {
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: 17%;
+
+            transform: translateX(-50%);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 3%;
+
+            width: 84%;
+
+            z-index: 10;
+
+        }
+
+
+        .realmButton {
+
+            display: block;
+
+            width: 15%;
+
+            aspect-ratio: 1;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s ease,
+                filter 0.15s ease;
+
+            user-select: none;
+
+            pointer-events: auto;
+
+        }
+
+
+        .realmButton img {
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            image-rendering: pixelated;
+
+            pointer-events: none;
+
+        }
+
+
+        .realmButton:hover {
+
+            transform: scale(1.12);
+
+            filter: brightness(1.15);
+
+        }
+
+
+        .realmButton:active {
+
+            transform: scale(0.95);
+
+        }
+
+
+        /* ========================================
+           THREE.JS CANVAS
+        ======================================== */
+
+        canvas {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div id="panorama"></div>
+
+
+    <div id="interactionLayer">
+
+
+        <div id="loreContainer">
+
+            <img
+                id="loreBox"
+                src="https://i.imgur.com/GePl0ts.png"
+                alt=""
+            >
+
+
+            <div id="loreText">
+
+                Which realm has touched you?
+
+            </div>
+
+
+            <div id="realmButtons">
+
+
+                <a
+                    class="realmButton"
+                    href="overworld.html"
+                    aria-label="Overworld"
+                >
+
+                    <img
+                        src="https://i.imgur.com/viHBHca.png"
+                        alt="Overworld"
+                    >
+
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="nether.html"
+                    aria-label="Nether"
+                >
+
+                    <img
+                        src="https://i.imgur.com/Lwe6PNM.png"
+                        alt="Nether"
+                    >
+
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="aether.html"
+                    aria-label="Aether"
+                >
+
+                    <img
+                        src="https://i.imgur.com/E2JL5Ia.png"
+                        alt="Aether"
+                    >
+
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="otherside.html"
+                    aria-label="Otherside"
+                >
+
+                    <img
+                        src="https://i.imgur.com/4hB9YGV.png"
+                        alt="Otherside"
+                    >
+
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="end.html"
+                    aria-label="End"
+                >
+
+                    <img
+                        src="https://i.imgur.com/LZiGKoN.png"
+                        alt="End"
+                    >
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script type="module">
+
+        import * as THREE from
+            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+        /* ========================================
+           OVERWORLD PANORAMA
+        ======================================== */
+
+        const panoramaURLs = [
+
+            "https://i.imgur.com/Qv1i6iu.jpeg",
+            "https://i.imgur.com/DozXrgb.jpeg",
+            "https://i.imgur.com/rOS65Sa.png",
+            "https://i.imgur.com/AeNmcy7.jpeg",
+            "https://i.imgur.com/07p3EMv.jpeg",
+            "https://i.imgur.com/XH20czc.jpeg"
+
+        ];
+
+
+        const scene =
+            new THREE.Scene();
+
+
+        const camera =
+            new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth /
+                    window.innerHeight,
+                0.1,
+                100
+            );
+
+
+        camera.position.set(
+            0,
+            0,
+            0
+        );
+
+
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true
+            });
+
+
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                2
+            )
+        );
+
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+
+        renderer.outputColorSpace =
+            THREE.SRGBColorSpace;
+
+
+        document.body.appendChild(
+            renderer.domElement
+        );
+
+
+        const loader =
+            new THREE.TextureLoader();
+
+
+        const textures =
+            panoramaURLs.map(
+                url => {
+
+                    const texture =
+                        loader.load(url);
+
+                    texture.colorSpace =
+                        THREE.SRGBColorSpace;
+
+                    return texture;
+
+                }
+            );
+
+
+        const materials =
+            textures.map(
+                texture =>
+                    new THREE.MeshBasicMaterial({
+                        map: texture,
+                        side: THREE.BackSide
+                    })
+            );
+
+
+        const geometry =
+            new THREE.BoxGeometry(
+                100,
+                100,
+                100
+            );
+
+
+        const panorama =
+            new THREE.Mesh(
+                geometry,
+                materials
+            );
+
+
+        scene.add(panorama);
+
+
+        /* ========================================
+           SLOW ROTATION
+        ======================================== */
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+
+            panorama.rotation.y +=
+                0.0003;
+
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        }
+
+
+        animate();
+
+
+        /* ========================================
+           RESIZE
+        ======================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+                camera.updateProjectionMatrix();
+
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
