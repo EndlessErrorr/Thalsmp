@@ -4,39 +4,384 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Nether Panorama Test</title>
+    <title>The Nether</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
-        html, body {
+
+        html,
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: black;
+            min-height: 100%;
+            background: #000;
         }
 
-        canvas {
-            display: block;
+        body {
+            overflow-x: hidden;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
+
+        /* ----------------------------------------
+           PANORAMA
+        ---------------------------------------- */
+
+        #panorama {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100vw;
             height: 100vh;
+            z-index: 0;
+            pointer-events: none;
         }
+
+
+        /* ----------------------------------------
+           PAGE
+        ---------------------------------------- */
+
+        #page {
+            position: relative;
+            z-index: 2;
+
+            width: 100%;
+            min-height: 100vh;
+
+            box-sizing: border-box;
+
+            padding: 7vh 0 10vh;
+
+            display: flex;
+            justify-content: center;
+        }
+
+
+        /* ----------------------------------------
+           LORE BOX
+        ---------------------------------------- */
+
+        #loreBoxContainer {
+            position: relative;
+
+            width: min(78vw, 950px);
+
+            margin: 0 auto;
+
+            image-rendering: pixelated;
+        }
+
+        #loreTop,
+        #loreBottom {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            image-rendering: pixelated;
+        }
+
+        #loreMiddle {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+        }
+
+        .middlePiece {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            flex-shrink: 0;
+
+            image-rendering: pixelated;
+        }
+
+
+        /* ----------------------------------------
+           CONTENT
+        ---------------------------------------- */
+
+        #boxContent {
+            position: absolute;
+
+            left: 8.08%;
+            top: 0;
+
+            width: 83.83%;
+
+            box-sizing: border-box;
+
+            padding: 4% 0 5%;
+
+            text-align: center;
+        }
+
+
+        /* ----------------------------------------
+           TITLE
+        ---------------------------------------- */
+
+        #pageTitle {
+            margin: 0 0 5%;
+
+            font-family: "Press Start 2P", monospace;
+
+            font-size: clamp(24px, 4.2vw, 50px);
+
+            line-height: 1.4;
+
+            color: #9e1b32;
+
+            text-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* ----------------------------------------
+           SECTION TITLES
+        ---------------------------------------- */
+
+        .sectionTitle {
+            margin: 4% 0 2%;
+
+            font-family: "Press Start 2P", monospace;
+
+            font-size: clamp(17px, 2.5vw, 31px);
+
+            line-height: 1.5;
+
+            color: #9e1b32;
+        }
+
+
+        /* ----------------------------------------
+           BODY TEXT
+        ---------------------------------------- */
+
+        .bodyText {
+            margin: 0 auto;
+
+            max-width: 900px;
+
+            font-family: "Pixelify Sans", sans-serif;
+
+            font-size: clamp(13px, 1.35vw, 18px);
+
+            font-weight: 500;
+
+            line-height: 1.9;
+
+            color: #b52b42;
+
+            text-align: center;
+        }
+
+
+        .bodyText strong {
+            color: #9e1b32;
+        }
+
+
+        /* ----------------------------------------
+           DIVIDERS
+        ---------------------------------------- */
+
+        .divider {
+            margin: 5% 0;
+
+            font-family: "Pixelify Sans", sans-serif;
+
+            font-size: clamp(13px, 1.5vw, 20px);
+
+            line-height: 1;
+
+            color: #9e1b32;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+        }
+
+
+        /* ----------------------------------------
+           ASPECT
+        ---------------------------------------- */
+
+        #aspectSymbol {
+            display: block;
+
+            width: min(21%, 135px);
+
+            height: auto;
+
+            margin: 3% auto 2%;
+
+            image-rendering: pixelated;
+        }
+
+        #aspectName {
+            margin: 0 0 4%;
+
+            font-family: "Pixelify Sans", sans-serif;
+
+            font-size: clamp(18px, 2vw, 27px);
+
+            font-weight: 700;
+
+            line-height: 1.4;
+
+            color: #9e1b32;
+        }
+
+
+        /* ----------------------------------------
+           RESPONSIVE
+        ---------------------------------------- */
+
+        @media (max-width: 600px) {
+
+            #page {
+                padding-top: 4vh;
+            }
+
+            #boxContent {
+                padding-top: 5%;
+                padding-bottom: 7%;
+            }
+
+            .bodyText {
+                line-height: 1.7;
+            }
+
+            .divider {
+                margin: 6% 0;
+            }
+
+        }
+
     </style>
 </head>
 
 <body>
+
+
+<!-- ============================================
+     PANORAMA
+============================================= -->
+
+<div id="panorama"></div>
+
+
+<!-- ============================================
+     PAGE CONTENT
+============================================= -->
+
+<main id="page">
+
+    <div id="loreBoxContainer">
+
+        <img
+            id="loreTop"
+            src="https://i.imgur.com/rkZjDca.png"
+            alt=""
+        >
+
+        <div id="loreMiddle"></div>
+
+        <img
+            id="loreBottom"
+            src="https://i.imgur.com/wgdAJjF.png"
+            alt=""
+        >
+
+        <div id="boxContent">
+
+            <h1 id="pageTitle">
+                The Nether
+            </h1>
+
+
+            <p class="bodyText">
+                The Nether is a place of heat and decay. Its lands are harsh and unforgiving, filled with fire, smoke, and life that seems to linger long after it should have died.
+            </p>
+
+
+            <div class="divider">
+                ــــــــــــــــﮩ٨ـ
+            </div>
+
+
+            <h2 class="sectionTitle">
+                Architect
+            </h2>
+
+
+            <p class="bodyText">
+                <strong>Cinichor, the Architect of the Nether</strong>, is a force of blood and fire. His realm is one of survival, destruction, and decay. He is a quiet and imposing figure, his presence carrying an ominous weight. To Cinichor, destruction is not an ending, and decay is not something to be feared. Both are simply parts of the natural order.
+            </p>
+
+
+            <div class="divider">
+                ــــــــــــــــﮩ٨ـ
+            </div>
+
+
+            <h2 class="sectionTitle">
+                Aspect
+            </h2>
+
+
+            <img
+                id="aspectSymbol"
+                src="https://i.imgur.com/Lwe6PNM.png"
+                alt="Nether Aspect"
+            >
+
+
+            <div id="aspectName">
+                Blood + Fire
+            </div>
+
+
+            <p class="bodyText">
+                The Aspect of the Nether draws its power from two forces deeply intertwined with the realm: blood and fire.
+                <br><br>
+                Its wielders can manipulate the heat and flame of the Nether, while blood magic allows them to draw upon life itself as a source of power. The Aspect is destructive, but it is also about survival. Those touched by the Nether learn to endure, even in a world that seems determined to consume them.
+            </p>
+
+
+            <div class="divider">
+                ــــــــــــــــﮩ٨ـ
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ============================================
+     THREE.JS PANORAMA
+============================================= -->
 
 <script type="module">
 
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // SCENE
-// --------------------------------------------------
+// ----------------------------------------
 
 const scene = new THREE.Scene();
 
@@ -50,9 +395,9 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 0, 0);
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // RENDERER
-// --------------------------------------------------
+// ----------------------------------------
 
 const renderer = new THREE.WebGLRenderer({
     antialias: true
@@ -67,20 +412,32 @@ renderer.setSize(
     window.innerHeight
 );
 
-document.body.appendChild(renderer.domElement);
+renderer.domElement.style.position = "fixed";
+renderer.domElement.style.top = "0";
+renderer.domElement.style.left = "0";
+renderer.domElement.style.width = "100vw";
+renderer.domElement.style.height = "100vh";
+renderer.domElement.style.zIndex = "0";
+renderer.domElement.style.pointerEvents = "none";
+
+document
+    .getElementById("panorama")
+    .appendChild(renderer.domElement);
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // NETHER PANORAMA
-// --------------------------------------------------
+// ----------------------------------------
 
 const panoramaURLs = [
+
     "https://i.imgur.com/07iMjyR.png",   // Right
     "https://i.imgur.com/HUIW4MK.jpeg",  // Left
-    "https://i.imgur.com/yxge6sC.jpeg",   // Top
-    "https://i.imgur.com/1744ZSq.png",   // Bottom
+    "https://i.imgur.com/yxge6sC.jpeg",  // Top
+    "https://i.imgur.com/1744ZSq.png",    // Bottom
     "https://i.imgur.com/67G6JBG.jpeg",  // Front
     "https://i.imgur.com/kg75wKt.jpeg"   // Back
+
 ];
 
 const loader = new THREE.TextureLoader();
@@ -89,19 +446,23 @@ const materials = panoramaURLs.map(url => {
 
     const texture = loader.load(url);
 
-    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.colorSpace =
+        THREE.SRGBColorSpace;
 
     return new THREE.MeshBasicMaterial({
+
         map: texture,
+
         side: THREE.BackSide
+
     });
 
 });
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // PANORAMA BOX
-// --------------------------------------------------
+// ----------------------------------------
 
 const geometry = new THREE.BoxGeometry(
     100,
@@ -117,9 +478,9 @@ const panorama = new THREE.Mesh(
 scene.add(panorama);
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // ANIMATION
-// --------------------------------------------------
+// ----------------------------------------
 
 function animate() {
 
@@ -137,24 +498,27 @@ function animate() {
 animate();
 
 
-// --------------------------------------------------
+// ----------------------------------------
 // RESIZE
-// --------------------------------------------------
+// ----------------------------------------
 
-window.addEventListener("resize", () => {
+window.addEventListener(
+    "resize",
+    () => {
 
-    camera.aspect =
-        window.innerWidth /
-        window.innerHeight;
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
 
-    camera.updateProjectionMatrix();
+        camera.updateProjectionMatrix();
 
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
 
-});
+    }
+);
 
 </script>
 
