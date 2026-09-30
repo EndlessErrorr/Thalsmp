@@ -520,6 +520,142 @@ window.addEventListener(
     }
 );
 
+
+// ----------------------------------------
+// BUILD LORE BOX
+// ----------------------------------------
+
+function buildLoreBox() {
+
+    const top =
+        document.getElementById("loreTop");
+
+    const middle =
+        document.getElementById("loreMiddle");
+
+    const bottom =
+        document.getElementById("loreBottom");
+
+    const content =
+        document.getElementById("boxContent");
+
+
+    // Make sure the images have loaded
+    if (
+        !top.complete ||
+        !bottom.complete
+    ) {
+        setTimeout(
+            buildLoreBox,
+            50
+        );
+
+        return;
+    }
+
+
+    // Calculate the height of the content
+    const contentHeight =
+        content.offsetHeight;
+
+
+    // Get the displayed height of the
+    // top and bottom pieces
+    const topHeight =
+        top.getBoundingClientRect().height;
+
+    const bottomHeight =
+        bottom.getBoundingClientRect().height;
+
+
+    // The middle section needs to cover
+    // the entire content area between them
+    const requiredMiddleHeight =
+        contentHeight -
+        topHeight -
+        bottomHeight;
+
+
+    // Get the natural middle image
+    // dimensions
+    const middleImage =
+        new Image();
+
+    middleImage.onload = () => {
+
+        const scaledMiddleHeight =
+            middleImage.height *
+            (
+                middle.offsetWidth /
+                middleImage.width
+            );
+
+
+        const copies =
+            Math.max(
+                1,
+                Math.ceil(
+                    requiredMiddleHeight /
+                    scaledMiddleHeight
+                )
+            );
+
+
+        middle.innerHTML = "";
+
+
+        for (
+            let i = 0;
+            i < copies;
+            i++
+        ) {
+
+            const piece =
+                document.createElement("img");
+
+            piece.className =
+                "middlePiece";
+
+            piece.src =
+                "https://i.imgur.com/C1w2h9j.png";
+
+            piece.alt = "";
+
+            middle.appendChild(piece);
+
+        }
+
+    };
+
+    middleImage.src =
+        "https://i.imgur.com/C1w2h9j.png";
+}
+
+
+// Wait for fonts and layout
+// before calculating the box
+
+if (document.fonts) {
+
+    document.fonts.ready.then(
+        buildLoreBox
+    );
+
+} else {
+
+    window.addEventListener(
+        "load",
+        buildLoreBox
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    buildLoreBox
+);
+
 </script>
 
 </body>
