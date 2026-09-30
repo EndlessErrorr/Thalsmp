@@ -6,7 +6,6 @@
 
     <title>The Overworld | ThalSMP 2</title>
 
-    <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
         rel="stylesheet"
@@ -29,7 +28,6 @@
         body {
             background: #000;
             overflow-x: hidden;
-            color: #6fa85b;
         }
 
 
@@ -48,7 +46,7 @@
 
 
         /* =========================================
-           PAGE CONTENT
+           PAGE
         ========================================= */
 
         #page {
@@ -59,31 +57,10 @@
             min-height: 100vh;
 
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            align-items: flex-start;
 
             padding: 7vh 0 10vh;
-        }
-
-
-        /* =========================================
-           MAIN TITLE
-        ========================================= */
-
-        #pageTitle {
-            margin: 0 0 4vh;
-
-            font-family: "Press Start 2P", monospace;
-            font-size: clamp(24px, 4.2vw, 50px);
-            line-height: 1.4;
-
-            text-align: center;
-
-            color: #386b2b;
-
-            text-shadow:
-                2px 2px 0 rgba(255,255,255,0.45),
-                3px 3px 0 rgba(0,0,0,0.12);
         }
 
 
@@ -93,18 +70,17 @@
 
         #loreBoxContainer {
             position: relative;
-
             width: min(78vw, 950px);
 
             image-rendering: pixelated;
         }
 
         #loreBoxTop,
-        #loreBoxMiddle,
-        #loreBoxBottom {
+        #loreBoxBottom,
+        #loreBoxMiddleContainer img {
             display: block;
-
             width: 100%;
+            height: auto;
 
             image-rendering: pixelated;
         }
@@ -115,7 +91,7 @@
 
 
         /* =========================================
-           CONTENT INSIDE BOX
+           CONTENT
         ========================================= */
 
         #boxContent {
@@ -131,20 +107,40 @@
             flex-direction: column;
             align-items: center;
 
-            padding:
-                7%
-                9%
-                7%;
+            padding: 7% 9%;
 
             text-align: center;
         }
 
 
         /* =========================================
-           INTRO TEXT
+           MAIN TITLE
         ========================================= */
 
-        .introText {
+        #pageTitle {
+            margin: 0 0 3vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(24px, 4.2vw, 50px);
+            line-height: 1.4;
+
+            color: #386b2b;
+
+            text-align: center;
+
+            text-shadow:
+                2px 2px 0 rgba(255,255,255,0.45),
+                3px 3px 0 rgba(0,0,0,0.12);
+        }
+
+
+        /* =========================================
+           BODY TEXT
+        ========================================= */
+
+        .introText,
+        .architectText,
+        .aspectText {
             margin: 0;
 
             font-family: "Pixelify Sans", sans-serif;
@@ -159,7 +155,7 @@
 
 
         /* =========================================
-           SECTION DIVIDERS
+           DIVIDERS
         ========================================= */
 
         .divider {
@@ -193,25 +189,7 @@
 
 
         /* =========================================
-           ARCHITECT TEXT
-        ========================================= */
-
-        .architectText {
-            margin: 0;
-
-            font-family: "Pixelify Sans", sans-serif;
-            font-size: clamp(13px, 1.35vw, 18px);
-            font-weight: 400;
-            line-height: 1.9;
-
-            color: #6fa85b;
-
-            text-align: center;
-        }
-
-
-        /* =========================================
-           ASPECT SECTION
+           ASPECT
         ========================================= */
 
         #aspectSymbol {
@@ -238,22 +216,9 @@
             text-align: center;
         }
 
-        .aspectText {
-            margin: 0;
-
-            font-family: "Pixelify Sans", sans-serif;
-            font-size: clamp(13px, 1.35vw, 18px);
-            font-weight: 400;
-            line-height: 1.9;
-
-            color: #6fa85b;
-
-            text-align: center;
-        }
-
 
         /* =========================================
-           BOTTOM SPACING
+           BOTTOM DIVIDER
         ========================================= */
 
         #bottomDivider {
@@ -273,15 +238,15 @@
                 padding-bottom: 8vh;
             }
 
-            #pageTitle {
-                margin-bottom: 3vh;
-            }
-
             #boxContent {
                 padding:
                     8%
                     8%
                     8%;
+            }
+
+            #pageTitle {
+                margin-bottom: 3vh;
             }
 
             .introText,
@@ -314,28 +279,21 @@
 
     <main id="page">
 
-        <h1 id="pageTitle">
-            The Overworld
-        </h1>
-
-
-        <!-- =====================================
-             LORE BOX
-        ===================================== -->
-
         <div id="loreBoxContainer">
 
-            <!-- Top of box -->
+            <!-- TOP OF BOX -->
             <img
                 id="loreBoxTop"
                 src="https://i.imgur.com/rkZjDca.png"
                 alt=""
             >
 
-            <!-- Repeating middle -->
+
+            <!-- REPEATING MIDDLE -->
             <div id="loreBoxMiddleContainer"></div>
 
-            <!-- Bottom of box -->
+
+            <!-- BOTTOM OF BOX -->
             <img
                 id="loreBoxBottom"
                 src="https://i.imgur.com/wgdAJjF.png"
@@ -344,10 +302,19 @@
 
 
             <!-- =================================
-                 TEXT CONTENT
+                 CONTENT INSIDE BOX
             ================================= -->
 
             <div id="boxContent">
+
+                <!-- TITLE -->
+
+                <h1 id="pageTitle">
+                    The Overworld
+                </h1>
+
+
+                <!-- INTRO -->
 
                 <p class="introText">
                     The Overworld is a place of change.
@@ -357,10 +324,14 @@
                 </p>
 
 
+                <!-- DIVIDER -->
+
                 <div class="divider">
                     °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
                 </div>
 
+
+                <!-- ARCHITECT -->
 
                 <h2 class="sectionTitle">
                     Architect
@@ -378,10 +349,14 @@
                 </p>
 
 
+                <!-- DIVIDER -->
+
                 <div class="divider">
                     °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
                 </div>
 
+
+                <!-- ASPECT -->
 
                 <h2 class="sectionTitle">
                     Aspect
@@ -414,6 +389,8 @@
                     the Overworld and its Architect.
                 </p>
 
+
+                <!-- BOTTOM DIVIDER -->
 
                 <div
                     id="bottomDivider"
@@ -517,7 +494,7 @@
 
 
         /* =========================================
-           PANORAMA TEXTURES
+           PANORAMA URLS
 
            Right
            Left
@@ -643,7 +620,7 @@
 
 
     <!-- =========================================
-         BUILD THE REPEATING LORE BOX
+         BUILD REPEATING LORE BOX
     ========================================= -->
 
     <script>
@@ -704,6 +681,7 @@
 
             middleImage.src =
                 middleURL;
+
 
             middleImage.onload =
                 () => {
