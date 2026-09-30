@@ -98,14 +98,8 @@
             display: block;
 
             width: 100%;
-            height: auto;
 
             image-rendering: pixelated;
-
-            /*
-             * The middle section repeats vertically.
-             * It is never stretched.
-             */
         }
 
 
@@ -127,10 +121,6 @@
 
             width: 100%;
 
-            /*
-             * This is positioned over the repeated
-             * middle section of the box.
-             */
             padding:
                 7% 9%
                 7%;
@@ -170,7 +160,7 @@
             width: 100%;
             max-width: 850px;
 
-            margin-bottom: 7vh;
+            margin-bottom: 0;
         }
 
 
@@ -191,27 +181,36 @@
             line-height: 2;
 
             text-align: center;
+
+            color: #6fa85b;
         }
 
 
         .sectionText strong {
             font-weight: normal;
+
+            color: #5d944c;
         }
 
 
         /* =========================
-           ARCHITECT
+           DECORATIVE BREAK
            ========================= */
 
-        #architectSymbol {
-            display: block;
+        .sectionDivider {
+            margin: 5vh 0 7vh;
 
-            width: min(30%, 180px);
-            height: auto;
+            font-family: "Times New Roman", serif;
 
-            margin: 0 auto 3vh;
+            font-size: clamp(16px, 2vw, 26px);
 
-            image-rendering: pixelated;
+            line-height: 1;
+
+            color: #6fa85b;
+
+            opacity: 0.85;
+
+            white-space: nowrap;
         }
 
 
@@ -236,6 +235,8 @@
 
             font-size: clamp(13px, 1.8vw, 22px);
             line-height: 1.7;
+
+            color: #5d944c;
         }
 
 
@@ -259,17 +260,14 @@
                 padding-right: 8%;
             }
 
-            .section {
-                margin-bottom: 5vh;
-            }
-
             .sectionText {
                 font-size: 10px;
                 line-height: 1.9;
             }
 
-            #architectSymbol {
-                width: 35%;
+            .sectionDivider {
+                font-size: 15px;
+                margin: 4vh 0 6vh;
             }
 
             #aspectSymbol {
@@ -305,12 +303,10 @@
                 alt=""
             >
 
-            <!--
-                Repeated middle section.
-                JavaScript creates enough copies
-                to fill the entire content area.
-            -->
+
+            <!-- Repeated middle section -->
             <div id="boxMiddle"></div>
+
 
             <!-- Box bottom -->
             <img
@@ -325,6 +321,9 @@
                  ========================= -->
 
             <div id="boxContent">
+
+
+                <!-- OVERWORLD -->
 
                 <section class="section">
 
@@ -341,6 +340,15 @@
 
                 </section>
 
+
+                <!-- DIVIDER -->
+
+                <div class="sectionDivider">
+                    °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
+                </div>
+
+
+                <!-- ARCHITECT -->
 
                 <section class="section">
 
@@ -361,11 +369,21 @@
                 </section>
 
 
+                <!-- DIVIDER -->
+
+                <div class="sectionDivider">
+                    °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
+                </div>
+
+
+                <!-- ASPECT -->
+
                 <section class="section">
 
                     <h2 class="sectionTitle">
                         Aspect
                     </h2>
+
 
                     <img
                         id="aspectSymbol"
@@ -373,9 +391,11 @@
                         alt="Overworld Aspect"
                     >
 
+
                     <h3 id="aspectName">
                         Nature + Lightning
                     </h3>
+
 
                     <p class="sectionText">
                         The Aspect of the Overworld is one of growth
@@ -384,7 +404,9 @@
                         nature and call upon the power of storms.
                     </p>
 
+
                     <br>
+
 
                     <p class="sectionText">
                         Those touched by the Overworld may find their
@@ -394,7 +416,9 @@
                         lightning and the power of the storm.
                     </p>
 
+
                     <br>
+
 
                     <p class="sectionText">
                         How your Aspect manifests is unique to you,
@@ -403,6 +427,7 @@
                     </p>
 
                 </section>
+
 
             </div>
 
@@ -620,12 +645,6 @@
 
         function buildLoreBox() {
 
-            /*
-             * Wait until the top and bottom images
-             * have loaded so their actual dimensions
-             * are available.
-             */
-
             const topHeight =
                 boxTop.getBoundingClientRect().height;
 
@@ -633,21 +652,13 @@
                 boxBottom.getBoundingClientRect().height;
 
 
-            /*
-             * Find how tall the content needs to be.
-             */
-
             const contentHeight =
                 boxContent.scrollHeight;
 
 
-            /*
-             * The middle image is repeated at its
-             * natural aspect ratio.
-             */
-
             const middleImage =
                 new Image();
+
 
             middleImage.src =
                 "https://i.imgur.com/C1w2h9j.png";
@@ -674,11 +685,6 @@
                             middleWidth
                         );
 
-
-                    /*
-                     * Work out how much middle
-                     * background is required.
-                     */
 
                     const requiredMiddleHeight =
                         Math.max(
@@ -711,26 +717,34 @@
                                 "img"
                             );
 
+
                         image.src =
                             "https://i.imgur.com/C1w2h9j.png";
+
 
                         image.alt =
                             "";
 
+
                         image.draggable =
                             false;
+
 
                         image.style.display =
                             "block";
 
+
                         image.style.width =
                             "100%";
+
 
                         image.style.height =
                             "auto";
 
+
                         image.style.imageRendering =
                             "pixelated";
+
 
                         boxMiddle.appendChild(
                             image
@@ -738,11 +752,6 @@
 
                     }
 
-
-                    /*
-                     * Put the content over the
-                     * entire box.
-                     */
 
                     const middleHeightTotal =
                         scaledMiddleHeight *
@@ -765,13 +774,9 @@
                         ) + "px";
 
 
-                    /*
-                     * The content is centered vertically
-                     * within the finished box.
-                     */
-
                     boxContent.style.paddingTop =
                         topHeight + "px";
+
 
                     boxContent.style.paddingBottom =
                         bottomHeight + "px";
@@ -801,6 +806,7 @@
                 clearTimeout(
                     window.__boxResizeTimer
                 );
+
 
                 window.__boxResizeTimer =
                     setTimeout(
