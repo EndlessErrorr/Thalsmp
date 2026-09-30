@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>The Overworld | ThalSMP 2</title>
 
@@ -17,16 +22,20 @@
             box-sizing: border-box;
         }
 
+
         html,
         body {
             margin: 0;
             padding: 0;
+
             width: 100%;
             min-height: 100%;
         }
 
+
         body {
             background: #000;
+
             overflow-x: hidden;
         }
 
@@ -37,10 +46,14 @@
 
         #panorama {
             position: fixed;
+
             inset: 0;
+
             width: 100vw;
             height: 100vh;
+
             z-index: 0;
+
             pointer-events: none;
         }
 
@@ -51,12 +64,14 @@
 
         #page {
             position: relative;
+
             z-index: 10;
 
             width: 100%;
             min-height: 100vh;
 
             display: flex;
+
             justify-content: center;
             align-items: flex-start;
 
@@ -70,20 +85,24 @@
 
         #loreBoxContainer {
             position: relative;
+
             width: min(78vw, 950px);
 
             image-rendering: pixelated;
         }
 
+
         #loreBoxTop,
         #loreBoxBottom,
         #loreBoxMiddleContainer img {
             display: block;
+
             width: 100%;
             height: auto;
 
             image-rendering: pixelated;
         }
+
 
         #loreBoxMiddleContainer {
             width: 100%;
@@ -104,7 +123,9 @@
             height: 100%;
 
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
 
             padding: 7% 9%;
@@ -120,8 +141,13 @@
         #pageTitle {
             margin: 0 0 3vh;
 
-            font-family: "Press Start 2P", monospace;
-            font-size: clamp(24px, 4.2vw, 50px);
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(24px, 4.2vw, 50px);
+
             line-height: 1.4;
 
             color: #386b2b;
@@ -143,9 +169,15 @@
         .aspectText {
             margin: 0;
 
-            font-family: "Pixelify Sans", sans-serif;
-            font-size: clamp(13px, 1.35vw, 18px);
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(13px, 1.35vw, 18px);
+
             font-weight: 400;
+
             line-height: 1.9;
 
             color: #6fa85b;
@@ -161,8 +193,13 @@
         .divider {
             margin: 2.2vh 0;
 
-            font-family: "Times New Roman", serif;
-            font-size: clamp(14px, 1.5vw, 20px);
+            font-family:
+                "Times New Roman",
+                serif;
+
+            font-size:
+                clamp(14px, 1.5vw, 20px);
+
             line-height: 1;
 
             color: #6fa85b;
@@ -178,8 +215,13 @@
         .sectionTitle {
             margin: 0 0 2vh;
 
-            font-family: "Press Start 2P", monospace;
-            font-size: clamp(17px, 2.5vw, 31px);
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(17px, 2.5vw, 31px);
+
             line-height: 1.5;
 
             color: #386b2b;
@@ -195,20 +237,31 @@
         #aspectSymbol {
             display: block;
 
-            width: min(21%, 135px);
+            width:
+                min(21%, 135px);
+
             height: auto;
 
-            margin: 0 auto 1.5vh;
+            margin:
+                0 auto 1.5vh;
 
             image-rendering: pixelated;
         }
 
-        .aspectName {
-            margin: 0 0 2vh;
 
-            font-family: "Pixelify Sans", sans-serif;
-            font-size: clamp(18px, 2vw, 27px);
+        .aspectName {
+            margin:
+                0 0 2vh;
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(18px, 2vw, 27px);
+
             font-weight: 700;
+
             line-height: 1.4;
 
             color: #578c49;
@@ -223,7 +276,58 @@
 
         #bottomDivider {
             margin-top: 2.2vh;
+
             margin-bottom: 0;
+        }
+
+
+        /* =========================================
+           RETURN TO REALMS BUTTON
+        ========================================= */
+
+        #backButton {
+            display: inline-block;
+
+            margin-top: 1vh;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(7px, 0.8vw, 11px);
+
+            color: #386b2b;
+
+            text-decoration: none;
+
+            background:
+                rgba(0, 0, 0, 0.35);
+
+            border: 2px solid #386b2b;
+
+            padding: 12px 16px;
+
+            image-rendering: pixelated;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+
+        #backButton:hover {
+            background: #386b2b;
+
+            color: #111;
+
+            transform: scale(1.05);
+        }
+
+
+        #backButton:active {
+            transform: scale(0.95);
         }
 
 
@@ -235,8 +339,10 @@
 
             #page {
                 padding-top: 5vh;
+
                 padding-bottom: 8vh;
             }
+
 
             #boxContent {
                 padding:
@@ -245,15 +351,18 @@
                     8%;
             }
 
+
             #pageTitle {
                 margin-bottom: 3vh;
             }
+
 
             .introText,
             .architectText,
             .aspectText {
                 line-height: 1.7;
             }
+
 
             .divider {
                 margin: 1.8vh 0;
@@ -262,9 +371,12 @@
         }
 
     </style>
+
 </head>
 
+
 <body>
+
 
     <!-- =========================================
          PANORAMA
@@ -281,7 +393,9 @@
 
         <div id="loreBoxContainer">
 
+
             <!-- TOP OF BOX -->
+
             <img
                 id="loreBoxTop"
                 src="https://i.imgur.com/rkZjDca.png"
@@ -290,10 +404,12 @@
 
 
             <!-- REPEATING MIDDLE -->
+
             <div id="loreBoxMiddleContainer"></div>
 
 
             <!-- BOTTOM OF BOX -->
+
             <img
                 id="loreBoxBottom"
                 src="https://i.imgur.com/wgdAJjF.png"
@@ -307,6 +423,7 @@
 
             <div id="boxContent">
 
+
                 <!-- TITLE -->
 
                 <h1 id="pageTitle">
@@ -317,10 +434,12 @@
                 <!-- INTRO -->
 
                 <p class="introText">
+
                     The Overworld is a place of change.
                     Whether it's day or night, hot or cold,
                     or the weather, something in the Overworld
                     is always changing, always growing.
+
                 </p>
 
 
@@ -337,7 +456,9 @@
                     Architect
                 </h2>
 
+
                 <p class="architectText">
+
                     Sylvara, the Architect of the Overworld,
                     is a force of nature and lightning.
                     She is a caring and nurturing Architect,
@@ -346,6 +467,7 @@
                     people with a deep connection to the living
                     world, guiding growth and change wherever
                     she can.
+
                 </p>
 
 
@@ -362,31 +484,40 @@
                     Aspect
                 </h2>
 
+
                 <img
                     id="aspectSymbol"
                     src="https://i.imgur.com/viHBHca.png"
                     alt="Overworld Aspect"
                 >
 
+
                 <p class="aspectName">
                     Nature + Lightning
                 </p>
 
+
                 <p class="aspectText">
+
                     The Aspect of the Overworld is one of growth
                     and change. It draws upon the living world
                     around you, allowing its wielders to influence
                     nature and call upon the power of storms.
+
                     <br><br>
+
                     Those touched by the Overworld may find their
                     magic taking many different forms. Some may
                     nurture life, manipulate plants, or shape the
                     land around them. Others may call upon
                     lightning and the power of the storm.
+
                     <br><br>
+
                     How your Aspect manifests is unique to you,
                     but all who wield it share a connection to
                     the Overworld and its Architect.
+
                 </p>
 
 
@@ -398,6 +529,17 @@
                 >
                     °❀⋆.ೃ࿔*:･°❀⋆.ೃ࿔*:･
                 </div>
+
+
+                <!-- RETURN TO REALMS -->
+
+                <a
+                    id="backButton"
+                    href="relms.html"
+                >
+                    Return to Realms
+                </a>
+
 
             </div>
 
@@ -437,6 +579,7 @@
                 100
             );
 
+
         camera.position.set(
             0,
             0,
@@ -453,6 +596,7 @@
                 antialias: true
             });
 
+
         renderer.setPixelRatio(
             Math.min(
                 window.devicePixelRatio,
@@ -460,31 +604,40 @@
             )
         );
 
+
         renderer.setSize(
             window.innerWidth,
             window.innerHeight
         );
 
+
         renderer.domElement.style.position =
             "fixed";
+
 
         renderer.domElement.style.top =
             "0";
 
+
         renderer.domElement.style.left =
             "0";
+
 
         renderer.domElement.style.width =
             "100vw";
 
+
         renderer.domElement.style.height =
             "100vh";
+
 
         renderer.domElement.style.zIndex =
             "0";
 
+
         renderer.domElement.style.pointerEvents =
             "none";
+
 
         document
             .getElementById("panorama")
@@ -536,12 +689,17 @@
                     const texture =
                         loader.load(url);
 
+
                     texture.colorSpace =
                         THREE.SRGBColorSpace;
 
+
                     return new THREE.MeshBasicMaterial({
+
                         map: texture,
+
                         side: THREE.BackSide
+
                     });
 
                 }
@@ -566,6 +724,7 @@
                 materials
             );
 
+
         scene.add(
             panorama
         );
@@ -581,8 +740,10 @@
                 animate
             );
 
+
             panorama.rotation.y +=
                 0.0003;
+
 
             renderer.render(
                 scene,
@@ -590,6 +751,7 @@
             );
 
         }
+
 
         animate();
 
@@ -606,7 +768,9 @@
                     window.innerWidth /
                     window.innerHeight;
 
+
                 camera.updateProjectionMatrix();
+
 
                 renderer.setSize(
                     window.innerWidth,
@@ -630,15 +794,18 @@
                 "loreBoxTop"
             );
 
+
         const middleContainer =
             document.getElementById(
                 "loreBoxMiddleContainer"
             );
 
+
         const bottomImage =
             document.getElementById(
                 "loreBoxBottom"
             );
+
 
         const boxContent =
             document.getElementById(
@@ -656,12 +823,15 @@
                 topImage.getBoundingClientRect()
                     .height;
 
+
             const bottomHeight =
                 bottomImage.getBoundingClientRect()
                     .height;
 
+
             const contentHeight =
                 boxContent.scrollHeight;
+
 
             const requiredMiddleHeight =
                 Math.max(
@@ -679,6 +849,7 @@
             const middleImage =
                 new Image();
 
+
             middleImage.src =
                 middleURL;
 
@@ -689,7 +860,8 @@
                     const scaledMiddleHeight =
                         middleImage.height *
                         (
-                            topImage.getBoundingClientRect()
+                            topImage
+                                .getBoundingClientRect()
                                 .width /
                             middleImage.width
                         );
@@ -716,23 +888,30 @@
                                 "img"
                             );
 
+
                         img.src =
                             middleURL;
+
 
                         img.alt =
                             "";
 
+
                         img.style.display =
                             "block";
+
 
                         img.style.width =
                             "100%";
 
+
                         img.style.height =
                             "auto";
 
+
                         img.style.imageRendering =
                             "pixelated";
+
 
                         middleContainer.appendChild(
                             img
@@ -766,6 +945,7 @@
                     window.__loreResizeTimer
                 );
 
+
                 window.__loreResizeTimer =
                     setTimeout(
                         buildLoreBox,
@@ -777,5 +957,7 @@
 
     </script>
 
+
 </body>
+
 </html>
