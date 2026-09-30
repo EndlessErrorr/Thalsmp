@@ -401,53 +401,104 @@
             .getElementById("panorama")
             .appendChild(renderer.domElement);
 
+        /*
+            Otherside panorama
+
+            Original screenshot order:
+            Front
+            Right
+            Back
+            Left
+            Up
+            Down
+
+            Confirmed working Three.js order:
+            Right
+            Left
+            Bottom
+            Top
+            Front
+            Back
+        */
+
         const panoramaURLs = [
-            "https://i.imgur.com/yToC3RB.png",   // Right
-            "https://i.imgur.com/bve9I8v.png",    // Left
-            "https://i.imgur.com/L4jdyLf.png",     // Bottom
-            "https://i.imgur.com/2SjSZ9Y.png",     // Top
-            "https://i.imgur.com/kWkxnTR.png"      // Back
-            "https://i.imgur.com/hArkRnD.jpeg",     // Front
-            
+            "https://i.imgur.com/hArkRnD.jpeg",  // Right
+            "https://i.imgur.com/bve9I8v.png",   // Left
+            "https://i.imgur.com/L4jdyLf.png",    // Bottom
+            "https://i.imgur.com/2SjSZ9Y.png",    // Top
+            "https://i.imgur.com/kWkxnTR.png",    // Front
+            "https://i.imgur.com/yToC3RB.png"     // Back
         ];
 
         const loader = new THREE.TextureLoader();
-        const materials = [];
 
-        panoramaURLs.forEach((url) => {
-            loader.load(
-                url,
-                (texture) => {
-                    texture.colorSpace = THREE.SRGBColorSpace;
+        /*
+            Keep materials at their original indexes.
 
-                    materials.push(
-                        new THREE.MeshBasicMaterial({
-                            map: texture,
-                            side: THREE.BackSide
-                        })
-                    );
+            Textures load asynchronously, so using
+            materials.push() can scramble the panorama.
+        */
 
-                    if (
-                        materials.length ===
-                        panoramaURLs.length
-                    ) {
-                        createPanorama();
+        const materials =
+            new Array(panoramaURLs.length);
+
+        let loadedCount = 0;
+
+        panoramaURLs.forEach(
+            (url, index) => {
+
+                loader.load(
+                    url,
+
+                    (texture) => {
+
+                        texture.colorSpace =
+                            THREE.SRGBColorSpace;
+
+                        materials[index] =
+                            new THREE.MeshBasicMaterial({
+                                map: texture,
+                                side: THREE.BackSide
+                            });
+
+                        loadedCount++;
+
+                        if (
+                            loadedCount ===
+                            panoramaURLs.length
+                        ) {
+                            createPanorama();
+                        }
+                    },
+
+                    undefined,
+
+                    (error) => {
+
+                        console.error(
+                            "Failed to load panorama texture:",
+                            url,
+                            error
+                        );
                     }
-                }
-            );
-        });
+                );
+            }
+        );
 
         function createPanorama() {
-            const geometry = new THREE.BoxGeometry(
-                100,
-                100,
-                100
-            );
 
-            const panorama = new THREE.Mesh(
-                geometry,
-                materials
-            );
+            const geometry =
+                new THREE.BoxGeometry(
+                    100,
+                    100,
+                    100
+                );
+
+            const panorama =
+                new THREE.Mesh(
+                    geometry,
+                    materials
+                );
 
             scene.add(panorama);
 
@@ -455,7 +506,10 @@
         }
 
         function animate() {
-            requestAnimationFrame(animate);
+
+            requestAnimationFrame(
+                animate
+            );
 
             scene.rotation.y += 0.0003;
 
@@ -472,6 +526,7 @@
         window.addEventListener(
             "resize",
             () => {
+
                 camera.aspect =
                     window.innerWidth /
                     window.innerHeight;
@@ -490,6 +545,7 @@
            ========================= */
 
         function buildLoreBox() {
+
             const top =
                 document.getElementById("loreTop");
 
@@ -556,6 +612,7 @@
                     i < copies;
                     i++
                 ) {
+
                     const piece =
                         document.createElement(
                             "img"
@@ -580,10 +637,13 @@
         }
 
         if (document.fonts) {
+
             document.fonts.ready.then(
                 buildLoreBox
             );
+
         } else {
+
             window.addEventListener(
                 "load",
                 buildLoreBox
