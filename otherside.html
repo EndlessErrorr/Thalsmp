@@ -1,275 +1,597 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+    <title>The Otherside</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet"
     >
 
-    <title>Otherside Panorama Test</title>
-
     <style>
-
         html,
         body {
-
             margin: 0;
             padding: 0;
-
             width: 100%;
-            height: 100%;
-
-            overflow: hidden;
-
+            min-height: 100%;
             background: #000;
-
         }
 
-        canvas {
+        body {
+            overflow-x: hidden;
+            color: #4f9699;
+            font-family: "Pixelify Sans", sans-serif;
+        }
 
+        /* =========================
+           PANORAMA
+           ========================= */
+
+        #panorama {
             position: fixed;
-
-            top: 0;
-            left: 0;
-
+            inset: 0;
             width: 100vw;
             height: 100vh;
-
-            display: block;
-
+            z-index: 0;
             pointer-events: none;
-
         }
 
+        /* =========================
+           PAGE
+           ========================= */
+
+        #page {
+            position: relative;
+            z-index: 2;
+
+            width: 100%;
+            min-height: 100vh;
+            box-sizing: border-box;
+
+            padding: 7vh 0 10vh;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================
+           TITLE
+           ========================= */
+
+        #pageTitle {
+            margin: 0 0 4vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(20px, 3vw, 38px);
+            line-height: 1.4;
+
+            color: #164b52;
+
+            text-align: center;
+
+            text-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        /* =========================
+           LORE BOX
+           ========================= */
+
+        #loreBoxContainer {
+            position: relative;
+
+            width: min(78vw, 950px);
+
+            image-rendering: pixelated;
+        }
+
+        #loreTop,
+        #loreBottom {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            image-rendering: pixelated;
+        }
+
+        #loreMiddle {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+        }
+
+        .middlePiece {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            flex-shrink: 0;
+
+            image-rendering: pixelated;
+        }
+
+        #boxContent {
+            position: absolute;
+
+            left: 8.08%;
+            top: 0;
+
+            width: 83.83%;
+
+            box-sizing: border-box;
+
+            padding: 8% 4% 7%;
+
+            text-align: center;
+        }
+
+        /* =========================
+           TEXT
+           ========================= */
+
+        .introText,
+        .architectText,
+        .aspectText {
+            margin: 0;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(14px, 1.35vw, 20px);
+            line-height: 1.6;
+
+            color: #4f9699;
+        }
+
+        strong {
+            color: #35777c;
+            font-weight: 700;
+        }
+
+        .sectionTitle {
+            margin: 0 0 2vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(10px, 1.2vw, 16px);
+            line-height: 1.5;
+
+            color: #164b52;
+        }
+
+        .divider {
+            margin: 2.5vh 0;
+
+            color: #164b52;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(13px, 1.3vw, 19px);
+
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* =========================
+           ASPECT
+           ========================= */
+
+        #aspectIcon {
+            display: block;
+
+            width: min(21%, 135px);
+            height: auto;
+
+            margin: 0 auto 1.5vh;
+
+            image-rendering: pixelated;
+        }
+
+        #aspectName {
+            margin: 0 0 2.5vh;
+
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: clamp(18px, 2vw, 28px);
+            font-weight: 600;
+
+            color: #164b52;
+        }
+
+        /* =========================
+           BACK BUTTON
+           ========================= */
+
+        #backButton {
+            display: inline-block;
+
+            margin-top: 3vh;
+
+            font-family: "Press Start 2P", monospace;
+            font-size: clamp(7px, 0.8vw, 11px);
+
+            color: #164b52;
+            text-decoration: none;
+
+            background: rgba(0, 0, 0, 0.35);
+
+            border: 2px solid #164b52;
+
+            padding: 12px 16px;
+
+            image-rendering: pixelated;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        #backButton:hover {
+            background: #164b52;
+            color: #111;
+
+            transform: scale(1.05);
+        }
+
+        #backButton:active {
+            transform: scale(0.95);
+        }
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 600px) {
+            #page {
+                padding-top: 5vh;
+                padding-bottom: 8vh;
+            }
+
+            #boxContent {
+                padding: 8%;
+            }
+
+            #pageTitle {
+                margin-bottom: 3vh;
+            }
+
+            .introText,
+            .architectText,
+            .aspectText {
+                line-height: 1.7;
+            }
+
+            .divider {
+                margin: 1.8vh 0;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-<script type="module">
+    <div id="panorama"></div>
 
-import * as THREE from
-    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+    <main id="page">
 
+        <h1 id="pageTitle">The Otherside</h1>
 
-/* =========================
-   OTHERSIDE PANORAMA
+        <div id="loreBoxContainer">
 
-   Your order:
+            <img
+                id="loreTop"
+                src="https://i.imgur.com/rkZjDca.png"
+                alt=""
+            >
 
-   Front
-   Right
-   Back
-   Left
-   Up
-   Down
+            <div id="loreMiddle"></div>
 
-   Converted to the
-   Three.js BoxGeometry order:
+            <img
+                id="loreBottom"
+                src="https://i.imgur.com/wgdAJjF.png"
+                alt=""
+            >
 
-   Right
-   Left
-   Top
-   Bottom
-   Front
-   Back
-   ========================= */
+            <div id="boxContent">
 
-const panoramaURLs = [
-    "https://i.imgur.com/hArkRnD.jpeg",   // Right
-    "https://i.imgur.com/bve9I8v.png",    // Left
-    "https://i.imgur.com/L4jdyLf.png",    // Bottom
-    "https://i.imgur.com/2SjSZ9Y.png",    // Top
-    "https://i.imgur.com/kWkxnTR.png",    // Front
-    "https://i.imgur.com/yToC3RB.png"     // Back
-];
+                <p class="introText">
+                    The Otherside is a place of darkness and miasma. Its lands are cold and still, filled with strange life that does not belong anywhere else. Something always seems to linger in the air, spreading quietly through the land and changing everything it touches.
+                </p>
 
+                <div class="divider">
+                    ⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂ ⠂⠄⠄⠂⠄ ‧
+                </div>
 
-/* =========================
-   SCENE
-   ========================= */
+                <h2 class="sectionTitle">
+                    Architect
+                </h2>
 
-const scene =
-    new THREE.Scene();
+                <p class="architectText">
+                    <strong>Miazomal, the Architect of the Otherside, is a force of disease and corruption.</strong>
+                    He is an unsettling and ancient figure, viewed with unease by the other Architects. Yet within his own realm, he is deeply protective of the things that call it home. To Miazomal, nothing in the Otherside is unnatural. It is simply another form of life, and he wants nothing more than to see it spread.
+                </p>
 
+                <div class="divider">
+                    ⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂ ⠂⠄⠄⠂⠄ ‧
+                </div>
 
-/* =========================
-   CAMERA
-   ========================= */
+                <h2 class="sectionTitle">
+                    Aspect
+                </h2>
 
-const camera =
-    new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth /
-        window.innerHeight,
-        0.1,
-        100
-    );
+                <img
+                    id="aspectIcon"
+                    src="https://i.imgur.com/4hB9YGV.png"
+                    alt="Otherside Aspect"
+                >
 
-camera.position.set(
-    0,
-    0,
-    0
-);
+                <h3 id="aspectName">
+                    Eldritch
+                </h3>
 
+                <p class="aspectText">
+                    The Aspect of the Otherside draws its power from things that should not exist. It is strange, unpredictable, and difficult to understand, shaped by the ancient forces that dwell beyond the boundaries of the other realms.
+                    <br><br>
+                    Those touched by the Otherside may find their magic taking forms that are difficult to explain. Their power may twist, distort, or change the world around them in ways that feel unnatural to those who have never seen it before.
+                    <br><br>
+                    The Eldritch Aspect is not meant to be understood. It is meant to be experienced.
+                </p>
 
-/* =========================
-   RENDERER
-   ========================= */
+                <div class="divider">
+                    ⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂⠁⠁⠂⠄⠄⠂ ⠂⠄⠄⠂⠄ ‧
+                </div>
 
-const renderer =
-    new THREE.WebGLRenderer({
-        antialias: true
-    });
+                <a id="backButton" href="relms.html">
+                    Return to Realms
+                </a>
 
-renderer.setPixelRatio(
-    Math.min(
-        window.devicePixelRatio,
-        2
-    )
-);
+            </div>
+        </div>
 
-renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-);
+    </main>
 
-document.body.appendChild(
-    renderer.domElement
-);
+    <script type="module">
+        import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
+        /* =========================
+           PANORAMA
+           ========================= */
 
-/* =========================
-   LOAD TEXTURES
-   ========================= */
+        const scene = new THREE.Scene();
 
-const loader =
-    new THREE.TextureLoader();
-
-const materials = [];
-
-
-panoramaURLs.forEach(
-    (url) => {
-
-        loader.load(
-            url,
-
-            (texture) => {
-
-                texture.colorSpace =
-                    THREE.SRGBColorSpace;
-
-                materials.push(
-                    new THREE.MeshBasicMaterial({
-                        map: texture,
-                        side: THREE.BackSide
-                    })
-                );
-
-
-                if (
-                    materials.length ===
-                    panoramaURLs.length
-                ) {
-
-                    createPanorama();
-
-                }
-
-            }
-
-        );
-
-    }
-);
-
-
-/* =========================
-   CREATE PANORAMA
-   ========================= */
-
-function createPanorama() {
-
-    const geometry =
-        new THREE.BoxGeometry(
-            100,
-            100,
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
             100
         );
 
+        camera.position.set(0, 0, 0);
 
-    const panorama =
-        new THREE.Mesh(
-            geometry,
-            materials
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio, 2)
         );
-
-
-    scene.add(
-        panorama
-    );
-
-}
-
-
-/* =========================
-   ROTATION
-   ========================= */
-
-function animate() {
-
-    requestAnimationFrame(
-        animate
-    );
-
-
-    scene.rotation.y +=
-        0.0003;
-
-
-    renderer.render(
-        scene,
-        camera
-    );
-
-}
-
-
-animate();
-
-
-/* =========================
-   RESIZE
-   ========================= */
-
-window.addEventListener(
-    "resize",
-    () => {
-
-        camera.aspect =
-            window.innerWidth /
-            window.innerHeight;
-
-        camera.updateProjectionMatrix();
 
         renderer.setSize(
             window.innerWidth,
             window.innerHeight
         );
 
-    }
-);
+        renderer.domElement.style.position = "fixed";
+        renderer.domElement.style.top = "0";
+        renderer.domElement.style.left = "0";
+        renderer.domElement.style.width = "100vw";
+        renderer.domElement.style.height = "100vh";
+        renderer.domElement.style.zIndex = "0";
+        renderer.domElement.style.pointerEvents = "none";
 
-</script>
+        document
+            .getElementById("panorama")
+            .appendChild(renderer.domElement);
+
+        const panoramaURLs = [
+            "https://i.imgur.com/hArkRnD.jpeg",   // Right
+            "https://i.imgur.com/bve9I8v.png",    // Left
+            "https://i.imgur.com/L4jdyLf.png",     // Bottom
+            "https://i.imgur.com/2SjSZ9Y.png",     // Top
+            "https://i.imgur.com/kWkxnTR.png",     // Front
+            "https://i.imgur.com/yToC3RB.png"      // Back
+        ];
+
+        const loader = new THREE.TextureLoader();
+        const materials = [];
+
+        panoramaURLs.forEach((url) => {
+            loader.load(
+                url,
+                (texture) => {
+                    texture.colorSpace = THREE.SRGBColorSpace;
+
+                    materials.push(
+                        new THREE.MeshBasicMaterial({
+                            map: texture,
+                            side: THREE.BackSide
+                        })
+                    );
+
+                    if (
+                        materials.length ===
+                        panoramaURLs.length
+                    ) {
+                        createPanorama();
+                    }
+                }
+            );
+        });
+
+        function createPanorama() {
+            const geometry = new THREE.BoxGeometry(
+                100,
+                100,
+                100
+            );
+
+            const panorama = new THREE.Mesh(
+                geometry,
+                materials
+            );
+
+            scene.add(panorama);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            scene.rotation.y += 0.0003;
+
+            renderer.render(
+                scene,
+                camera
+            );
+        }
+
+        /* =========================
+           RESIZE
+           ========================= */
+
+        window.addEventListener(
+            "resize",
+            () => {
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+            }
+        );
+
+        /* =========================
+           LORE BOX
+           ========================= */
+
+        function buildLoreBox() {
+            const top =
+                document.getElementById("loreTop");
+
+            const middle =
+                document.getElementById("loreMiddle");
+
+            const bottom =
+                document.getElementById("loreBottom");
+
+            const content =
+                document.getElementById("boxContent");
+
+            if (
+                !top.complete ||
+                !bottom.complete
+            ) {
+                setTimeout(
+                    buildLoreBox,
+                    50
+                );
+
+                return;
+            }
+
+            const contentHeight =
+                content.offsetHeight;
+
+            const topHeight =
+                top.getBoundingClientRect().height;
+
+            const bottomHeight =
+                bottom.getBoundingClientRect().height;
+
+            const requiredMiddleHeight =
+                contentHeight -
+                topHeight -
+                bottomHeight;
+
+            const middleImage =
+                new Image();
+
+            middleImage.onload = () => {
+
+                const scaledMiddleHeight =
+                    middleImage.height *
+                    (
+                        middle.offsetWidth /
+                        middleImage.width
+                    );
+
+                const copies =
+                    Math.max(
+                        1,
+                        Math.ceil(
+                            requiredMiddleHeight /
+                            scaledMiddleHeight
+                        )
+                    );
+
+                middle.innerHTML = "";
+
+                for (
+                    let i = 0;
+                    i < copies;
+                    i++
+                ) {
+                    const piece =
+                        document.createElement(
+                            "img"
+                        );
+
+                    piece.className =
+                        "middlePiece";
+
+                    piece.src =
+                        "https://i.imgur.com/C1w2h9j.png";
+
+                    piece.alt = "";
+
+                    middle.appendChild(
+                        piece
+                    );
+                }
+            };
+
+            middleImage.src =
+                "https://i.imgur.com/C1w2h9j.png";
+        }
+
+        if (document.fonts) {
+            document.fonts.ready.then(
+                buildLoreBox
+            );
+        } else {
+            window.addEventListener(
+                "load",
+                buildLoreBox
+            );
+        }
+
+        window.addEventListener(
+            "resize",
+            buildLoreBox
+        );
+    </script>
 
 </body>
-
 </html>
