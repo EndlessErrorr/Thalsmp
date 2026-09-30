@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>The Nether</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ThalSMP 2 - The Nether</title>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap"
@@ -15,192 +21,316 @@
 
         html,
         body {
+
             margin: 0;
             padding: 0;
-            min-height: 100%;
-            background: #000;
-        }
-
-        body {
-            overflow-x: hidden;
-            font-family: "Pixelify Sans", sans-serif;
-        }
-
-
-        /* ----------------------------------------
-           PANORAMA
-        ---------------------------------------- */
-
-        #panorama {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-
-        /* ----------------------------------------
-           PAGE
-        ---------------------------------------- */
-
-        #page {
-            position: relative;
-            z-index: 2;
 
             width: 100%;
+            min-height: 100%;
+
+            background: #000;
+
+            overflow-x: hidden;
+
+        }
+
+
+        body {
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+        }
+
+
+        /* ========================================
+           PANORAMA
+        ======================================== */
+
+        #panorama {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+        }
+
+
+        canvas {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+        }
+
+
+        /* ========================================
+           BACK BUTTON
+        ======================================== */
+
+        #backButton {
+
+            position: fixed;
+
+            top: 24px;
+            left: 24px;
+
+            z-index: 200;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(7px, 0.8vw, 11px);
+
+            color: #9e1b32;
+
+            text-decoration: none;
+
+            background:
+                rgba(0, 0, 0, 0.45);
+
+            border: 2px solid #9e1b32;
+
+            padding: 12px 16px;
+
+            image-rendering: pixelated;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                transform 0.15s ease;
+
+            pointer-events: auto;
+
+        }
+
+
+        #backButton:hover {
+
+            background: #9e1b32;
+
+            color: #111;
+
+            transform: scale(1.05);
+
+        }
+
+
+        #backButton:active {
+
+            transform: scale(0.95);
+
+        }
+
+
+        /* ========================================
+           PAGE
+        ======================================== */
+
+        #page {
+
+            position: relative;
+
+            z-index: 10;
+
             min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            padding:
+                7vh 0 10vh;
 
             box-sizing: border-box;
 
-            padding: 7vh 0 10vh;
-
-            display: flex;
-            justify-content: center;
         }
 
 
-        /* ----------------------------------------
+        /* ========================================
            LORE BOX
-        ---------------------------------------- */
+        ======================================== */
 
         #loreBoxContainer {
+
             position: relative;
 
-            width: min(78vw, 950px);
+            width:
+                min(78vw, 950px);
 
             margin: 0 auto;
 
-            image-rendering: pixelated;
         }
+
 
         #loreTop,
         #loreBottom {
+
             display: block;
 
             width: 100%;
+
             height: auto;
 
             image-rendering: pixelated;
+
         }
+
 
         #loreMiddle {
+
+            position: relative;
+
             width: 100%;
 
-            display: flex;
-            flex-direction: column;
-
             overflow: hidden;
+
         }
 
+
         .middlePiece {
+
             display: block;
 
             width: 100%;
+
             height: auto;
 
-            flex-shrink: 0;
-
             image-rendering: pixelated;
+
         }
 
 
-        /* ----------------------------------------
-           CONTENT
-        ---------------------------------------- */
-
         #boxContent {
+
             position: absolute;
 
             left: 8.08%;
+
             top: 0;
 
             width: 83.83%;
 
             box-sizing: border-box;
 
-            padding: 7% 2% 6%;
+            padding:
+                7% 2% 6%;
 
             text-align: center;
+
         }
 
 
-        /* ----------------------------------------
+        /* ========================================
            TITLE
-        ---------------------------------------- */
+        ======================================== */
 
         #pageTitle {
-            margin: 0 0 5%;
 
-            font-family: "Press Start 2P", monospace;
+            margin: 0;
 
-            font-size: clamp(24px, 4.2vw, 50px);
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(24px, 4.2vw, 50px);
 
             line-height: 1.4;
 
             color: #9e1b32;
 
-            text-shadow:
-                2px 2px 0 rgba(0, 0, 0, 0.35);
         }
 
 
-        /* ----------------------------------------
+        /* ========================================
            SECTION TITLES
-        ---------------------------------------- */
+        ======================================== */
 
         .sectionTitle {
-            margin: 4% 0 2%;
 
-            font-family: "Press Start 2P", monospace;
+            margin: 0;
 
-            font-size: clamp(17px, 2.5vw, 31px);
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size:
+                clamp(17px, 2.5vw, 31px);
 
             line-height: 1.5;
 
             color: #9e1b32;
+
         }
 
 
-        /* ----------------------------------------
+        /* ========================================
            BODY TEXT
-        ---------------------------------------- */
+        ======================================== */
 
         .bodyText {
-            margin: 0 auto;
 
-            max-width: 900px;
+            margin: 0;
 
-            font-family: "Pixelify Sans", sans-serif;
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
 
-            font-size: clamp(13px, 1.35vw, 18px);
-
-            font-weight: 500;
+            font-size:
+                clamp(13px, 1.35vw, 18px);
 
             line-height: 1.9;
 
             color: #b52b42;
 
-            text-align: center;
         }
 
 
-        .bodyText strong {
+        .strongText {
+
             color: #9e1b32;
+
+            font-weight: 700;
+
         }
 
 
-        /* ----------------------------------------
-           DIVIDERS
-        ---------------------------------------- */
+        /* ========================================
+           DIVIDER
+        ======================================== */
 
         .divider {
-            margin: 5% 0;
 
-            font-family: "Pixelify Sans", sans-serif;
+            margin:
+                2.5vh 0;
 
-            font-size: clamp(13px, 1.5vw, 20px);
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(16px, 2vw, 25px);
 
             line-height: 1;
 
@@ -208,455 +338,528 @@
 
             white-space: nowrap;
 
-            overflow: hidden;
         }
 
 
-        /* ----------------------------------------
+        /* ========================================
            ASPECT
-        ---------------------------------------- */
+        ======================================== */
 
         #aspectSymbol {
+
             display: block;
 
-            width: min(21%, 135px);
+            width:
+                min(21%, 135px);
 
             height: auto;
 
-            margin: 3% auto 2%;
+            margin:
+                2vh auto;
 
             image-rendering: pixelated;
+
         }
 
+
         #aspectName {
-            margin: 0 0 4%;
 
-            font-family: "Pixelify Sans", sans-serif;
+            margin: 0 0 2vh;
 
-            font-size: clamp(18px, 2vw, 27px);
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(18px, 2.3vw, 30px);
 
             font-weight: 700;
 
-            line-height: 1.4;
-
             color: #9e1b32;
-        }
-
-
-        /* ----------------------------------------
-           RESPONSIVE
-        ---------------------------------------- */
-
-        @media (max-width: 600px) {
-
-            #page {
-                padding-top: 4vh;
-            }
-
-            #boxContent {
-                padding-top: 5%;
-                padding-bottom: 7%;
-            }
-
-            .bodyText {
-                line-height: 1.7;
-            }
-
-            .divider {
-                margin: 6% 0;
-            }
 
         }
+
+
+        #aspectText {
+
+            margin: 0;
+
+            font-family:
+                "Pixelify Sans",
+                sans-serif;
+
+            font-size:
+                clamp(13px, 1.35vw, 18px);
+
+            line-height: 1.9;
+
+            color: #b52b42;
+
+        }
+
 
     </style>
+
 </head>
+
 
 <body>
 
 
-<!-- ============================================
-     PANORAMA
-============================================= -->
-
-<div id="panorama"></div>
-
-
-<!-- ============================================
-     PAGE CONTENT
-============================================= -->
-
-<main id="page">
-
-    <div id="loreBoxContainer">
-
-        <img
-            id="loreTop"
-            src="https://i.imgur.com/rkZjDca.png"
-            alt=""
-        >
-
-        <div id="loreMiddle"></div>
-
-        <img
-            id="loreBottom"
-            src="https://i.imgur.com/wgdAJjF.png"
-            alt=""
-        >
-
-        <div id="boxContent">
-
-            <h1 id="pageTitle">
-                The Nether
-            </h1>
+    <a
+        id="backButton"
+        href="realms.html"
+    >
+        Return to Realms
+    </a>
 
 
-            <p class="bodyText">
-                The Nether is a place of heat and decay. Its lands are harsh and unforgiving, filled with fire, smoke, and life that seems to linger long after it should have died.
-            </p>
+    <div id="panorama"></div>
 
 
-            <div class="divider">
-                ــــــــــــــــﮩ٨ـ
-            </div>
+    <main id="page">
 
-
-            <h2 class="sectionTitle">
-                Architect
-            </h2>
-
-
-            <p class="bodyText">
-                <strong>Cinichor, the Architect of the Nether</strong>, is a force of blood and fire. His realm is one of survival, destruction, and decay. He is a quiet and imposing figure, his presence carrying an ominous weight. To Cinichor, destruction is not an ending, and decay is not something to be feared. Both are simply parts of the natural order.
-            </p>
-
-
-            <div class="divider">
-                ــــــــــــــــﮩ٨ـ
-            </div>
-
-
-            <h2 class="sectionTitle">
-                Aspect
-            </h2>
+        <div id="loreBoxContainer">
 
 
             <img
-                id="aspectSymbol"
-                src="https://i.imgur.com/Lwe6PNM.png"
-                alt="Nether Aspect"
+                id="loreTop"
+                src="https://i.imgur.com/rkZjDca.png"
+                alt=""
             >
 
 
-            <div id="aspectName">
-                Blood + Fire
-            </div>
+            <div id="loreMiddle"></div>
 
 
-            <p class="bodyText">
-                The Aspect of the Nether draws its power from two forces deeply intertwined with the realm: blood and fire.
-                <br><br>
-                Its wielders can manipulate the heat and flame of the Nether, while blood magic allows them to draw upon life itself as a source of power. The Aspect is destructive, but it is also about survival. Those touched by the Nether learn to endure, even in a world that seems determined to consume them.
-            </p>
+            <img
+                id="loreBottom"
+                src="https://i.imgur.com/wgdAJjF.png"
+                alt=""
+            >
 
 
-            <div class="divider">
-                ــــــــــــــــﮩ٨ـ
+            <div id="boxContent">
+
+
+                <h1 id="pageTitle">
+                    The Nether
+                </h1>
+
+
+                <p class="bodyText">
+
+                    The Nether is a place of heat and decay.
+                    Its lands are harsh and unforgiving,
+                    filled with fire, smoke, and life that
+                    seems to linger long after it should
+                    have died.
+
+                </p>
+
+
+                <div class="divider">
+                    ــــــــــــــــﮩ٨ـ
+                </div>
+
+
+                <h2 class="sectionTitle">
+                    Architect
+                </h2>
+
+
+                <p class="bodyText">
+
+                    Cinichor, the Architect of the Nether,
+                    is a force of blood and fire. His realm
+                    is one of survival, destruction, and decay.
+                    He is a quiet and imposing figure, his
+                    presence carrying an ominous weight.
+                    To Cinichor, destruction is not an ending,
+                    and decay is not something to be feared.
+                    Both are simply parts of the natural order.
+
+                </p>
+
+
+                <div class="divider">
+                    ــــــــــــــــﮩ٨ـ
+                </div>
+
+
+                <h2 class="sectionTitle">
+                    Aspect
+                </h2>
+
+
+                <img
+                    id="aspectSymbol"
+                    src="https://i.imgur.com/Lwe6PNM.png"
+                    alt="Nether Aspect"
+                >
+
+
+                <p id="aspectName">
+                    Blood + Fire
+                </p>
+
+
+                <p id="aspectText">
+
+                    The Aspect of the Nether draws its power
+                    from two forces deeply intertwined with
+                    the realm: blood and fire.
+
+                    <br><br>
+
+                    Its wielders can manipulate the heat and
+                    flame of the Nether, while blood magic
+                    allows them to draw upon life itself as a
+                    source of power. The Aspect is destructive,
+                    but it is also about survival. Those touched
+                    by the Nether learn to endure, even in a
+                    world that seems determined to consume them.
+
+                </p>
+
+
+                <div class="divider">
+                    ــــــــــــــــﮩ٨ـ
+                </div>
+
+
             </div>
 
         </div>
 
-    </div>
-
-</main>
+    </main>
 
 
-<!-- ============================================
-     THREE.JS PANORAMA
-============================================= -->
+    <script type="module">
 
-<script type="module">
-
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+        import * as THREE from
+            "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-// ----------------------------------------
-// SCENE
-// ----------------------------------------
+        /* ========================================
+           PANORAMA
+        ======================================== */
 
-const scene = new THREE.Scene();
+        const panoramaURLs = [
 
-const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-);
+            "https://i.imgur.com/07iMjyR.png",
+            "https://i.imgur.com/HUIW4MK.jpeg",
+            "https://i.imgur.com/yxge6sC.jpeg",
+            "https://i.imgur.com/1744ZSq.png",
+            "https://i.imgur.com/67G6JBG.jpeg",
+            "https://i.imgur.com/kg75wKt.jpeg"
 
-camera.position.set(0, 0, 0);
-
-
-// ----------------------------------------
-// RENDERER
-// ----------------------------------------
-
-const renderer = new THREE.WebGLRenderer({
-    antialias: true
-});
-
-renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
-);
-
-renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-);
-
-renderer.domElement.style.position = "fixed";
-renderer.domElement.style.top = "0";
-renderer.domElement.style.left = "0";
-renderer.domElement.style.width = "100vw";
-renderer.domElement.style.height = "100vh";
-renderer.domElement.style.zIndex = "0";
-renderer.domElement.style.pointerEvents = "none";
-
-document
-    .getElementById("panorama")
-    .appendChild(renderer.domElement);
+        ];
 
 
-// ----------------------------------------
-// NETHER PANORAMA
-// ----------------------------------------
-
-const panoramaURLs = [
-
-    "https://i.imgur.com/07iMjyR.png",   // Right
-    "https://i.imgur.com/HUIW4MK.jpeg",  // Left
-    "https://i.imgur.com/yxge6sC.jpeg",  // Top
-    "https://i.imgur.com/1744ZSq.png",    // Bottom
-    "https://i.imgur.com/67G6JBG.jpeg",  // Front
-    "https://i.imgur.com/kg75wKt.jpeg"   // Back
-
-];
-
-const loader = new THREE.TextureLoader();
-
-const materials = panoramaURLs.map(url => {
-
-    const texture = loader.load(url);
-
-    texture.colorSpace =
-        THREE.SRGBColorSpace;
-
-    return new THREE.MeshBasicMaterial({
-
-        map: texture,
-
-        side: THREE.BackSide
-
-    });
-
-});
+        const scene =
+            new THREE.Scene();
 
 
-// ----------------------------------------
-// PANORAMA BOX
-// ----------------------------------------
-
-const geometry = new THREE.BoxGeometry(
-    100,
-    100,
-    100
-);
-
-const panorama = new THREE.Mesh(
-    geometry,
-    materials
-);
-
-scene.add(panorama);
+        const camera =
+            new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth /
+                    window.innerHeight,
+                0.1,
+                100
+            );
 
 
-// ----------------------------------------
-// ANIMATION
-// ----------------------------------------
-
-function animate() {
-
-    requestAnimationFrame(animate);
-
-    panorama.rotation.y += 0.0003;
-
-    renderer.render(
-        scene,
-        camera
-    );
-
-}
-
-animate();
+        camera.position.set(
+            0,
+            0,
+            0
+        );
 
 
-// ----------------------------------------
-// RESIZE
-// ----------------------------------------
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true
+            });
 
-window.addEventListener(
-    "resize",
-    () => {
 
-        camera.aspect =
-            window.innerWidth /
-            window.innerHeight;
+        renderer.setPixelRatio(
+            Math.min(
+                window.devicePixelRatio,
+                2
+            )
+        );
 
-        camera.updateProjectionMatrix();
 
         renderer.setSize(
             window.innerWidth,
             window.innerHeight
         );
 
-    }
-);
+
+        renderer.outputColorSpace =
+            THREE.SRGBColorSpace;
 
 
-// ----------------------------------------
-// BUILD LORE BOX
-// ----------------------------------------
-
-function buildLoreBox() {
-
-    const top =
-        document.getElementById("loreTop");
-
-    const middle =
-        document.getElementById("loreMiddle");
-
-    const bottom =
-        document.getElementById("loreBottom");
-
-    const content =
-        document.getElementById("boxContent");
-
-
-    // Make sure the images have loaded
-    if (
-        !top.complete ||
-        !bottom.complete
-    ) {
-        setTimeout(
-            buildLoreBox,
-            50
+        document.body.appendChild(
+            renderer.domElement
         );
 
-        return;
-    }
+
+        const loader =
+            new THREE.TextureLoader();
 
 
-    // Calculate the height of the content
-    const contentHeight =
-        content.offsetHeight;
+        const textures =
+            panoramaURLs.map(
+                url => {
 
+                    const texture =
+                        loader.load(url);
 
-    // Get the displayed height of the
-    // top and bottom pieces
-    const topHeight =
-        top.getBoundingClientRect().height;
+                    texture.colorSpace =
+                        THREE.SRGBColorSpace;
 
-    const bottomHeight =
-        bottom.getBoundingClientRect().height;
+                    return texture;
 
-
-    // The middle section needs to cover
-    // the entire content area between them
-    const requiredMiddleHeight =
-        contentHeight -
-        topHeight -
-        bottomHeight;
-
-
-    // Get the natural middle image
-    // dimensions
-    const middleImage =
-        new Image();
-
-    middleImage.onload = () => {
-
-        const scaledMiddleHeight =
-            middleImage.height *
-            (
-                middle.offsetWidth /
-                middleImage.width
+                }
             );
 
 
-        const copies =
-            Math.max(
-                1,
-                Math.ceil(
-                    requiredMiddleHeight /
-                    scaledMiddleHeight
-                )
+        const materials =
+            textures.map(
+                texture =>
+                    new THREE.MeshBasicMaterial({
+
+                        map: texture,
+
+                        side: THREE.BackSide
+
+                    })
             );
 
 
-        middle.innerHTML = "";
+        const geometry =
+            new THREE.BoxGeometry(
+                100,
+                100,
+                100
+            );
 
 
-        for (
-            let i = 0;
-            i < copies;
-            i++
-        ) {
+        const panorama =
+            new THREE.Mesh(
+                geometry,
+                materials
+            );
 
-            const piece =
-                document.createElement("img");
 
-            piece.className =
-                "middlePiece";
+        scene.add(
+            panorama
+        );
 
-            piece.src =
+
+        /* ========================================
+           LORE BOX HEIGHT
+        ======================================== */
+
+        function buildLoreBox() {
+
+            const top =
+                document.getElementById(
+                    "loreTop"
+                );
+
+            const middle =
+                document.getElementById(
+                    "loreMiddle"
+                );
+
+            const bottom =
+                document.getElementById(
+                    "loreBottom"
+                );
+
+            const content =
+                document.getElementById(
+                    "boxContent"
+                );
+
+
+            if (
+                !top.complete ||
+                !bottom.complete
+            ) {
+
+                setTimeout(
+                    buildLoreBox,
+                    50
+                );
+
+                return;
+
+            }
+
+
+            const contentHeight =
+                content.offsetHeight;
+
+
+            const topHeight =
+                top.getBoundingClientRect().height;
+
+
+            const bottomHeight =
+                bottom.getBoundingClientRect().height;
+
+
+            const requiredMiddleHeight =
+                contentHeight -
+                topHeight -
+                bottomHeight;
+
+
+            const middleImage =
+                new Image();
+
+
+            middleImage.onload = () => {
+
+                const scaledMiddleHeight =
+                    middleImage.height *
+                    (
+                        middle.offsetWidth /
+                        middleImage.width
+                    );
+
+
+                const copies =
+                    Math.max(
+                        1,
+                        Math.ceil(
+                            requiredMiddleHeight /
+                            scaledMiddleHeight
+                        )
+                    );
+
+
+                middle.innerHTML = "";
+
+
+                for (
+                    let i = 0;
+                    i < copies;
+                    i++
+                ) {
+
+                    const piece =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    piece.className =
+                        "middlePiece";
+
+
+                    piece.src =
+                        "https://i.imgur.com/C1w2h9j.png";
+
+
+                    piece.alt = "";
+
+
+                    middle.appendChild(
+                        piece
+                    );
+
+                }
+
+            };
+
+
+            middleImage.src =
                 "https://i.imgur.com/C1w2h9j.png";
-
-            piece.alt = "";
-
-            middle.appendChild(piece);
 
         }
 
-    };
 
-    middleImage.src =
-        "https://i.imgur.com/C1w2h9j.png";
-}
+        if (document.fonts) {
 
+            document.fonts.ready.then(
+                buildLoreBox
+            );
 
-// Wait for fonts and layout
-// before calculating the box
+        } else {
 
-if (document.fonts) {
+            window.addEventListener(
+                "load",
+                buildLoreBox
+            );
 
-    document.fonts.ready.then(
-        buildLoreBox
-    );
-
-} else {
-
-    window.addEventListener(
-        "load",
-        buildLoreBox
-    );
-
-}
+        }
 
 
-window.addEventListener(
-    "resize",
-    buildLoreBox
-);
+        window.addEventListener(
+            "resize",
+            buildLoreBox
+        );
 
-</script>
+
+        /* ========================================
+           ANIMATION
+        ======================================== */
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+
+            panorama.rotation.y +=
+                0.0003;
+
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        }
+
+
+        animate();
+
+
+        /* ========================================
+           RESIZE
+        ======================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                camera.aspect =
+                    window.innerWidth /
+                    window.innerHeight;
+
+
+                camera.updateProjectionMatrix();
+
+
+                renderer.setSize(
+                    window.innerWidth,
+                    window.innerHeight
+                );
+
+            }
+        );
+
+    </script>
+
 
 </body>
+
 </html>
