@@ -785,5 +785,1025 @@ const renderer =
     });
 
 
-renderer.setPixelRat
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
+
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+
+document.body.appendChild(
+    renderer.domElement
+);
+
+
+/* =========================================================
+   PANORAMA
+   ========================================================= */
+
+const panoramaURLs = [
+
+    "https://i.imgur.com/Qv1i6iu.jpeg",   // Right
+    "https://i.imgur.com/DozXrgb.jpeg",    // Left
+    "https://i.imgur.com/rOS65Sa.png",     // Top
+    "https://i.imgur.com/AeNmcy7.jpeg",    // Bottom
+    "https://i.imgur.com/07p3EMv.jpeg",    // Front
+    "https://i.imgur.com/XH20czc.jpeg"     // Back
+
+];
+
+
+const loader =
+    new THREE.TextureLoader();
+
+
+try {
+
+    /* =====================================================
+       LOAD ALL PANORAMA IMAGES
+       ===================================================== */
+
+    const textures =
+        await Promise.all(
+
+            panoramaURLs.map(
+                url => {
+
+                    return new Promise(
+                        (resolve, reject) => {
+
+                            loader.load(
+                                url,
+                                resolve,
+                                undefined,
+                                reject
+                            );
+
+                        }
+                    );
+
+                }
+            )
+
+        );
+
+
+    /* =====================================================
+       CREATE MATERIALS
+       ===================================================== */
+
+    const materials =
+        textures.map(
+            texture => {
+
+                texture.colorSpace =
+                    THREE.SRGBColorSpace;
+
+
+                return new THREE.MeshBasicMaterial({
+
+                    map: texture,
+
+                    side: THREE.BackSide
+
+                });
+
+            }
+        );
+
+
+    /* =====================================================
+       CREATE PANORAMA
+       ===================================================== */
+
+    const geometry =
+        new THREE.BoxGeometry(
+            100,
+            100,
+            100
+        );
+
+
+    const panorama =
+        new THREE.Mesh(
+            geometry,
+            materials
+        );
+
+
+    scene.add(
+        panorama
+    );
+
+
+    /* =====================================================
+       REMOVE LOADING SCREEN
+       ===================================================== */
+
+    document.getElementById(
+        "loading"
+    ).style.display = "none";
+
+
+    /* =====================================================
+       PANORAMA ROTATION
+       ===================================================== */
+
+    let rotationY = 0;
+
+
+    function animate() {
+
+        requestAnimationFrame(
+            animate
+        );
+
+
+        rotationY += 0.0003;
+
+
+        panorama.rotation.y =
+            rotationY;
+
+
+        renderer.render(
+            scene,
+            camera
+        );
+
+    }
+
+
+    animate();
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+    const welcomeText =
+        document.getElementById(
+            "welcomeText"
+        );
+
+
+    const proceedArea =
+        document.getElementById(
+            "proceedArea"
+        );
+
+
+    const welcomeScreen =
+        document.getElementById(
+            "welcomeScreen"
+        );
+
+
+    const loreScreen =
+        document.getElementById(
+            "loreScreen"
+        );
+
+
+    const loreText =
+        document.getElementById(
+            "loreText"
+        );
+
+
+    const realmSymbol =
+        document.getElementById(
+            "realmSymbol"
+        );
+
+
+    const nextIndicator =
+        document.getElementById(
+            "nextIndicator"
+        );
+
+
+    const realmButtons =
+        document.getElementById(
+            "realmButtons"
+        );
+
+
+    /* =====================================================
+       WELCOME TYPEWRITER
+       ===================================================== */
+
+    const welcomeMessage =
+        "Welcome....";
+
+
+    let welcomeCharacter = 0;
+
+
+    function typeWelcome() {
+
+        if (
+            welcomeCharacter <
+            welcomeMessage.length
+        ) {
+
+            welcomeText.textContent +=
+                welcomeMessage[
+                    welcomeCharacter
+                ];
+
+
+            welcomeCharacter++;
+
+
+            setTimeout(
+                typeWelcome,
+                250
+            );
+
+        }
+
+        else {
+
+            setTimeout(
+                () => {
+
+                    proceedArea.style.opacity =
+                        "1";
+
+                },
+                400
+            );
+
+        }
+
+    }
+
+
+    setTimeout(
+        typeWelcome,
+        1000
+    );
+
+
+    /* =====================================================
+       LORE PAGES
+       ===================================================== */
+
+    const lorePages = [
+
+        {
+            text:
+                "You are about to enter the Overworld, one of five realms that make up this world.",
+
+            symbol:
+                null
+        },
+
+
+        {
+            text:
+                "The Overworld is green and warm, filled with life and growth.",
+
+            symbol:
+                "https://i.imgur.com/viHBHca.png"
+        },
+
+
+        {
+            text:
+                "The Nether is hot and smoky, filled with decay.",
+
+            symbol:
+                "https://i.imgur.com/Lwe6PNM.png"
+        },
+
+
+        {
+            text:
+                "The Aether is pastel and cool, filled with spirit.",
+
+            symbol:
+                "https://i.imgur.com/E2JL5Ia.png"
+        },
+
+
+        {
+            text:
+                "The Otherside is dark and chilling, filled with miasma and souls.",
+
+            symbol:
+                "https://i.imgur.com/4hB9YGV.png"
+        },
+
+
+        {
+            text:
+                "The End is dark and cold, yet burns with distant warmth, filled with everything and nothing.",
+
+            symbol:
+                "https://i.imgur.com/LZiGKoN.png"
+        },
+
+
+        {
+            text:
+                "Not every realm can be easily reached. Some may be places you never see at all.\nBut every one of you has been touched by one of them.",
+
+            symbol:
+                null
+        },
+
+
+        /* =================================================
+           MAGIC TITLE
+           ================================================= */
+
+        {
+            text:
+                "Magic",
+
+            symbol:
+                null,
+
+            magicTitle:
+                true
+        },
+
+
+        /* =================================================
+           MAGIC PAGE 1
+           ================================================= */
+
+        {
+            text:
+                "Not everyone in this world can wield magic.\nSome, touched by a realm, can carry a connection to its power, to its Architect.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        /* =================================================
+           MAGIC PAGE 2
+           ================================================= */
+
+        {
+            text:
+                "Being touched does not always mean understanding that power.\nSome discover their abilities naturally, while others must spend years honing their power.\nThe magic of each realm takes different forms.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        /* =================================================
+           MAGIC PAGE 3
+           ================================================= */
+
+        {
+            text:
+                "These are known as your Aspect.\nThere are five Aspects, each connected to one of the five realms, governed by one of the Five Architects.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        /* =================================================
+           REALM CHOICE
+           ================================================= */
+
+        {
+            text:
+                "Which realm has touched you?",
+
+            symbol:
+                null,
+
+            magic:
+                true,
+
+            realmChoice:
+                true,
+
+            realmChoiceText:
+                true
+        }
+
+    ];
+
+
+    let currentLorePage = 0;
+
+
+    let typing = false;
+
+
+    let typingTimer = null;
+
+
+    let currentText = "";
+
+
+    let currentCharacter = 0;
+
+
+    /* =====================================================
+       TYPEWRITER SPEED
+       ===================================================== */
+
+    const typingSpeed = 55;
+
+
+    /* =====================================================
+       TYPE LORE PAGE
+       ===================================================== */
+
+    function typeLorePage() {
+
+        clearTimeout(
+            typingTimer
+        );
+
+
+        typing = true;
+
+
+        nextIndicator.classList.remove(
+            "visible"
+        );
+
+
+        realmButtons.classList.remove(
+            "visible"
+        );
+
+
+        currentText =
+            lorePages[
+                currentLorePage
+            ].text;
+
+
+        currentCharacter = 0;
+
+
+        loreText.textContent = "";
+
+
+        /* -----------------------------------------------
+           Determine page type
+           ----------------------------------------------- */
+
+        if (
+            lorePages[
+                currentLorePage
+            ].magicTitle
+        ) {
+
+            loreText.classList.add(
+                "magicTitle"
+            );
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
+            loreText.classList.remove(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "realmChoiceText"
+            );
+
+        }
+
+        else if (
+            lorePages[
+                currentLorePage
+            ].realmChoiceText
+        ) {
+
+            loreText.classList.add(
+                "realmChoiceText"
+            );
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
+            loreText.classList.remove(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "magicTitle"
+            );
+
+        }
+
+        else if (
+            lorePages[
+                currentLorePage
+            ].symbol
+        ) {
+
+            loreText.classList.add(
+                "realmText"
+            );
+
+            loreText.classList.remove(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "magicTitle"
+            );
+
+            loreText.classList.remove(
+                "realmChoiceText"
+            );
+
+        }
+
+        else if (
+            lorePages[
+                currentLorePage
+            ].magic
+        ) {
+
+            loreText.classList.add(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
+            loreText.classList.remove(
+                "magicTitle"
+            );
+
+            loreText.classList.remove(
+                "realmChoiceText"
+            );
+
+        }
+
+        else {
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
+            loreText.classList.remove(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "magicTitle"
+            );
+
+            loreText.classList.remove(
+                "realmChoiceText"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           Hide old realm symbol
+           ----------------------------------------------- */
+
+        realmSymbol.classList.remove(
+            "visible"
+        );
+
+
+        setTimeout(
+            () => {
+
+                const newSymbol =
+                    lorePages[
+                        currentLorePage
+                    ].symbol;
+
+
+                if (newSymbol) {
+
+                    realmSymbol.src =
+                        newSymbol;
+
+                }
+
+                else {
+
+                    realmSymbol.removeAttribute(
+                        "src"
+                    );
+
+                }
+
+            },
+            600
+        );
+
+
+        /* -----------------------------------------------
+           Type text
+           ----------------------------------------------- */
+
+        function typeCharacter() {
+
+            if (
+                currentCharacter <
+                currentText.length
+            ) {
+
+                loreText.textContent +=
+                    currentText[
+                        currentCharacter
+                    ];
+
+
+                currentCharacter++;
+
+
+                typingTimer =
+                    setTimeout(
+                        typeCharacter,
+                        typingSpeed
+                    );
+
+            }
+
+            else {
+
+                typing = false;
+
+
+                /* ---------------------------------------
+                   Show realm symbol
+                   --------------------------------------- */
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].symbol
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            realmSymbol.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        150
+                    );
+
+                }
+
+
+                /* ---------------------------------------
+                   Show realm choices
+                   --------------------------------------- */
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            realmButtons.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        250
+                    );
+
+                }
+
+
+                /* ---------------------------------------
+                   Show continue indicator
+                   --------------------------------------- */
+
+                if (
+                    !lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            nextIndicator.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        600
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        typeCharacter();
+
+    }
+
+
+    /* =====================================================
+       START LORE
+       ===================================================== */
+
+    function startLore() {
+
+        console.log(
+            "Proceed button clicked!"
+        );
+
+
+        proceedArea.style.pointerEvents =
+            "none";
+
+
+        welcomeScreen.style.opacity =
+            "0";
+
+
+        welcomeScreen.style.transform =
+            "translateY(-20px)";
+
+
+        setTimeout(
+            () => {
+
+                welcomeScreen.style.display =
+                    "none";
+
+
+                loreScreen.style.pointerEvents =
+                    "auto";
+
+
+                loreScreen.style.opacity =
+                    "1";
+
+
+                setTimeout(
+                    () => {
+
+                        typeLorePage();
+
+                    },
+                    500
+                );
+
+            },
+            700
+        );
+
+    }
+
+
+    /* =====================================================
+       PROCEED BUTTON
+       ===================================================== */
+
+    proceedArea.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            startLore();
+
+        }
+    );
+
+
+    /* =====================================================
+       LORE CLICKING
+       ===================================================== */
+
+    loreScreen.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+               Do not advance if the user clicked
+               one of the realm buttons.
+            */
+
+            if (
+                event.target.closest(
+                    ".realmButton"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+               If text is still typing,
+               finish it immediately.
+            */
+
+            if (typing) {
+
+                clearTimeout(
+                    typingTimer
+                );
+
+
+                loreText.textContent =
+                    currentText;
+
+
+                currentCharacter =
+                    currentText.length;
+
+
+                typing = false;
+
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].symbol
+                ) {
+
+                    realmSymbol.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    realmButtons.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
+                if (
+                    !lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    nextIndicator.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            /*
+               Realm choice page does not
+               advance when clicking elsewhere.
+            */
+
+            if (
+                lorePages[
+                    currentLorePage
+                ].realmChoice
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+               Otherwise advance.
+            */
+
+            if (
+                currentLorePage <
+                lorePages.length - 1
+            ) {
+
+                currentLorePage++;
+
+
+                typeLorePage();
+
+
+                return;
+
+            }
+
+
+            nextIndicator.classList.remove(
+                "visible"
+            );
+
+        }
+    );
+
+
+}
+catch (error) {
+
+    console.error(
+        error
+    );
+
+
+    const errorBox =
+        document.getElementById(
+            "error"
+        );
+
+
+    errorBox.textContent =
+        "The world could not be loaded. Check the browser console for details.";
+
+
+    errorBox.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
 ```
