@@ -351,40 +351,84 @@
 
     document.body.appendChild(renderer.domElement);
 
+    /*
+        End panorama
+
+        Original screenshot order:
+        Front
+        Right
+        Back
+        Left
+        Up
+        Down
+
+        Working Three.js order:
+        Right
+        Left
+        Bottom
+        Top
+        Front
+        Back
+    */
+
     const panoramaURLs = [
-    "https://i.imgur.com/Ect30c7.jpeg",  // Right
-    "https://i.imgur.com/qyRFzM5.jpeg",  // Left
-    "https://i.imgur.com/10Nwqok.png",   // Bottom
-    "https://i.imgur.com/oncFUFI.png",   // Top
-    "https://i.imgur.com/wwnCOJH.jpeg",  // Front
-    "https://i.imgur.com/seoC63G.jpeg"   // Back
-];
+        "https://i.imgur.com/Ect30c7.jpeg",  // Right
+        "https://i.imgur.com/qyRFzM5.jpeg",  // Left
+        "https://i.imgur.com/10Nwqok.png",   // Bottom
+        "https://i.imgur.com/oncFUFI.png",   // Top
+        "https://i.imgur.com/wwnCOJH.jpeg",  // Front
+        "https://i.imgur.com/seoC63G.jpeg"   // Back
+    ];
 
     const loader = new THREE.TextureLoader();
-    const materials = [];
 
-    panoramaURLs.forEach((url) => {
+    /*
+        IMPORTANT:
+        Keep each material at its original index.
+        Images load asynchronously, so simply using
+        materials.push() can scramble the panorama.
+    */
+
+    const materials =
+        new Array(panoramaURLs.length);
+
+    let loadedCount = 0;
+
+    panoramaURLs.forEach((url, index) => {
 
         loader.load(
             url,
+
             (texture) => {
 
                 texture.colorSpace =
                     THREE.SRGBColorSpace;
 
-                materials.push(
+                materials[index] =
                     new THREE.MeshBasicMaterial({
                         map: texture,
                         side: THREE.BackSide
-                    })
-                );
+                    });
+
+                loadedCount++;
 
                 if (
-                    materials.length ===
+                    loadedCount ===
                     panoramaURLs.length
                 ) {
                     createPanorama();
                 }
+            },
+
+            undefined,
+
+            (error) => {
+
+                console.error(
+                    "Failed to load panorama texture:",
+                    url,
+                    error
+                );
             }
         );
     });
