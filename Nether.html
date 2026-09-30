@@ -1,1 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Nether Panorama Test</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+
+<script type="module">
+
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+// --------------------------------------------------
+// SCENE
+// --------------------------------------------------
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+);
+
+camera.position.set(0, 0, 0);
+
+
+// --------------------------------------------------
+// RENDERER
+// --------------------------------------------------
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+document.body.appendChild(renderer.domElement);
+
+
+// --------------------------------------------------
+// NETHER PANORAMA
+// --------------------------------------------------
+
+const panoramaURLs = [
+    "https://i.imgur.com/k3LeoXV.jpeg",   // Right
+    "https://i.imgur.com/bz2qpx9.jpeg",   // Left
+    "https://i.imgur.com/gIX8vuO.jpeg",   // Top
+    "https://i.imgur.com/T5X8heZ.jpeg",   // Bottom
+    "https://i.imgur.com/McLIhY3.jpeg",   // Front
+    "https://i.imgur.com/PZhyFy0.jpeg"    // Back
+];
+
+const loader = new THREE.TextureLoader();
+
+const materials = panoramaURLs.map(url => {
+
+    const texture = loader.load(url);
+
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+    return new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.BackSide
+    });
+
+});
+
+
+// --------------------------------------------------
+// PANORAMA BOX
+// --------------------------------------------------
+
+const geometry = new THREE.BoxGeometry(
+    100,
+    100,
+    100
+);
+
+const panorama = new THREE.Mesh(
+    geometry,
+    materials
+);
+
+scene.add(panorama);
+
+
+// --------------------------------------------------
+// ANIMATION
+// --------------------------------------------------
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    panorama.rotation.y += 0.0003;
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+animate();
+
+
+// --------------------------------------------------
+// RESIZE
+// --------------------------------------------------
+
+window.addEventListener("resize", () => {
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+});
+
+</script>
+
+</body>
+</html>
