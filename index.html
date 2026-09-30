@@ -26,56 +26,107 @@ body {
     background: #000;
 }
 
+
+/* =========================================================
+   PANORAMA
+   ========================================================= */
+
 canvas {
     position: fixed;
+
     top: 0;
     left: 0;
+
     width: 100vw;
     height: 100vh;
+
     display: block;
+
     z-index: 0;
+
     pointer-events: none;
 }
 
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
 #loading {
     position: fixed;
+
     inset: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     background: #000;
+
     color: white;
+
     font-family: "Press Start 2P", monospace;
+
     font-size: 18px;
+
     z-index: 1000;
 }
 
+
+/* =========================================================
+   MAIN INTERACTION LAYER
+   ========================================================= */
+
 #interactionLayer {
     position: fixed;
+
     inset: 0;
+
     z-index: 100;
+
     pointer-events: auto;
 }
 
+
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
+
 #welcomeScreen {
     position: absolute;
+
     inset: 0;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     flex-direction: column;
+
     text-align: center;
+
     opacity: 1;
+
     transition:
         opacity 0.7s ease,
         transform 0.7s ease;
 }
 
+
+/* =========================================================
+   WELCOME TEXT
+   ========================================================= */
+
 #welcomeText {
     white-space: nowrap;
+
     font-family: "Press Start 2P", monospace;
+
     font-size: clamp(32px, 6vw, 90px);
+
     color: white;
+
     text-shadow:
         4px 4px 0 #000,
         -2px -2px 0 #000,
@@ -83,156 +134,287 @@ canvas {
         -2px 2px 0 #000;
 }
 
+
+/* =========================================================
+   PROCEED AREA
+   ========================================================= */
+
 #proceedArea {
     margin-top: 25px;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     opacity: 0;
+
     transition:
         opacity 0.5s ease;
+
     cursor: pointer;
+
     user-select: none;
+
     pointer-events: auto;
 }
+
+
+/* =========================================================
+   PROCEED TEXT
+   ========================================================= */
 
 #proceedText {
     margin-bottom: 12px;
+
     font-family: "Press Start 2P", monospace;
+
     font-size: clamp(7px, 1vw, 12px);
+
     color: #000;
+
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.5);
+
     pointer-events: none;
 }
 
+
+/* =========================================================
+   PROCEED BUTTON
+   ========================================================= */
+
 #proceedButton {
     display: block;
+
     width: clamp(100px, 12vw, 170px);
+
     height: auto;
+
     cursor: pointer;
+
     user-select: none;
+
     pointer-events: auto;
+
     transition:
         transform 0.15s ease,
         filter 0.15s ease;
 }
 
+
 #proceedArea:hover #proceedButton {
     transform: scale(1.05);
+
     filter: brightness(1.1);
 }
+
 
 #proceedArea:active #proceedButton {
     transform: scale(0.97);
 }
 
+
+/* =========================================================
+   LORE SCREEN
+   ========================================================= */
+
 #loreScreen {
     position: absolute;
+
     inset: 0;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     opacity: 0;
+
     pointer-events: none;
+
     transition:
         opacity 0.7s ease;
 }
 
+
+/* =========================================================
+   LORE CONTAINER
+   ========================================================= */
+
 #loreContainer {
     position: relative;
+
     width: min(80vw, 1000px);
+
     aspect-ratio: 334 / 154;
+
     image-rendering: pixelated;
+
     cursor: pointer;
+
     user-select: none;
 }
 
+
+/* =========================================================
+   LORE BOX IMAGE
+   ========================================================= */
+
 #loreBox {
     position: absolute;
+
     inset: 0;
+
     width: 100%;
     height: 100%;
+
     display: block;
+
     image-rendering: pixelated;
+
     pointer-events: none;
 }
+
+
+/* =========================================================
+   REALM SYMBOL
+   ========================================================= */
 
 #realmSymbol {
     position: absolute;
+
     left: 50%;
+
     top: 18%;
+
     transform:
         translateX(-50%)
         scale(0.8);
+
     width: 24%;
+
     height: 34%;
+
     object-fit: contain;
+
     image-rendering: pixelated;
+
     opacity: 0;
+
     transition:
         opacity 0.6s ease,
         transform 0.6s ease;
+
     pointer-events: none;
+
     z-index: 2;
 }
 
+
 #realmSymbol.visible {
     opacity: 1;
+
     transform:
         translateX(-50%)
         scale(1);
 }
 
+
+/* =========================================================
+   LORE TEXT
+   ========================================================= */
+
 #loreText {
     position: absolute;
+
     left: 8.08%;
     top: 13%;
+
     width: 83.83%;
     height: 72.73%;
+
     box-sizing: border-box;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     padding: 0;
+
     text-align: center;
+
     font-family: "Press Start 2P", monospace;
+
     font-size: clamp(11px, 1.5vw, 21px);
+
     line-height: 1.7;
+
     color: #111;
+
     white-space: pre-line;
+
     overflow: hidden;
+
     user-select: none;
+
     pointer-events: none;
+
     z-index: 3;
 }
 
+
+/* =========================================================
+   REALM TEXT POSITION
+   ========================================================= */
+
 #loreText.realmText {
     align-items: flex-end;
+
     padding-bottom: 3%;
 }
 
+
+/* =========================================================
+   NEXT INDICATOR
+   ========================================================= */
+
 #nextIndicator {
     position: absolute;
+
     bottom: -55px;
+
     left: 50%;
+
     transform: translateX(-50%);
+
     font-family: "Press Start 2P", monospace;
+
     font-size: clamp(7px, 0.9vw, 12px);
+
     color: #000;
+
     text-shadow:
         1px 1px 0 rgba(255,255,255,0.5);
+
     opacity: 0;
+
     white-space: nowrap;
+
     transition:
         opacity 0.4s ease;
 }
 
+
 #nextIndicator.visible {
     opacity: 1;
+
     animation:
         blink 1.2s infinite;
 }
+
 
 @keyframes blink {
 
@@ -247,41 +429,167 @@ canvas {
 
 }
 
+
+/* =========================================================
+   MAGIC REALM BUTTONS
+   ========================================================= */
+
+#realmButtons {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 7%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3%;
+
+    width: 84%;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.6s ease;
+}
+
+
+#realmButtons.visible {
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+.realmButton {
+    display: block;
+
+    width: 15%;
+
+    aspect-ratio: 1;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        filter 0.15s ease;
+
+    user-select: none;
+}
+
+
+.realmButton img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+}
+
+
+.realmButton:hover {
+    transform: scale(1.12);
+
+    filter: brightness(1.15);
+}
+
+
+.realmButton:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   MAGIC PAGE TEXT
+   ========================================================= */
+
+#loreText.magicText {
+    align-items: center;
+
+    padding-bottom: 0;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
 #error {
     position: fixed;
+
     left: 50%;
     top: 50%;
+
     transform: translate(-50%, -50%);
+
     max-width: 80vw;
+
     padding: 20px;
+
     background: rgba(0,0,0,0.85);
+
     color: white;
+
     font-family: monospace;
+
     text-align: center;
+
     z-index: 2000;
+
     display: none;
 }
 
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =======================================================
+     LOADING
+     ======================================================= -->
 
 <div id="loading">
     Entering the world...
 </div>
 
+
+<!-- =======================================================
+     INTERACTION LAYER
+     ======================================================= -->
+
 <div id="interactionLayer">
+
+
+    <!-- ===================================================
+         WELCOME
+         =================================================== -->
 
     <div id="welcomeScreen">
 
         <div id="welcomeText"></div>
+
 
         <div id="proceedArea">
 
             <div id="proceedText">
                 (Click to Proceed)
             </div>
+
 
             <img
                 id="proceedButton"
@@ -293,9 +601,15 @@ canvas {
 
     </div>
 
+
+    <!-- ===================================================
+         LORE
+         =================================================== -->
+
     <div id="loreScreen">
 
         <div id="loreContainer">
+
 
             <img
                 id="loreBox"
@@ -303,13 +617,84 @@ canvas {
                 alt=""
             >
 
+
             <img
                 id="realmSymbol"
                 src=""
                 alt=""
             >
 
+
             <div id="loreText"></div>
+
+
+            <!-- =========================================
+                 REALM BUTTONS
+                 ========================================= -->
+
+            <div id="realmButtons">
+
+                <a
+                    class="realmButton"
+                    href="overworld.html"
+                    aria-label="Overworld"
+                >
+                    <img
+                        src="https://i.imgur.com/viHBHca.png"
+                        alt="Overworld"
+                    >
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="nether.html"
+                    aria-label="Nether"
+                >
+                    <img
+                        src="https://i.imgur.com/Lwe6PNM.png"
+                        alt="Nether"
+                    >
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="aether.html"
+                    aria-label="Aether"
+                >
+                    <img
+                        src="https://i.imgur.com/E2JL5Ia.png"
+                        alt="Aether"
+                    >
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="otherside.html"
+                    aria-label="Otherside"
+                >
+                    <img
+                        src="https://i.imgur.com/4hB9YGV.png"
+                        alt="Otherside"
+                    >
+                </a>
+
+
+                <a
+                    class="realmButton"
+                    href="end.html"
+                    aria-label="End"
+                >
+                    <img
+                        src="https://i.imgur.com/LZiGKoN.png"
+                        alt="End"
+                    >
+                </a>
+
+            </div>
+
 
             <div id="nextIndicator">
                 (Click to Continue)
@@ -321,15 +706,27 @@ canvas {
 
 </div>
 
+
+<!-- =======================================================
+     ERROR
+     ======================================================= -->
+
 <div id="error"></div>
+
 
 <script type="module">
 
 import * as THREE from
     "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
+
+/* =========================================================
+   THREE.JS SETUP
+   ========================================================= */
+
 const scene =
     new THREE.Scene();
+
 
 const camera =
     new THREE.PerspectiveCamera(
@@ -340,16 +737,19 @@ const camera =
         100
     );
 
+
 camera.position.set(
     0,
     0,
     0
 );
 
+
 const renderer =
     new THREE.WebGLRenderer({
         antialias: true
     });
+
 
 renderer.setPixelRatio(
     Math.min(
@@ -358,14 +758,21 @@ renderer.setPixelRatio(
     )
 );
 
+
 renderer.setSize(
     window.innerWidth,
     window.innerHeight
 );
 
+
 document.body.appendChild(
     renderer.domElement
 );
+
+
+/* =========================================================
+   PANORAMA
+   ========================================================= */
 
 const panoramaURLs = [
 
@@ -378,8 +785,10 @@ const panoramaURLs = [
 
 ];
 
+
 const loader =
     new THREE.TextureLoader();
+
 
 try {
 
@@ -407,12 +816,14 @@ try {
 
         );
 
+
     const materials =
         textures.map(
             texture => {
 
                 texture.colorSpace =
                     THREE.SRGBColorSpace;
+
 
                 return new THREE.MeshBasicMaterial({
 
@@ -425,6 +836,7 @@ try {
             }
         );
 
+
     const geometry =
         new THREE.BoxGeometry(
             100,
@@ -432,21 +844,30 @@ try {
             100
         );
 
+
     const panorama =
         new THREE.Mesh(
             geometry,
             materials
         );
 
+
     scene.add(
         panorama
     );
+
 
     document.getElementById(
         "loading"
     ).style.display = "none";
 
+
+    /* =====================================================
+       PANORAMA ROTATION
+       ===================================================== */
+
     let rotationY = 0;
+
 
     function animate() {
 
@@ -454,10 +875,13 @@ try {
             animate
         );
 
+
         rotationY += 0.0003;
+
 
         panorama.rotation.y =
             rotationY;
+
 
         renderer.render(
             scene,
@@ -466,47 +890,72 @@ try {
 
     }
 
+
     animate();
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
 
     const welcomeText =
         document.getElementById(
             "welcomeText"
         );
 
+
     const proceedArea =
         document.getElementById(
             "proceedArea"
         );
+
 
     const welcomeScreen =
         document.getElementById(
             "welcomeScreen"
         );
 
+
     const loreScreen =
         document.getElementById(
             "loreScreen"
         );
+
 
     const loreText =
         document.getElementById(
             "loreText"
         );
 
+
     const realmSymbol =
         document.getElementById(
             "realmSymbol"
         );
+
 
     const nextIndicator =
         document.getElementById(
             "nextIndicator"
         );
 
+
+    const realmButtons =
+        document.getElementById(
+            "realmButtons"
+        );
+
+
+    /* =====================================================
+       WELCOME TYPEWRITER
+       ===================================================== */
+
     const welcomeMessage =
         "Welcome....";
 
+
     let welcomeCharacter = 0;
+
 
     function typeWelcome() {
 
@@ -520,7 +969,9 @@ try {
                     welcomeCharacter
                 ];
 
+
             welcomeCharacter++;
+
 
             setTimeout(
                 typeWelcome,
@@ -545,10 +996,16 @@ try {
 
     }
 
+
     setTimeout(
         typeWelcome,
         1000
     );
+
+
+    /* =====================================================
+       LORE PAGES
+       ===================================================== */
 
     const lorePages = [
 
@@ -560,6 +1017,7 @@ try {
                 null
         },
 
+
         {
             text:
                 "The Overworld is green and warm, filled with life and growth.",
@@ -567,6 +1025,7 @@ try {
             symbol:
                 "https://i.imgur.com/viHBHca.png"
         },
+
 
         {
             text:
@@ -576,6 +1035,7 @@ try {
                 "https://i.imgur.com/Lwe6PNM.png"
         },
 
+
         {
             text:
                 "The Aether is pastel and cool, filled with spirit.",
@@ -583,6 +1043,7 @@ try {
             symbol:
                 "https://i.imgur.com/E2JL5Ia.png"
         },
+
 
         {
             text:
@@ -592,6 +1053,7 @@ try {
                 "https://i.imgur.com/4hB9YGV.png"
         },
 
+
         {
             text:
                 "The End is dark and cold, yet burns with distant warmth, filled with everything and nothing.",
@@ -600,27 +1062,94 @@ try {
                 "https://i.imgur.com/LZiGKoN.png"
         },
 
+
         {
             text:
                 "Not every realm can be easily reached. Some may be places you never see at all.\nBut every one of you has been touched by one of them.",
 
             symbol:
                 null
+        },
+
+
+        /* =================================================
+           MAGIC
+           ================================================= */
+
+        {
+            text:
+                "Magic\nNot everyone in this world can wield magic.\nSome, touched by a realm, can carry a connection to its power, to its Architect.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        {
+            text:
+                "Being touched does not always mean understanding that power.\nSome discover their abilities naturally, while others must spend years honing their power.\nThe magic of each realm takes different forms.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        {
+            text:
+                "These are known as your Aspect.\nThere are five Aspects, each connected to one of the five realms, governed by one of the Five Architects.",
+
+            symbol:
+                null,
+
+            magic:
+                true
+        },
+
+
+        {
+            text:
+                "Which realm has touched you?",
+
+            symbol:
+                null,
+
+            magic:
+                true,
+
+            realmChoice:
+                true
         }
 
     ];
 
+
     let currentLorePage = 0;
+
 
     let typing = false;
 
+
     let typingTimer = null;
+
 
     let currentText = "";
 
+
     let currentCharacter = 0;
 
+
     const typingSpeed = 35;
+
+
+    /* =====================================================
+       TYPE LORE PAGE
+       ===================================================== */
 
     function typeLorePage() {
 
@@ -628,20 +1157,35 @@ try {
             typingTimer
         );
 
+
         typing = true;
+
 
         nextIndicator.classList.remove(
             "visible"
         );
+
+
+        realmButtons.classList.remove(
+            "visible"
+        );
+
 
         currentText =
             lorePages[
                 currentLorePage
             ].text;
 
+
         currentCharacter = 0;
 
+
         loreText.textContent = "";
+
+
+        /* -----------------------------------------------
+           Determine page type
+           ----------------------------------------------- */
 
         if (
             lorePages[
@@ -653,6 +1197,26 @@ try {
                 "realmText"
             );
 
+            loreText.classList.remove(
+                "magicText"
+            );
+
+        }
+
+        else if (
+            lorePages[
+                currentLorePage
+            ].magic
+        ) {
+
+            loreText.classList.add(
+                "magicText"
+            );
+
+            loreText.classList.remove(
+                "realmText"
+            );
+
         }
 
         else {
@@ -661,14 +1225,22 @@ try {
                 "realmText"
             );
 
+            loreText.classList.remove(
+                "magicText"
+            );
+
         }
 
-        /* Hide the old symbol first */
+
+        /* -----------------------------------------------
+           Hide old realm symbol
+           ----------------------------------------------- */
+
         realmSymbol.classList.remove(
             "visible"
         );
 
-        /* Wait for the fade-out to finish */
+
         setTimeout(
             () => {
 
@@ -676,6 +1248,7 @@ try {
                     lorePages[
                         currentLorePage
                     ].symbol;
+
 
                 if (newSymbol) {
 
@@ -696,6 +1269,11 @@ try {
             600
         );
 
+
+        /* -----------------------------------------------
+           Type text
+           ----------------------------------------------- */
+
         function typeCharacter() {
 
             if (
@@ -708,7 +1286,9 @@ try {
                         currentCharacter
                     ];
 
+
                 currentCharacter++;
+
 
                 typingTimer =
                     setTimeout(
@@ -721,6 +1301,11 @@ try {
             else {
 
                 typing = false;
+
+
+                /* ---------------------------------------
+                   Show realm symbol
+                   --------------------------------------- */
 
                 if (
                     lorePages[
@@ -741,24 +1326,67 @@ try {
 
                 }
 
-                setTimeout(
-                    () => {
 
-                        nextIndicator.classList.add(
-                            "visible"
-                        );
+                /* ---------------------------------------
+                   Show realm choices
+                   --------------------------------------- */
 
-                    },
-                    600
-                );
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            realmButtons.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        250
+                    );
+
+                }
+
+
+                /* ---------------------------------------
+                   Show continue indicator
+                   --------------------------------------- */
+
+                if (
+                    !lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            nextIndicator.classList.add(
+                                "visible"
+                            );
+
+                        },
+                        600
+                    );
+
+                }
 
             }
 
         }
 
+
         typeCharacter();
 
     }
+
+
+    /* =====================================================
+       START LORE
+       ===================================================== */
 
     function startLore() {
 
@@ -766,14 +1394,18 @@ try {
             "Proceed button clicked!"
         );
 
+
         proceedArea.style.pointerEvents =
             "none";
+
 
         welcomeScreen.style.opacity =
             "0";
 
+
         welcomeScreen.style.transform =
             "translateY(-20px)";
+
 
         setTimeout(
             () => {
@@ -781,11 +1413,14 @@ try {
                 welcomeScreen.style.display =
                     "none";
 
+
                 loreScreen.style.pointerEvents =
                     "auto";
 
+
                 loreScreen.style.opacity =
                     "1";
+
 
                 setTimeout(
                     () => {
@@ -802,6 +1437,11 @@ try {
 
     }
 
+
+    /* =====================================================
+       PROCEED BUTTON
+       ===================================================== */
+
     proceedArea.addEventListener(
         "pointerdown",
         event => {
@@ -810,14 +1450,16 @@ try {
 
             event.stopPropagation();
 
-            console.log(
-                "Proceed area pointer detected!"
-            );
 
             startLore();
 
         }
     );
+
+
+    /* =====================================================
+       LORE CLICKING
+       ===================================================== */
 
     loreScreen.addEventListener(
         "pointerdown",
@@ -827,19 +1469,45 @@ try {
 
             event.stopPropagation();
 
+
+            /*
+               Do not advance if the user clicked
+               one of the realm buttons.
+            */
+
+            if (
+                event.target.closest(
+                    ".realmButton"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+               If text is still typing,
+               finish it immediately.
+            */
+
             if (typing) {
 
                 clearTimeout(
                     typingTimer
                 );
 
+
                 loreText.textContent =
                     currentText;
+
 
                 currentCharacter =
                     currentText.length;
 
+
                 typing = false;
+
 
                 if (
                     lorePages[
@@ -853,13 +1521,57 @@ try {
 
                 }
 
-                nextIndicator.classList.add(
-                    "visible"
-                );
+
+                if (
+                    lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    realmButtons.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
+                if (
+                    !lorePages[
+                        currentLorePage
+                    ].realmChoice
+                ) {
+
+                    nextIndicator.classList.add(
+                        "visible"
+                    );
+
+                }
+
 
                 return;
 
             }
+
+
+            /*
+               Realm choice page does not
+               advance when clicking elsewhere.
+            */
+
+            if (
+                lorePages[
+                    currentLorePage
+                ].realmChoice
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+               Otherwise advance.
+            */
 
             if (
                 currentLorePage <
@@ -868,11 +1580,14 @@ try {
 
                 currentLorePage++;
 
+
                 typeLorePage();
+
 
                 return;
 
             }
+
 
             nextIndicator.classList.remove(
                 "visible"
@@ -881,6 +1596,7 @@ try {
         }
     );
 
+
 }
 catch (error) {
 
@@ -888,18 +1604,26 @@ catch (error) {
         error
     );
 
+
     const errorBox =
         document.getElementById(
             "error"
         );
 
+
     errorBox.textContent =
         "The world could not be loaded. Check the browser console for details.";
+
 
     errorBox.style.display =
         "block";
 
 }
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
 
 window.addEventListener(
     "resize",
@@ -909,7 +1633,9 @@ window.addEventListener(
             window.innerWidth /
             window.innerHeight;
 
+
         camera.updateProjectionMatrix();
+
 
         renderer.setSize(
             window.innerWidth,
