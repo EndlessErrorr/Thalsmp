@@ -1,7 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -15,16 +16,23 @@
 
         html,
         body {
+
             margin: 0;
             padding: 0;
+
             width: 100%;
             height: 100%;
+
             overflow: hidden;
+
             background: #000;
+
         }
 
         canvas {
+
             position: fixed;
+
             top: 0;
             left: 0;
 
@@ -34,240 +42,235 @@
             display: block;
 
             pointer-events: none;
+
         }
 
     </style>
+
 </head>
+
 
 <body>
 
 <script type="module">
 
-    import * as THREE from
-        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import * as THREE from
+    "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
 
-    /* =========================
-       PANORAMA IMAGES
-       ========================= */
+/* =========================
+   AETHER PANORAMA
 
-    const panoramaURLs = [
+   Three.js BoxGeometry order:
 
-        "https://i.imgur.com/NJgHJw5.jpeg",   // Right
-        "https://i.imgur.com/ZcAYCGC.jpeg",   // Left
-        "https://i.imgur.com/aiIpfeA.jpeg",   // Top
-        "https://i.imgur.com/P4O37bj.jpeg",   // Bottom
-        "https://i.imgur.com/LKiduuw.jpeg",   // Front
-        "https://i.imgur.com/jyWhcTy.jpeg"    // Back
+   0 = Right
+   1 = Left
+   2 = Top
+   3 = Bottom
+   4 = Front
+   5 = Back
+   ========================= */
 
-    ];
+const panoramaURLs = [
+
+    "https://i.imgur.com/NJgHJw5.jpeg",   // Right
+    "https://i.imgur.com/ZcAYCGC.jpeg",   // Left
+    "https://i.imgur.com/aiIpfeA.jpeg",   // Top
+    "https://i.imgur.com/P4O37bj.jpeg",   // Bottom
+    "https://i.imgur.com/LKiduuw.jpeg",   // Front
+    "https://i.imgur.com/jyWhcTy.jpeg"    // Back
+
+];
 
 
-    /* =========================
-       SCENE
-       ========================= */
+/* =========================
+   SCENE
+   ========================= */
 
-    const scene =
-        new THREE.Scene();
+const scene =
+    new THREE.Scene();
 
 
-    /* =========================
-       CAMERA
-       ========================= */
+/* =========================
+   CAMERA
+   ========================= */
 
-    const camera =
-        new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth /
-            window.innerHeight,
-            0.1,
-            100
-        );
-
-    camera.position.set(
-        0,
-        0,
-        0
+const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        100
     );
 
-
-    /* =========================
-       RENDERER
-       ========================= */
-
-    const renderer =
-        new THREE.WebGLRenderer({
-            antialias: true
-        });
-
-    renderer.setPixelRatio(
-        Math.min(
-            window.devicePixelRatio,
-            2
-        )
-    );
-
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
-
-    document.body.appendChild(
-        renderer.domElement
-    );
+camera.position.set(
+    0,
+    0,
+    0
+);
 
 
-    /* =========================
-       LOAD PANORAMA
-       ========================= */
+/* =========================
+   RENDERER
+   ========================= */
 
-    const loader =
-        new THREE.TextureLoader();
+const renderer =
+    new THREE.WebGLRenderer({
+        antialias: true
+    });
 
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
 
-    panoramaURLs.forEach(
-        (url, index) => {
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
 
-            loader.load(
-                url,
-                (texture) => {
-
-                    texture.colorSpace =
-                        THREE.SRGBColorSpace;
-
-
-                    const material =
-                        new THREE.MeshBasicMaterial({
-                            map: texture,
-                            side: THREE.BackSide
-                        });
-
-
-                    const geometry =
-                        new THREE.BoxGeometry(
-                            100,
-                            100,
-                            100
-                        );
+document.body.appendChild(
+    renderer.domElement
+);
 
 
-                    const face =
-                        new THREE.Mesh(
-                            geometry,
-                            material
-                        );
+/* =========================
+   LOAD TEXTURES
+   ========================= */
+
+const loader =
+    new THREE.TextureLoader();
+
+const textures = [];
+
+let loadedTextures = 0;
 
 
-                    /*
-                     * Each face gets its
-                     * own geometry.
-                     */
+panoramaURLs.forEach(
+    (url, index) => {
 
-                    face.position.set(
-                        0,
-                        0,
-                        0
-                    );
+        loader.load(
+            url,
 
+            (texture) => {
 
-                    /*
-                     * Rotate the individual
-                     * cube face into position.
-                     */
+                texture.colorSpace =
+                    THREE.SRGBColorSpace;
 
-                    switch (index) {
+                textures[index] =
+                    texture;
 
-                        case 0:
-                            face.rotation.y =
-                                Math.PI / 2;
-                            break;
-
-                        case 1:
-                            face.rotation.y =
-                                -Math.PI / 2;
-                            break;
-
-                        case 2:
-                            face.rotation.x =
-                                Math.PI / 2;
-                            break;
-
-                        case 3:
-                            face.rotation.x =
-                                -Math.PI / 2;
-                            break;
-
-                        case 4:
-                            face.rotation.y =
-                                Math.PI;
-                            break;
-
-                        case 5:
-                            face.rotation.y =
-                                0;
-                            break;
-
-                    }
+                loadedTextures++;
 
 
-                    scene.add(face);
+                if (
+                    loadedTextures ===
+                    panoramaURLs.length
+                ) {
+
+                    createPanorama();
 
                 }
-            );
 
-        }
-    );
+            }
 
-
-    /* =========================
-       PANORAMA ROTATION
-       ========================= */
-
-    function animate() {
-
-        requestAnimationFrame(
-            animate
-        );
-
-
-        scene.rotation.y +=
-            0.0003;
-
-
-        renderer.render(
-            scene,
-            camera
         );
 
     }
+);
 
 
-    animate();
+/* =========================
+   CREATE PANORAMA
+   ========================= */
+
+function createPanorama() {
+
+    const geometry =
+        new THREE.BoxGeometry(
+            100,
+            100,
+            100
+        );
 
 
-    /* =========================
-       RESIZE
-       ========================= */
+    const materials =
+        textures.map(
+            (texture) =>
+                new THREE.MeshBasicMaterial({
+                    map: texture,
+                    side: THREE.BackSide
+                })
+        );
 
-    window.addEventListener(
-        "resize",
-        () => {
 
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
+    const panorama =
+        new THREE.Mesh(
+            geometry,
+            materials
+        );
 
-            camera.updateProjectionMatrix();
 
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-        }
+    scene.add(
+        panorama
     );
+
+}
+
+
+/* =========================
+   ANIMATION
+   ========================= */
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    scene.rotation.y +=
+        0.0003;
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+
+/* =========================
+   RESIZE
+   ========================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
 
 </script>
 
 </body>
+
 </html>
